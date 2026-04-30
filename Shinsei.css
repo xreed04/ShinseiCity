@@ -1,0 +1,126 @@
+/* ══════════════════════════════════════════════════════
+   SHINSEI CITY — shinsei.css
+   Héberge ce fichier sur GitHub et lie-le dans le header
+   avec : <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xreed04/ShinseiCity@main/shinsei.css">
+══════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Nunito:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+/* ── Variables ── */
+:root {
+  --sc-bg:       #0c0b1e;
+  --sc-surface:  #151330;
+  --sc-card:     #1a1838;
+  --sc-border:   rgba(140, 120, 220, 0.14);
+  --sc-border-h: rgba(160, 140, 240, 0.28);
+  --sc-accent:   #7f72d0;
+  --sc-accent2:  #a897f0;
+  --sc-adim:     rgba(127, 114, 208, 0.16);
+  --sc-gold:     #e8a94d;
+  --sc-gold2:    #ffc870;
+  --sc-text:     #ddd6f0;
+  --sc-text2:    #9c93c6;
+  --sc-text3:    #635e8a;
+  --sc-green:    #4caf7d;
+  --sc-red:      #e85a5a;
+  --sc-r:        10px;
+  --sc-r2:       16px;
+}
+
+/* ── Reset minimal ── */
+#sc-header,
+#sc-header * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+#sc-header {
+  background: var(--sc-bg);
+  width: 100%;
+  text-align: center;
+  padding: 72px 24px 0;
+  position: relative;
+  overflow: visible;
+}
+
+#sc-title {
+  font-family: 'Cinzel', serif;
+  font-size: 68px;
+  font-weight: 700;
+  letter-spacing: 16px;
+  color: #ffffff;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 18px;
+}
+
+#sc-tagline {
+  font-family: 'Nunito', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--sc-text2);
+  margin-bottom: 44px;
+}
+
+.sc-sep {
+  color: var(--sc-accent2);
+  margin: 0 8px;
+}
+
+/* Image optionnelle sous le titre */
+#sc-img-wrap {
+  width: 100%;
+  max-height: 320px;
+  overflow: hidden;
+  line-height: 0;
+}
+
+/* Masque automatiquement le conteneur si src est vide */
+#sc-img-wrap img[src=""],
+#sc-img-wrap img:not([src]) {
+  display: none;
+}
+
+#sc-img-wrap img {
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* Logo "市" centré en bas du header */
+#sc-logo {
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 52px;
+  background: var(--sc-surface);
+  border: 2px solid var(--sc-accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  color: var(--sc-accent2);
+  z-index: 10;
+  box-shadow: 0 0 24px rgba(127, 114, 208, 0.45);
+  cursor: pointer;
+  transition: box-shadow 0.3s;
+}
+
+#sc-logo:hover {
+  box-shadow: 0 0 38px rgba(127, 114, 208, 0.75);
+}
+
+/* ══════════════════════════════════════════
+   (à compléter : nav, index, catégories…)
+══════════════════════════════════════════ */
