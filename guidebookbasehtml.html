@@ -1,0 +1,394 @@
+<!--  
+  ============================================================
+  GUIDEBOOK SHINSEI CITY
+  ============================================================
+  À coller dans une Page HTML (Panneau d'administration >
+  Modules > Gérer les pages HTML).
+
+  STRUCTURE :
+  - .gbside  = menu accordéon à gauche (catégories dépliables)
+  - .gbmain  = zone de contenu à droite (une "page" par section,
+               une seule visible à la fois grâce au JS)
+
+  POUR AJOUTER UNE NOUVELLE PAGE :
+  1. Ajoute un <li><a href="#tonid" class="gblink">Nom</a></li>
+     dans la bonne catégorie du menu (.gbsublist)
+  2. Duplique un bloc <div class="gbpage" id="tonid">...</div>
+     dans .gbmain et adapte le contenu
+  L'id du lien et l'id de la page doivent être identiques.
+  ============================================================
+  -->
+<div id="guidebook">
+	     
+	<div class="gbenv">
+		       
+		<!--   ============ MENU LATÉRAL ============   -->    <nav class="gbside">      </nav> 
+		<ul class="gbcatlist" style="">
+			           
+			<!--   Catégorie : Généralités   -->         
+			<li class="gbcat-item">
+				            
+				<button class="gbcat-toggle">
+					             <em class="fa-thin fa-lightbulb"></em>            <span>Généralités</span>            <em class="gbchevron"></em>           
+				</button>
+				            
+				<ul class="gbsublist">
+					              
+					<li>
+						 <a href="#reglement" class="gblink">Règlement</a> 
+					</li>
+					              
+					<li>
+						 <a href="#contexte" class="gblink">Contexte</a> 
+					</li>
+					              
+					<li>
+						 <a href="#groupes" class="gblink">Groupes</a> 
+					</li>
+					              
+					<li>
+						 <a href="#faq" class="gblink">Foire aux questions</a> 
+					</li>
+					            
+				</ul>
+				          
+			</li>
+			           
+			<!--   Catégorie : Vie du forum   -->         
+			<li class="gbcat-item">
+				            
+				<button class="gbcat-toggle">
+					             <em class="fa-thin fa-comments"></em>            <span>Vie du forum</span>            <em class="gbchevron"></em>           
+				</button>
+				            
+				<ul class="gbsublist">
+					              
+					<li>
+						 <a href="#activite" class="gblink">Activité</a> 
+					</li>
+					              
+					<li>
+						 <a href="#chatbox" class="gblink">Chatbox</a> 
+					</li>
+					              
+					<li>
+						 <a href="#partenariats" class="gblink">Partenariats</a> 
+					</li>
+					            
+				</ul>
+				          
+			</li>
+			           
+			<!--   Catégorie : Lore   -->         
+			<li class="gbcat-item">
+				            
+				<button class="gbcat-toggle">
+					             <em class="fa-thin fa-star"></em>            <span>Lore</span>            <em class="gbchevron"></em>           
+				</button>
+				            
+				<ul class="gbsublist">
+					              
+					<li>
+						 <a href="#histoire" class="gblink">Histoire de la ville</a> 
+					</li>
+					              
+					<li>
+						 <a href="#score" class="gblink">Le score d'engagement</a> 
+					</li>
+					              
+					<li>
+						 <a href="#groupes-affinite" class="gblink">Loyalistes, Détracteurs & co</a> 
+					</li>
+					            
+				</ul>
+				          
+			</li>
+			           
+			<!--   Catégorie : Ressources RPG   -->         
+			<li class="gbcat-item">
+				            
+				<button class="gbcat-toggle">
+					             <em class="fa-thin fa-hand"></em>            <span>Ressources RPG</span>            <em class="gbchevron"></em>           
+				</button>
+				            
+				<ul class="gbsublist">
+					              
+					<li>
+						 <a href="#fiche" class="gblink">Fiche de personnage</a> 
+					</li>
+					              
+					<li>
+						 <a href="#templates" class="gblink">Templates RP</a> 
+					</li>
+					            
+				</ul>
+				          
+			</li>
+			         
+		</ul><nav class="gbside">    </nav>      
+		<!--   ============ ZONE DE CONTENU ============   -->     
+		<div class="gbmain">
+			         
+			<!--   Page d'accueil (visible par défaut)   -->       
+			<div class="gbpage active" id="welcome">
+				          
+				<div class="gbheader">
+					           <em class="fa-thin fa-atom-simple"></em>           
+					<h2>
+						 Bienvenue dans le Guidebook 
+					</h2>
+					          
+				</div>
+				          
+				<div class="gbtext">
+					           Cliquez sur une catégorie dans le menu à gauche pour déplier ses sections,           puis sur un lien pour afficher son contenu.          
+				</div>
+				        
+			</div>
+			         
+			<!--   Exemple de page complète : Règlement   -->       
+			<div class="gbpage" id="reglement">
+				          
+				<div class="gbheader">
+					           <em class="fa-solid fa-sparkles"></em>           
+					<h2>
+						 Règlement 
+					</h2>
+					          
+				</div>
+				           
+				<div class="gbintro">
+					           La lecture de ce règlement est impérative avant toute inscription.           Son non-respect peut entraîner un avertissement ou une exclusion du forum.          
+				</div>
+				           
+				<div class="gbbody">
+					            <aside class="gbsommaire">            </aside> 
+					<h3 style="">
+						 Sommaire 
+					</h3><aside class="gbsommaire">            <a href="#reg-personnages">Personnages</a>            <a href="#reg-rp">Roleplay</a>            <a href="#reg-forum">Vie du forum</a>          </aside>            
+					<div class="gbtext">
+						               
+						<h3 id="reg-personnages">
+							 Personnages 
+						</h3>
+						              
+						<p>
+							               Tout résident de Shinsei City possède un identifiant civil sous la forme               <strong>Nom Prénom</strong>. Les personnages doivent être cohérents avec              le contexte de la ville : aucune référence extérieure, aucune culture               importée, aucun souvenir du monde d'avant le mur d'enceinte.              
+						</p>
+						               
+						<div class="gbcallout">
+							                
+							<h4>
+								 À noter 
+							</h4>
+							                
+							<p>
+								                 Le score d'engagement de départ est déterminé à la validation de la                 fiche par le staff, en fonction du profil du personnage.                
+							</p>
+							              
+						</div>
+						               
+						<h3 id="reg-rp">
+							 Roleplay 
+						</h3>
+						              
+						<p>
+							               Un minimum d'activité est demandé pour conserver son compte actif.               Le langage doit rester correct et lisible ; les fautes répétées               pourront être signalées avec bienveillance par le staff.              
+						</p>
+						               
+						<h3 id="reg-forum">
+							 Vie du forum 
+						</h3>
+						              
+						<p>
+							               Le respect entre membres est la règle numéro un. Toute forme de               harcèlement, de discrimination ou d'irrespect envers un autre membre               entraînera une sanction immédiate.              
+						</p>
+						             
+					</div>
+					          
+				</div>
+				        
+			</div>
+			         
+			<!--   Pages à compléter : dupliquer la structure ci-dessus   -->       
+			<div class="gbpage" id="contexte">
+				          
+				<div class="gbheader">
+					 <em class="fa-solid fa-sparkles"> </em> 
+					<h2>
+						 Contexte 
+					</h2>
+					 
+				</div>
+				          
+				<div class="gbtext">
+					 Contenu à venir. 
+				</div>
+				        
+			</div>
+			         
+			<div class="gbpage" id="groupes">
+				          
+				<div class="gbheader">
+					 <em class="fa-solid fa-sparkles"> </em> 
+					<h2>
+						 Groupes 
+					</h2>
+					 
+				</div>
+				          
+				<div class="gbtext">
+					 Contenu à venir. 
+				</div>
+				        
+			</div>
+			         
+			<div class="gbpage" id="faq">
+				          
+				<div class="gbheader">
+					 <em class="fa-solid fa-sparkles"> </em> 
+					<h2>
+						 Foire aux questions 
+					</h2>
+					 
+				</div>
+				          
+				<div class="gbtext">
+					 Contenu à venir. 
+				</div>
+				        
+			</div>
+			         
+			<div class="gbpage" id="activite">
+				          
+				<div class="gbheader">
+					 <em class="fa-solid fa-sparkles"> </em> 
+					<h2>
+						 Activité 
+					</h2>
+					 
+				</div>
+				          
+				<div class="gbtext">
+					 Contenu à venir. 
+				</div>
+				        
+			</div>
+			         
+			<div class="gbpage" id="chatbox">
+				          
+				<div class="gbheader">
+					 <em class="fa-solid fa-sparkles"> </em> 
+					<h2>
+						 Chatbox 
+					</h2>
+					 
+				</div>
+				          
+				<div class="gbtext">
+					 Contenu à venir. 
+				</div>
+				        
+			</div>
+			         
+			<div class="gbpage" id="partenariats">
+				          
+				<div class="gbheader">
+					 <em class="fa-solid fa-sparkles"> </em> 
+					<h2>
+						 Partenariats 
+					</h2>
+					 
+				</div>
+				          
+				<div class="gbtext">
+					 Contenu à venir. 
+				</div>
+				        
+			</div>
+			         
+			<div class="gbpage" id="histoire">
+				          
+				<div class="gbheader">
+					 <em class="fa-solid fa-sparkles"> </em> 
+					<h2>
+						 Histoire de la ville 
+					</h2>
+					 
+				</div>
+				          
+				<div class="gbtext">
+					 Contenu à venir. 
+				</div>
+				        
+			</div>
+			         
+			<div class="gbpage" id="score">
+				          
+				<div class="gbheader">
+					 <em class="fa-solid fa-sparkles"> </em> 
+					<h2>
+						 Le score d'engagement 
+					</h2>
+					 
+				</div>
+				          
+				<div class="gbtext">
+					 Contenu à venir. 
+				</div>
+				        
+			</div>
+			         
+			<div class="gbpage" id="groupes-affinite">
+				          
+				<div class="gbheader">
+					 <em class="fa-solid fa-sparkles"> </em> 
+					<h2>
+						 Loyalistes, Détracteurs & co 
+					</h2>
+					 
+				</div>
+				          
+				<div class="gbtext">
+					 Contenu à venir. 
+				</div>
+				        
+			</div>
+			         
+			<div class="gbpage" id="fiche">
+				          
+				<div class="gbheader">
+					 <em class="fa-solid fa-sparkles"> </em> 
+					<h2>
+						 Fiche de personnage 
+					</h2>
+					 
+				</div>
+				          
+				<div class="gbtext">
+					 Contenu à venir. 
+				</div>
+				        
+			</div>
+			         
+			<div class="gbpage" id="templates">
+				          
+				<div class="gbheader">
+					 <em class="fa-solid fa-sparkles"> </em> 
+					<h2>
+						 Templates RP 
+					</h2>
+					 
+				</div>
+				          
+				<div class="gbtext">
+					 Contenu à venir. 
+				</div>
+				        
+			</div>
+			       
+		</div>
+		    
+	</div>
+</div>
+ <script src="https://cdn.jsdelivr.net/gh/xreed04/ShinseiCity@main/shinsei-guidebook.js?v=1"></script>
