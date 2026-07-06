@@ -10,6 +10,8 @@
   }
 
   function styleChatbox(obj) {
+    var FIXED_HEIGHT = 500; /* hauteur totale fixe du widget, en px - ajuste si besoin */
+
     function inject() {
       var doc = obj.contentDocument;
       if (!doc) return;
@@ -17,44 +19,67 @@
       var style = doc.createElement('style');
       style.textContent = `
         html, body.chatbox {
-          height: auto !important;
-          overflow: visible !important;
+          height: 100% !important;
+          overflow: hidden !important;
+          margin: 0;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+        }
+        #chatbox_header {
+          flex-shrink: 0;
+        }
+        #chatbox_members {
+          flex-shrink: 0;
+        }
+        #chatbox {
+          flex: 1 1 auto;
+          overflow-y: auto !important;
+          min-height: 0;
+          box-sizing: border-box;
         }
         #chatbox_footer {
+          flex-shrink: 0;
           display: flex !important;
           flex-direction: column;
           gap: 0.5rem;
           padding: 0.75rem !important;
+          padding-bottom: 1rem !important;
           box-sizing: border-box;
         }
-        #chatbox {
-          box-sizing: border-box;
+        .right-box.style-buttons {
+          padding-bottom: 0.25rem;
         }
       `;
       doc.head.appendChild(style);
     }
 
-    function resize() {
+    function fixHeight() {
+      obj.parentElement.style.height = FIXED_HEIGHT + 'px';
+      obj.style.height = '100%';
+    }
+
+    function scrollToBottom() {
       if (!obj.contentDocument) return;
       var chatboxEl = obj.contentDocument.getElementById('chatbox');
-      var footerEl = obj.contentDocument.getElementById('chatbox_footer');
-      var headerEl = obj.contentDocument.getElementById('chatbox_header');
-      var membersEl = obj.contentDocument.getElementById('chatbox_members');
-      if (chatboxEl && footerEl) {
-        var total = (headerEl ? headerEl.offsetHeight : 0)
-                  + (membersEl ? membersEl.offsetHeight : 0)
-                  + chatboxEl.scrollHeight
-                  + footerEl.offsetHeight
-                  + 20;
-        obj.parentElement.style.height = total + 'px';
-        obj.style.height = '100%';
+      if (chatboxEl) {
+        chatboxEl.scrollTop = chatboxEl.scrollHeight;
       }
     }
 
     function onReady() {
       inject();
-      resize();
-      setInterval(resize, 1000);
+      fixHeight();
+      scrollToBottom();
+
+      /* Observe les nouveaux messages pour re-scroller en bas automatiquement */
+      var chatboxEl = obj.contentDocument.getElementById('chatbox');
+      if (chatboxEl && window.MutationObserver) {
+        var observer = new obj.contentWindow.MutationObserver(function(){
+          scrollToBottom();
+        });
+        observer.observe(chatboxEl, { childList: true, subtree: true });
+      }
     }
 
     if (obj.contentDocument && obj.contentDocument.readyState === 'complete') {
