@@ -24,6 +24,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  /* ---- Fil d'Ariane ---- */
+  function updateBreadcrumb(categoryName, pageTitle) {
+    var el = guidebook.querySelector('#gbbreadcrumb') || document.getElementById('gbbreadcrumb');
+    if (!el) return;
+    if (!categoryName) {
+      el.innerHTML = '<span class="gbcrumb-current">Accueil</span>';
+      return;
+    }
+    el.innerHTML = categoryName +
+      ' <em class="fa-solid fa-chevron-right"></em> ' +
+      '<span class="gbcrumb-current">' + pageTitle + '</span>';
+  }
+
   /* ---- Affiche une page et met à jour le menu ---- */
   function showPage(id) {
     var target = document.getElementById(id);
@@ -34,11 +47,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     links.forEach(function (l) { l.classList.remove('active'); });
     var activeLink = guidebook.querySelector('.gblink[href="#' + id + '"]');
+    var categoryName = null;
+
     if (activeLink) {
       activeLink.classList.add('active');
       var parentItem = activeLink.closest('.gbcat-item');
-      if (parentItem) parentItem.classList.add('open');
+      if (parentItem) {
+        parentItem.classList.add('open');
+        var catLabel = parentItem.querySelector('.gbcat-toggle span');
+        if (catLabel) categoryName = catLabel.textContent.trim();
+      }
     }
+
+    var titleEl = target.querySelector('.gbheader h2');
+    var pageTitle = titleEl ? titleEl.textContent.trim() : '';
+    updateBreadcrumb(categoryName, pageTitle);
 
     guidebook.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -60,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
   } else {
     var firstCat = guidebook.querySelector('.gbcat-item');
     if (firstCat) firstCat.classList.add('open');
+    updateBreadcrumb(null, '');
   }
 
 });
