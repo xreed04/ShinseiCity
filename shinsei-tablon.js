@@ -10,7 +10,7 @@
 
   document.getElementById("tbweather-month").textContent = monthsFR[month];
 
-  document.getElementById("tbcalendar-month").textContent = monthsFR[month] + ", " + year;
+  document.getElementById("tbcalendar-month").textContent = todayDate + " " + monthsFR[month] + ", " + year;
 
   var evenements = {};
 
