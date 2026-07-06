@@ -1,8 +1,15 @@
 (function(){
-  function styleChatbox() {
+  function waitForChatbox(callback, attempts) {
+    attempts = attempts || 0;
     var obj = document.getElementById('frame_chatbox');
-    if (!obj) return;
+    if (obj) {
+      callback(obj);
+    } else if (attempts < 40) {
+      setTimeout(function(){ waitForChatbox(callback, attempts + 1); }, 250);
+    }
+  }
 
+  function styleChatbox(obj) {
     function inject() {
       var doc = obj.contentDocument;
       if (!doc) return;
@@ -44,22 +51,18 @@
       }
     }
 
-    if (obj.contentDocument && obj.contentDocument.readyState === 'complete') {
+    function onReady() {
       inject();
       resize();
-    } else {
-      obj.addEventListener('load', function(){
-        inject();
-        resize();
-      });
+      setInterval(resize, 1000);
     }
 
-    setInterval(resize, 1000);
+    if (obj.contentDocument && obj.contentDocument.readyState === 'complete') {
+      onReady();
+    } else {
+      obj.addEventListener('load', onReady);
+    }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', styleChatbox);
-  } else {
-    styleChatbox();
-  }
+  waitForChatbox(styleChatbox);
 })();
