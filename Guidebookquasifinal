@@ -677,11 +677,11 @@ display: flex; align-items: center; gap: 1em;
 <button class="gbcat-toggle"><em class="fa-solid fa-star"></em><span>Lore</span><i class="gbchevron"></i></button>
 <ul class="gbsublist">
 <li><a href="#score" class="gblink" data-tag="important">Score d'engagement</a></li>
-<li><a href="#credits-engagement" class="gblink">Crédits d'engagement</a></li>
-<li><a href="#education" class="gblink">Éducation</a></li>
-<li><a href="#travail" class="gblink">Travail</a></li>
-<li><a href="#communication" class="gblink">Communication & Internet</a></li>
-<li><a href="#groupes-affinite" class="gblink">Loyalistes, Détracteurs & co</a></li>
+<li><a href="#credits-engagement" class="gblink" data-tag="important">Crédits d'engagement</a></li>
+<li><a href="#travail" class="gblink" data-tag="important">Travail</a></li>
+<li><a href="#education" class="gblink" data-tag="important">Éducation</a></li>
+<li><a href="#communication" class="gblink" data-tag="important">Communication & Internet</a></li>
+<li><a href="#mur" class="gblink" data-tag="important">Le Mur : Limites de la ville</a></li>
 </ul>
 </li>
 
@@ -977,106 +977,82 @@ Un petit message de présentation, ton, humour ou sérieux, comme vous le souhai
 </div>
 </div>
 
-<!-- ==== PAGE: CREDITS ==== --><div class="gbpage" id="credits"><div class="gbheader"><em class="fa-solid fa-scroll"></em><h2>Crédits</h2><span class="gbdocnum">DOC. 011-S</span></div><div class="gbintro">Shinsei City n'existerait pas sans le travail de designers, codeurs et créateurs de contenu, dont nous remercions ici le travail.</div><div class="gbcreditsgrid"><div class="gbcreditcard"><em class="fa-solid fa-palette gbcrediticon"></em><div class="gbcreditcard-text">
-<h4>Thème graphique</h4>
-<p>Blood Upon The Snow — thème acheté auprès d'un développeur espagnol.</p>
-</div>
-</div><div class="gbcreditcard"><em class="fa-solid fa-font gbcrediticon"></em><div class="gbcreditcard-text">
-<h4>Polices</h4>
-<p>Google Fonts — Lato, Electrolize, IBM Plex Mono.</p>
-</div>
-</div><div class="gbcreditcard"><em class="fa-solid fa-icons gbcrediticon"></em><div class="gbcreditcard-text">
-<h4>Iconographie</h4>
-<p>Font Awesome Pro.</p>
-</div>
-</div><div class="gbcreditcard"><em class="fa-solid fa-image gbcrediticon"></em><div class="gbcreditcard-text">
-<h4>Visuels & avatars</h4>
-<p>Crédits des illustrations et faceclaims à ajouter au cas par cas.</p>
-</div>
-</div>
-
+<!-- ==== PAGE: CREDITS ==== --><div class="gbpage" id="credits"><div class="gbheader"><em class="fa-solid fa-scroll"></em><h2>Crédits</h2><span class="gbdocnum">DOC. 011-S</span></div><div class="gbintro">Shinsei City n'existerait pas sans le travail de designers, codeurs et créateurs de contenu, dont nous remercions ici le travail.</div><div class="gbtext">
+<p>WIP</p>
 </div>
 </div>
 
 <!-- ==== PAGE: CREDITS ENGAGEMENT ==== --><div class="gbpage" id="credits-engagement"><div class="gbbanner">
-<img data-img-dark="https://2img.net/i.imgur.com/jjV2Uqg.jpeg?text=Crédits+d%27engagement" data-img-light="https://2img.net/i.imgur.com/jjV2Uqg.jpeg?text=Crédits+d%27engagement" src="https://2img.net/i.imgur.com/jjV2Uqg.jpeg?text=Crédits+d%27engagement" alt=""><div class="gbheader"><h2>Crédits d'engagement</h2><span class="gbdocnum">DOC. 004-A</span></div>
+<img data-img-dark="https://2img.net/i.imgur.com/jjV2Uqg.jpeg?text=Crédits+d%27engagement" data-img-light="https://2img.net/i.imgur.com/jjV2Uqg.jpeg?text=Crédits+d%27engagement" src="https://2img.net/i.imgur.com/jjV2Uqg.jpeg?text=Crédits+d%27engagement" alt=""><div class="gbheader"><h2>Crédits d'engagement</h2><span class="gbtag gbtag-important">Important</span><span class="gbdocnum">DOC. 004-A</span></div>
 </div><div class="gbintro">Shinsei City fonctionne selon des règles qui lui sont propres, aussi bien sur le plan économique que social. Aucun besoin fondamental n'y est payant, mais la ville a développé ses propres mécanismes pour récompenser l'investissement de ses habitants.</div><div class="gbtext"><div class="gbregcat"><em class="fa-solid fa-coins"></em><span>Économie</span></div>
 <h3 id="hist-credits">Crédits d'engagement</h3>
-<p>Ici, le concept de monnaie n'a pas disparu, mais il ne fonctionne pas comme là où vous viviez avant. Car si à l'époque l'argent vous servait à survivre, ici, à Shinsei City, <strong>tous les besoins fondamentaux ne demandent aucun paiement</strong>. Votre logement vous est fourni par le Maire, la nourriture est librement accessible dans les supermarchés. L'éducation, la santé, la justice, ou encore les transports publics… Tout est fourni sans frais. Et chaque nouvel arrivant commence sa vie ici sur le même pied d'égalité.</p><div class="gbcallout">
-<h4>À noter</h4>
-<p>Personne, à Shinsei City, ne meurt de faim et ne dort dehors du moment qu'il respecte les règles et s'investit dans la communauté.</p>
-</div>
+<p>Ici, le concept de monnaie n'a pas disparu, mais il ne fonctionne pas comme là où vous viviez avant. Car si à l'époque l'argent vous servait à survivre, ici, à Shinsei City, <strong>tous les besoins fondamentaux et les services publics ne demandent aucun paiement</strong>. Votre logement vous est fourni par le Maire, la nourriture est librement accessible dans les supermarchés. L'éducation, la santé, la justice, ou encore les transports publics… Tout est fourni sans frais. Et chaque nouvel arrivant commence sa vie ici sur le même pied d'égalité.</p>
 
-<p>Mais l'égalité n'efface bien entendu pas l'ambition.</p>
+  <p><strong>Mais l'égalité n'efface bien entendu pas l'ambition.</strong></p>
 
 <p>Pour encourager l'investissement personnel et l'envie de faire prospérer Shinsei City tout en rendant la vie des autres habitants plus agréable, une monnaie existe tout de même : les <strong>crédits d'engagement</strong>.</p>
 
-<p>Plus un habitant s'implique dans la vie de Shinsei City, par son travail, sa position, ses initiatives, etc., plus il en accumule. Ces crédits, s'ils ne servent pas à survivre, servent plutôt à obtenir du confort et à s'élever au sein de la société.</p>
+  <p><strong>Plus un habitant s'implique dans la vie de Shinsei City, par son travail, sa position, ses initiatives, etc., plus il en accumule</strong>. Ces crédits, s'ils ne servent pas à survivre, servent plutôt à obtenir du confort et à s'offrir des plaisirs. Un salaire, versé à ceux qui exercent un emploi, en constitue la base ; des initiatives ponctuelles, des services rendus ou des missions accomplies pour la ville peuvent aussi en rapporter davantage.</p>
 
-<p>Ils permettent par exemple d'obtenir un bien dans un quartier plus prisé et réputé, des logements plus spacieux, du mobilier d'exception… Mais ils ouvrent aussi les portes de clubs privés et l'accès à des événements réservés à l'élite, permettant par exemple de rencontrer ses stars préférées. Ici, le confort devient donc un signe d'implication. Si un habitant a pu obtenir tout ça, ce n'est pas parce qu'il est né riche ou qu'il a eu de la chance. Mais bien parce qu'il a dédié son temps, sa vie, à servir Shinsei City et ses habitants.</p><div class="gbfeature"><div class="gbfeature-img"><img src="https://placehold.co/400x400/1a1a1a/666?text=Quartier+Gold" alt=""></div><div class="gbfeature-body">
-<h4>Le confort, une récompense</h4>
-<p>Des quartiers résidentiels aux clubs privés, chaque palier de crédits d'engagement débloque un accès un peu plus exclusif à la ville. Le décor change, littéralement, selon l'implication de chacun.</p>
+  <p>Ils <strong>permettent par exemple d'acheter des services</strong> : des vêtements, un tatouage, un piercing, ou tout simplement une coupe chez le coiffeur. Ils permettent aussi de financer des aménagements ou des rénovations pour son logement, pour qui souhaite obtenir plus que ce que le système offre en fonction de votre rang. Mais, les crédits ouvrent aussi les portes de sorties, comme un concert ou une séance de cinéma. Ici, si les besoins fondamentaux et les services publics sont gratuits, le plaisir, lui, devient un signe d'implication. Si un habitant a pu se les offrir, ce n'est pas parce qu'il est né riche ou qu'il a eu de la chance, mais bien parce qu'il a dédié son temps, sa vie, à servir Shinsei City et ses habitants.</p>  <div class="gbcallout">
+<h4>À noter</h4>
+  <p>D'un point de vue HRP, <strong>nous laissons les membres s'autogérer sur à quel point leurs personnages possèdent et gagnent des crédits d'engagement</strong>. Nous ne voulons pas un système complexe qui entrainerait des calculs ou des ajouts du staff tous les mois, voyez ça plutôt comme un salaire, vous le gérez IRP, et ça permet à votre personnage de s'acheter des plaisirs et expériences.</p>
 </div>
-</div><div class="gbquote">
-Officiellement, Shinsei City est bâtie sur un système juste. Un système égalitaire. Mais si l'ascension est simple et claire quant à la façon de l'obtenir, la chute, elle, peut aussi être très violente si vous ne participez pas à la vie de la communauté.
+</div>
+</div>
+  
+<!-- ==== PAGE: TRAVAIL ==== --><div class="gbpage" id="travail"><div class="gbbanner">
+<img data-img-dark="https://2img.net/i.imgur.com/DmM4YYh.jpeg?text=Travail" data-img-light="https://2img.net/i.imgur.com/CSOAZ8R.jpeg?text=Travail" src="https://2img.net/i.imgur.com/DmM4YYh.jpeg?text=Travail" alt=""><div class="gbheader"><h2>Travail</h2><span class="gbtag gbtag-important">Important</span><span class="gbdocnum">DOC. 004-C</span></div>
+</div><div class="gbintro">Le travail n'est pas obligatoire pour survivre à Shinsei City, mais il reste la principale source de crédits d'engagement, et le meilleur rempart contre la chute dans le classement.</div><div class="gbtext"><div class="gbregcat"><em class="fa-solid fa-briefcase"></em><span>Société</span></div>
+<h3 id="hist-travail">Travail</h3>
+  <p>Certes, le travail n'est pas indispensable à l'arrivée à Shinsei City pour bénéficier d'un logement, de soins, ou encore de nourriture. Il reste néanmoins indispensable pour qui ne souhaite pas descendre dans le classement de la ville. <strong>Personne n'est officiellement contraint de travailler. Pourtant, la plupart des habitants choisissent d'exercer une activité professionnelle</strong>.</p>
+
+  <p>Car <strong>travailler, c'est s'investir. Et s'investir, c'est réduire les risques de descendre dans le classement</strong>.</p>
+
+<p>Travailler, c'est également la principale source de <span class="gblex" data-def="Monnaie interne à Shinsei City, obtenue par l'implication d'un habitant dans la vie de la ville, et permettant d'accéder à plus de confort et de prestige.">crédits d'engagement</span>. Plus un citoyen contribue au développement de la ville, plus il en accumule, et plus son confort augmente. Travailler est donc un moyen de se faire plaisir, tout en garantissant ses chances de grimper dans le classement.</p>
+
+  <p>Les secteurs d'activité sont nombreux, et pratiquement tous les métiers existent et sont importants ici. <strong>La ville étant néanmoins autosuffisante et coupée du monde, certains métiers n'existent plus</strong>, comme ceux liés au commerce international, à la diplomatie étrangère, au tourisme extérieur ou au transport intercontinental… Il n'existe ni ambassade, ni douane, ni compagnie aérienne.</p>
+
+<p><strong>D'autres professions ont été retravaillées pour s'adapter à la politique de la ville</strong>. Une chaîne de télé, par exemple, sera destinée uniquement à la diffusion pour Shinsei City, tandis qu'un chef d'entreprise sait qu'il ne pourra pas développer son entreprise en dehors de la ville. Mais Shinsei City étant une ville d'environ dix millions d'habitants, il y a de quoi faire, et le business y est florissant.</p><div class="gbcallout">
+<h4>À noter</h4>
+<p>Le chômage, officiellement, n'existe pas. Offrir du travail à Shinsei City est une obligation : Ceux qui choisissent de ne pas travailler ne voient pas leurs scores baisser drastiquement d'un coup. Mais s'ils continuent à ne pas travailler, après quelques semaines, leurs scores d'engagement se mettront à baisser drastiquement.</p>
 </div>
 
 </div>
 </div>
 
 <!-- ==== PAGE: EDUCATION ==== --><div class="gbpage" id="education"><div class="gbbanner">
-<img data-img-dark="https://placehold.co/1200x400/1a1a1a/666?text=Éducation" data-img-light="https://placehold.co/1200x400/f5ebe0/865438?text=Éducation" src="https://placehold.co/1200x400/1a1a1a/666?text=Éducation" alt=""><div class="gbheader"><h2>Éducation</h2><span class="gbdocnum">DOC. 004-B</span></div>
+<img data-img-dark="https://2img.net/i.imgur.com/n5yT9tA.jpeg?text=Éducation" data-img-light="https://2img.net/i.imgur.com/n5yT9tA.jpeg?text=Éducation" src="https://2img.net/i.imgur.com/n5yT9tA.jpeg?text=Éducation" alt=""><div class="gbheader"><h2>Éducation</h2><span class="gbtag gbtag-important">Important</span><span class="gbdocnum">DOC. 004-B</span></div>
 </div><div class="gbintro">Des crèches aux universités, Shinsei City dispose d'un système éducatif complet et moderne, mais tourné vers un seul horizon : la ville elle-même.</div><div class="gbtext"><div class="gbregcat"><em class="fa-solid fa-graduation-cap"></em><span>Société</span></div>
 <h3 id="hist-education">Éducation</h3>
-<p>À Shinsei City, l'éducation est gratuite et obligatoire au moins jusqu'à l'âge de seize ans. Néanmoins, aucune personne mineure n'est jamais arrachée au monde extérieur : le Maire ne propose des contrats qu'aux personnes majeures. Les écoles accueillent donc soit des personnes fraîchement arrivées avant d'avoir terminé leurs études, soit des adultes voulant se réorienter, soit tout simplement des enfants nés à Shinsei City. Car pour eux, la ville constitue leur seule réalité connue. Ce monde, c'est leur monde, bien qu'ils aient tous déjà entendu parler de l'ancien monde dans le programme scolaire.</p>
+  <p><strong>À Shinsei City, l'éducation est gratuite et obligatoire au moins jusqu'à l'âge de dix huit ans</strong>. Et si aucune personne mineure n'est jamais arrachée au monde extérieur : <strong>le Maire ne propose des contrats qu'aux personnes majeures. Les écoles accueillent donc soit des personnes fraîchement arrivées avant d'avoir terminé leurs études, soit des adultes voulant se réorienter, soit tout simplement des enfants nés à Shinsei City</strong>. Car pour eux, la ville constitue leur seule réalité connue. Ce monde, c'est leur monde, bien qu'ils aient tous déjà entendu parler de l'ancien monde dans le programme scolaire.</p>
 
-<p>Des crèches aux universités, le système éducatif est complet, moderne et performant. Les infrastructures sont impeccables et tout laisse suggérer que des moyens ont été mis en œuvre afin de pouvoir éduquer convenablement les jeunes. En apparence, l'enseignement n'a rien à envier aux meilleures écoles du monde extérieur. Ici, comme dehors, les élèves étudient diverses matières et peuvent participer à diverses activités ou s'inscrire à divers clubs.</p><div class="gbfeature gbfeature-reverse"><div class="gbfeature-img"><img src="https://placehold.co/400x400/1a1a1a/666?text=Université" alt=""></div><div class="gbfeature-body">
-<h4>Des campus impeccables</h4>
-<p>Des crèches aux universités, les infrastructures rivalisent avec les meilleures écoles du monde extérieur. Un enseignement moderne, mais toujours tourné vers un seul horizon : Shinsei City elle-même.</p>
-</div>
-</div>
+  <p>Gratuite ne veut pas dire égale. Si l'inscription et les frais de scolarité ne coûtent rien, <strong>l'accès aux établissements les plus reconnus, lui, se mérite : nombre d'entre eux fonctionnent sur dossier, et ce dossier tient presque toujours en un seul critère, le rang d'engagement des parents ou de l'élève lui-même</strong>. Certaines structures refusent purement et simplement les enfants de familles Obsidian, quand d'autres se contentent de les reléguer en fin de liste d'attente.</p>
+<p>Dans les écoles réputées, les infrastructures rivalisent avec les meilleures du monde extérieur : bâtiments impeccables, matériel dernier cri, professeurs triés sur le volet. Un enseignement moderne, mais toujours tourné vers un seul horizon, Shinsei City elle-même, et réservé à ceux dont le dossier passe le premier filtre.</p>
+ 
+<p>Les établissements qui acceptent tout le monde, eux, existent bel et bien : ce sont souvent les mêmes qui manquent de moyens, de professeurs qualifiés ou d'infrastructures récentes. On y étudie les mêmes matières, on peut y participer aux mêmes types d'activités, sur le papier, mais avec des salles plus vétustes, des effectifs plus chargés, un matériel qui date. Officiellement, aucune loi n'interdit à un enfant Obsidian de fréquenter la meilleure école de la ville. Mais officieusement, personne à Shinsei City n'est dupe de la différence entre le droit et la pratique.</p>
 
-<p>Les manuels d'histoire évoquent l'ancien monde, l'Histoire avec un grand H, simplement pour que celle-ci ne se répète pas.</p><div class="gbcallout">
-<h4>À noter</h4>
-<p>L'éducation à Shinsei City met l'accent sur l'engagement citoyen, la coopération et la bienveillance. Très jeunes, les enfants sont déjà formés à l'idée de devoir s'investir dans le développement de la ville, à travers des modules obligatoires qui font l'éloge du système et des activités comme le nettoyage d'une rue, pour les sensibiliser à l'action citoyenne.</p>
-</div>
+  <p><strong>Les manuels d'histoire évoquent l'ancien monde ainsi que l'Histoire avec un grand H, simplement pour que celle-ci ne se répète pas.</strong></p>
 
-<p>Les écoles supérieures forment des médecins, des ingénieurs, des artistes, des chercheurs, des entrepreneurs… Mais toujours dans une optique interne, dans le seul but de continuer à développer Shinsei City. Et Shinsei City uniquement.</p>
-
-</div>
-</div>
-
-<!-- ==== PAGE: TRAVAIL ==== --><div class="gbpage" id="travail"><div class="gbbanner">
-<img data-img-dark="https://placehold.co/1200x400/1a1a1a/666?text=Travail" data-img-light="https://placehold.co/1200x400/f5ebe0/865438?text=Travail" src="https://placehold.co/1200x400/1a1a1a/666?text=Travail" alt=""><div class="gbheader"><h2>Travail</h2><span class="gbdocnum">DOC. 004-C</span></div>
-</div><div class="gbintro">Le travail n'est pas obligatoire pour survivre à Shinsei City, mais il reste la principale source de crédits d'engagement, et le meilleur rempart contre la chute dans le classement.</div><div class="gbtext"><div class="gbregcat"><em class="fa-solid fa-briefcase"></em><span>Société</span></div>
-<h3 id="hist-travail">Travail</h3>
-<p>Certes, le travail n'est pas indispensable à l'arrivée à Shinsei City pour bénéficier d'un logement, de soins, ou encore de nourriture. Il reste néanmoins indispensable pour qui ne souhaite pas descendre dans le classement de la ville. Personne n'est officiellement contraint de travailler. Pourtant, la plupart des habitants choisissent d'exercer une activité professionnelle.</p>
-
-<p>Car travailler, c'est s'investir. Et s'investir, c'est réduire les risques de descendre dans le classement.</p>
-
-<p>Travailler, c'est également la principale source de <span class="gblex" data-def="Monnaie interne à Shinsei City, obtenue par l'implication d'un habitant dans la vie de la ville, et permettant d'accéder à plus de confort et de prestige.">crédits d'engagement</span>. Plus un citoyen contribue au développement de la ville, plus il en accumule, et plus son confort augmente. Travailler est donc un moyen de se faire plaisir, tout en garantissant ses chances de grimper dans le classement.</p>
-
-<p>Les secteurs d'activité sont nombreux, et pratiquement tous les métiers existent et sont importants ici. La ville étant néanmoins autosuffisante et coupée du monde, certains métiers n'existent plus, comme ceux liés au commerce international, à la diplomatie étrangère, au tourisme extérieur ou au transport intercontinental… Il n'existe ni ambassade, ni douane, ni compagnie aérienne.</p>
-
-<p>D'autres professions ont été retravaillées pour s'adapter à la politique de la ville. Une chaîne de télé, par exemple, sera destinée uniquement à la diffusion pour Shinsei City, tandis qu'un chef d'entreprise sait qu'il ne pourra pas développer son entreprise en dehors de la ville. Mais Shinsei City étant une ville d'environ dix millions d'habitants, il y a de quoi faire, et le business y est florissant.</p><div class="gbinlinebanner">
-<img src="https://placehold.co/1200x400/1a1a1a/666?text=Quartier+d%27affaires+de+Shinsei+City" alt=""><div class="gbinlinebanner-caption">Le quartier d'affaires, cœur battant de l'économie de la ville</div>
-</div><div class="gbcallout">
-<h4>À noter</h4>
-<p>Le chômage, officiellement, n'existe pas. Offrir du travail à Shinsei City est une obligation : pas de refus arbitraire, pas de discrimination à l'embauche. Ceux qui choisissent de ne pas travailler conservent dans un premier temps leur logement et leurs droits fondamentaux, mais voient petit à petit leur score de fiabilité baisser, jusqu'à être considérés comme ne s'impliquant pas dans la ville. Les conséquences peuvent alors être désastreuses.</p>
-</div>
+  <p><strong>L'éducation à Shinsei City met l'accent sur l'engagement citoyen, la coopération et la bienveillance. Très jeunes, les enfants sont déjà formés à l'idée de devoir s'investir dans le développement de la ville</strong>, à travers des modules obligatoires qui font l'éloge du système et des activités comme le nettoyage d'une rue, pour les sensibiliser à l'action citoyenne.</p>
 
 </div>
 </div>
 
 <!-- ==== PAGE: COMMUNICATION ==== --><div class="gbpage" id="communication"><div class="gbbanner">
-<img data-img-dark="https://placehold.co/1200x400/1a1a1a/666?text=Communication+%26+Internet" data-img-light="https://placehold.co/1200x400/f5ebe0/865438?text=Communication+%26+Internet" src="https://placehold.co/1200x400/1a1a1a/666?text=Communication+%26+Internet" alt=""><div class="gbheader"><h2>Communication & Internet</h2><span class="gbdocnum">DOC. 004-D</span></div>
-</div><div class="gbintro">Shinsei City fonctionne sur un réseau entièrement fermé. Internet et les télécommunications existent, mais restent cloisonnés à la ville, coupés de tout contact avec le monde extérieur.</div><div class="gbtext"><div class="gbregcat"><em class="fa-solid fa-tower-broadcast"></em><span>Société</span></div>
-<h3 id="hist-communication">Communication et Internet</h3>
-<p>Les communications à Shinsei City fonctionnent sur un réseau entièrement fermé. Que ce soit via Internet ou le réseau téléphonique, n'espérez pas contacter le monde extérieur ni même recevoir la moindre nouvelle de celui-ci. Toute tentative d'envoi de SMS vers un numéro externe est accompagnée d'un message d'erreur. Les appels ne passent pas, les mails non plus.</p>
+<img data-img-dark="https://2img.net/i.imgur.com/mxHv2wT.jpeg?text=Communication+%26+Internet" data-img-light="https://2img.net/i.imgur.com/mxHv2wT.jpeg?text=Communication+%26+Internet" src="https://2img.net/i.imgur.com/mxHv2wT.jpeg?text=Communication+%26+Internet" alt=""><div class="gbheader"><h2>Communication & Internet</h2><span class="gbtag gbtag-important">Important</span><span class="gbdocnum">DOC. 004-D</span></div>
+</div>   <div class="gbregcat"><em class="fa-solid fa-tower-broadcast"></em><span>Société</span></div><div class="gbtext">
+ <h3 id="hist-communication">Langue</h3>
+  <p><strong>La ville accueille des habitants de tous horizons, mais son identité reste profondément japonaise</strong> : architecture, codes sociaux, administration, tout y porte cette empreinte. Sans que ce soit une exigence officielle, <strong>c'est donc la langue japonaise qui domine très largement les rues</strong>, les commerces et les échanges du quotidien, porté par une majorité écrasante de citoyens Japonais.</p> 
+  <p>Cela ne veut pas dire que les autres langues ont totalement disparu. <strong>Ici et là, de petites communautés se forment, tentant de faire vivre leurs langues d'origine</strong> : cours improvisés, groupes de conversation, échanges linguistiques organisés en marge du système. Des îlots de résistance culturelle, discrets mais tenaces, dans une ville qui tend à tout uniformiser.</p> 
+ <p>Si votre personnage est né à Shinsei City, ou y vit depuis longtemps, il parle forcément japonais : impossible d'y survivre autrement. S'il vient d'arriver récemment, en revanche, deux options s'offrent à vous : soit il connaissait déjà la langue avant son arrivée (études, origines...), soit il devra composer avec la barrière de la langue, du moins au début.</p> 
+  <h3 id="hist-communication">Communication et Internet</h3>
+  <div class="gbintro">Shinsei City fonctionne sur un <strong>réseau entièrement fermé</strong>. Internet et les télécommunications existent, mais restent cloisonnés à la ville, coupés de tout contact avec le monde extérieur.</div>
+  <p>Les communications à Shinsei City fonctionnent sur un réseau entièrement fermé. Que ce soit via Internet ou le réseau téléphonique, n'espérez pas contacter le monde extérieur ni même recevoir la moindre nouvelle de celui-ci. <strong>Toute tentative d'envoi de SMS vers un numéro externe est accompagnée d'un message d'erreur. Les appels ne passent pas, les mails non plus</strong>.</p>
 
 <p>D'après le Maire, cette fermeture vise à maintenir l'harmonie et l'équilibre de la vie à Shinsei City. En signant le contrat, chacun a accepté de tourner la page sur sa vie d'avant. Contacter le monde extérieur mettrait donc en péril cette harmonie. Le réseau fonctionne ainsi en circuit autonome, et ses infrastructures ne dépendent d'aucun réseau ni d'aucune entreprise extérieure.</p>
 
-<p>Pourtant, Internet et le réseau téléphonique existent bel et bien. Mais ils sont cloisonnés, limités à celles et ceux qui vivent ici, à Shinsei City. Il est par exemple possible de naviguer sur Instagram, de publier des photos, de discuter avec ses amis, de regarder des vidéos… Mais on n'y verra que les profils des habitants de Shinsei City, ceux qui, comme vous, ont signé le contrat. Les anciens profils et comptes n'existent plus et ne sont plus accessibles : en arrivant à Shinsei City, de tout nouveaux comptes sur les réseaux sociaux ont été créés pour l'occasion.</p>
+  <p>Il est par exemple possible de naviguer sur Instagram, de publier des photos, de discuter avec vos amis, de regarder des vidéos… Mais on vous n'y verrez que les profils des habitants de Shinsei City, ceux qui, comme vous, ont signé le contrat. Les anciens profils et comptes n'existent plus et ne sont plus accessibles : <strong>en arrivant à Shinsei City, de tout nouveaux comptes sur les réseaux sociaux auront été créés pour l'occasion dés votre arrivée</strong>.</p>
 
 <p>C'est la même chose pour les contenus publiés. Les reels, les vidéos YouTube, les chaînes de télévision… Tout ce qui est diffusé a été fait par quelqu'un de Shinsei City, et pour le peuple de Shinsei City.</p><div class="gbimggrid">
 <figure><img src="https://placehold.co/300x200/1a1a1a/666?text=Réseaux+sociaux" alt=""><figcaption>Réseaux sociaux internes</figcaption></figure>
@@ -1089,19 +1065,61 @@ Officiellement, Shinsei City est bâtie sur un système juste. Un système égal
 
 </div>
 </div>
+  
+<!-- ==== PAGE: LE MUR ==== --><div class="gbpage" id="mur"><div class="gbbanner">
+<img data-img-dark="https://2img.net/i.imgur.com/L5aI6es.jpeg?text=La+Brume" data-img-light="https://2img.net/i.imgur.com/L5aI6es.jpeg?text=La+Brume" src="https://2img.net/i.imgur.com/L5aI6es.jpeg?text=La+Brume" alt=""><div class="gbheader"><h2>La Brume : Limites de la ville</h2><span class="gbtag gbtag-important">Important</span><span class="gbdocnum">DOC. 004-E</span></div>
+</div><div class="gbintro">Shinsei City n'a ni mur, ni grille, ni frontière visible. Elle a une brume. Et personne, à ce jour, n'a jamais réussi à la traverser.</div><div class="gbtext"><div class="gbregcat"><em class="fa-solid fa-smog"></em><span>Société</span></div>
+<h3 id="hist-mur">La Brume</h3>
+
+  <p><strong>Aux abords de la ville, là où les derniers quartiers s'effacent peu à peu, les rues finissent toujours par se perdre dans une brume dense et immobile</strong>. Elle ne bouge presque jamais, ne se dissipe jamais totalement, quelle que soit la météo, la saison, ou l'heure du jour. On ne sait pas où elle commence précisément. On sait seulement qu'à un moment, la ville s'arrête, et que la brume prend le relais.</p>
+
+<p>Personne n'a jamais atteint l'autre côté. Non pas parce qu'un obstacle physique s'y oppose, mais parce que la brume elle-même semble redéfinir ce que « avancer » veut dire. Certains racontent avoir marché pendant des heures à l'aveugle sans jamais sembler s'enfoncer plus loin ni en voir le bout. D'autres, eux, disent n'avoir marché que quelques minutes. Mais tous s'accordent pour dire que, sans trop savoir comment, ils peu importe de quel côté ils avançaient dans la brume. Ils revenaient à chaque fois dans les rues qu'ils venaient de quitter.</p>
+
+<h3 id="mur-tentatives">Les tentatives</h3>
+  <p><strong>La brume n'a jamais été traversée. Ni à pied, ni en véhicule, ni en suivant une trajectoire tracée au préalable pour ne pas dévier</strong>. Cela n'a pourtant jamais empêché certains habitants d'essayer.</p>
+
+<ul class="gblist">
+<li>Des marches organisées en ligne droite, boussole ou fil tendu à la main, pour vérifier qu'on ne tournait pas en rond sans s'en rendre compte.</li>
+<li>Des trajets en voiture, phares allumés, jusqu'à revenir une fois de plus au point de départ.</li>
+<li>Des messages, des objets, parfois même des animaux, envoyés en direction de la brume. Ils revenaient à chaque fois au point de départ.</li>
+<li>De longues stations immobiles, à simplement l'observer, dans l'espoir d'y voir passer quelque chose, ou quelqu'un.</li>
+</ul>
+
+<p>Rien de tout cela n'a jamais permis de la franchir, ni de la comprendre. La plupart de ceux qui ont tenté de la traverser racontent seulement une impression diffuse d'avoir marché longtemps pour rien.</p><div class="gbcallout">
+<h4>À noter</h4>
+<p>Ce que ressent exactement votre personnage face à la brume est laissé à votre appréciation, tant que cela reste cohérent avec le principe suivant : personne ne parvient à la traverser, ni à en expliquer le fonctionnement. Le mystère doit rester entier.</p>
+</div><div class="gbinlinebanner">
+<img src="https://2img.net/i.imgur.com/HGfxOUk.png?text=La+brume%2C+aux+abords+de+la+ville" alt=""><div class="gbinlinebanner-caption">La brume, telle qu'aperçue aux abords de la forêt.</div>
+</div>
+
+<h3 id="mur-croyances">Croyances et théories</h3>
+<p>Faute de réponses officielles, chacun s'est forgé sa propre théorie sur la nature de la brume. Aucune n'a jamais été confirmée ni infirmée par le Maire, qui élude systématiquement le sujet lorsqu'il est abordé.</p>
+
+<ul class="gblist">
+<li>Certains pensent qu'il ne s'agit pas d'un lieu, mais d'un état, une sorte de seuil mental que l'esprit refuse de dépasser.</li>
+<li>D'autres sont persuadés qu'il n'y a tout simplement plus rien de l'autre côté, que Shinsei City est tout ce qui reste d'un monde disparu.</li>
+<li>Certains considèrent la brume comme une frontière sacrée, un jugement, une épreuve qu'il ne faut surtout pas chercher à franchir. Ou qu'il sera possible de franchir après avoir accompli une mission divine.</li>
+<li>De rares anciens anciens disent que le Maire contrôle la brume. Qu'un jour, il a offert aux hâbitants l'accès à une forêt ainsi quà un lac artificiel. Ils disent que ce jour là, la brume, a laissé apparaître le chemin. Enveloppant ces nouvelles routes et lieux pour s'assurer que personne ne sorte du cadre.</li>
+<li>D'autres encore pensent que la brume n'existe que pour ceux qui croient en son existence, une idée aussi séduisante qu'invérifiable.</li>
+</ul>
+
+<p>Ce que l'on sait avec certitude, c'est qu'aucun message, aucun objet, aucune trace ne parvient jamais à passer de l'autre côté. Et que ceux qui s'en approchent trop longtemps finissent, tôt ou tard, par rentrer chez eux bredouille.</p>
+
+</div>
+</div>
 
 <!-- ==== PAGE: SCORE ==== --><div class="gbpage" id="score"><div class="gbbanner">
 <img data-img-dark="https://2img.net/i.imgur.com/HRU9aJE.jpeg" data-img-light="https://2img.net/i.imgur.com/y8eDdaF.jpeg" src="https://2img.net/i.imgur.com/HRU9aJE.jpeg" alt=""><div class="gbheader"><h2>Score d'engagement</h2><span class="gbtag gbtag-important">Important</span><span class="gbdocnum">DOC. 014-C</span></div>
 </div><div class="gbintro">Chaque résident de Shinsei City est évalué en continu par un indicateur de fiabilité, noté de 0 à 100%. Ce score conditionne le logement, l'emploi, l'accès aux soins, aux loisirs, et parfois l'attention personnelle du Maire.</div><div class="gbtext"><div class="gbcallout">
 <h4>À noter</h4>
-<p>Tout nouvel arrivant à Shinsei City débute avec un score de fiabilité de <strong>55%</strong>, soit le rang <strong>Silver</strong>.</p>
+  <p>Tout <strong>nouvel arrivant</strong> à Shinsei City débute avec un score de fiabilité de <strong>55%</strong>, soit le rang <strong>Silver</strong>. Si votre personnage est <strong>là depuis longtemps, l'Administrateur validant votre fiche vous attribuera un score d'engagement</strong>qui correspond à votre personnage.</p>
 </div>
 
 <h3>Les cinq rangs</h3>
-<p>La fiabilité d'un résident le place dans l'un de ces cinq paliers, chacun avec ses propres droits et restrictions.</p><div class="gbscoreranks" id="gbscoreranks"></div>
+<p>Le score d'engagement d'un résident le place dans l'un de ces cinq paliers, chacun avec ses propres droits et restrictions.</p><div class="gbscoreranks" id="gbscoreranks"></div>
 
 <h3>Simulateur de fiabilité</h3>
-<p>Déplacez le curseur et voyez comment les rangs d'engagement fonctionnent à Shinsei City : chaque palier de fiabilité change concrètement le quotidien d'un résident, de son logement à sa dernière demeure.</p><div class="gbsimscore" id="gbsimscore"><div class="gbsim-top"><div class="gbsim-readout">
+<p>Déplacez le curseur et voyez comment les rangs d'engagement fonctionnent à Shinsei City : chaque palier change concrètement le quotidien d'un résident, de son logement à sa dernière demeure.</p><div class="gbsimscore" id="gbsimscore"><div class="gbsim-top"><div class="gbsim-readout">
 <span class="gbsim-score-value" id="gbsimvalue">55</span><span class="gbsim-score-pct">%</span>
 </div>
 <span class="gbsim-badge" id="gbsimbadge">Silver</span>
@@ -1122,14 +1140,6 @@ Officiellement, Shinsei City est bâtie sur un système juste. Un système égal
 </div>
 </details>
 
-</div>
-</div>
-
-<!-- ==== PAGE: GROUPES AFFINITE ==== --><div class="gbpage" id="groupes-affinite"><div class="gbbanner">
-<img data-img-dark="https://placehold.co/1200x400/1a1a1a/666?text=Loyalistes%2C+Détracteurs+%26+co" data-img-light="https://placehold.co/1200x400/f5ebe0/865438?text=Loyalistes%2C+Détracteurs+%26+co" src="https://placehold.co/1200x400/1a1a1a/666?text=Loyalistes%2C+Détracteurs+%26+co" alt=""><div class="gbheader"><h2>Loyalistes, Détracteurs & co</h2></div>
-</div><div class="gbtext">
-<p>WIP</p>
-<p>WIP</p>
 </div>
 </div>
 
@@ -1440,7 +1450,7 @@ full: [
 ]
 },
 {
-key: 'silver', name: 'Silver', min: 50, max: 74, color: '#9aa1a8',
+key: 'silver', name: 'Silver', min: 50, max: 79, color: '#9aa1a8',
 quick: [
 'Rang standard : logement et emploi corrects',
 'Avocat commis d\'office réellement suivi',
@@ -1460,7 +1470,7 @@ full: [
 ]
 },
 {
-key: 'gold', name: 'Gold', min: 75, max: 90, color: '#d8b34a',
+key: 'gold', name: 'Gold', min: 80, max: 94, color: '#d8b34a',
 quick: [
 'Priorité sur les démarches administratives',
 'Avocat personnel assigné, dossier suivi de près',
@@ -1482,7 +1492,7 @@ full: [
 ]
 },
 {
-key: 'platinum', name: 'Platinum', min: 91, max: 100, color: '#5bc0e8',
+key: 'platinum', name: 'Platinum', min: 95, max: 100, color: '#5bc0e8',
 quick: [
 'Priorité absolue sur tous les services',
 'Cabinet d\'avocats dédié, jugements sans attente',
@@ -1507,8 +1517,8 @@ full: [
 ];
 
 function rankFor(score) {
-if (score >= 91) return ranks[4];
-if (score >= 75) return ranks[3];
+if (score >= 95) return ranks[4];
+if (score >= 80) return ranks[3];
 if (score >= 50) return ranks[2];
 if (score >= 20) return ranks[1];
 return ranks[0];
