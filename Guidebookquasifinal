@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guidebook - Shinsei City</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Electrolize&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+:root {
+color-scheme: dark;
+--accent1: #c94c4c;
+--accent2: #7a3b3b;
+--links1: #b5b5b5;
+--links2: #ddd;
+--scroll-thumb: var(--accent2);
+--scroll-track: #0d0c10;
+--body: #201f24;
+--cuerpo: #0c0b0fce;
+--dbckg0: #0e0d1280;
+--dbckg1: #100f1480;
+--dbckg2: #12111680;
+--deco: #0d0c10;
+--border1: 1px solid #16151a;
+--border2: 1px solid color-mix(in srgb, var(--accent2) 50%, #0d0c10);
+--fs-h1: 3.5rem;
+--fs-h3: 2rem;
+--fs-h4: 1.6rem;
+--fs-h6: 1.25rem;
+--fs-body: 1rem;
+--fs-small: 0.85rem;
+--fs-tiny: 0.75rem;
+--f-body: "Lato", sans-serif;
+--f-titles: "Electrolize", sans-serif;
+--f-mono: "IBM Plex Mono", monospace;
+--text: #8d8a92;
+--text2: #6a6770;
+--text3: #47454c;
+--subtitle: #c3bfc9;
+--title: #ece9ef;
+--gap: 1rem;
+--padding: 2rem;
+--margin: 3rem;
+--body-img: url(https://2img.net/i.imgur.com/Nl6O7zB.jpeg);
+--body-effect: multiply;
+}
+html.light {
+color-scheme: light;
+--accent1: #af7853;
+--accent2: #865438;
+--links1: #5b4636;
+--links2: #3a2c22;
+--body: #f5ebe0;
+--cuerpo: #f7efe680;
+--dbckg0: #f2e8dd80;
+--dbckg1: #efe2d580;
+--dbckg2: #ecdccc80;
+--deco: #edcdad;
+--border1: 1px solid #d9bfa0;
+--text: #6b5946;
+--text2: #86735d;
+--text3: #9c8b76;
+--subtitle: #4a3b2c;
+--title: #2c2115;
+--body-effect: screen;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; min-height: 100%; font: var(--fs-body) var(--f-body); scroll-behavior: smooth; }
+body {
+background-color: var(--body);
+background-image: var(--body-img);
+background-blend-mode: var(--body-effect, multiply);
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+background-repeat: no-repeat;
+color: var(--text);
+padding: var(--margin) 0;
+position: relative;
+}
+body::before {
+content: '';
+position: fixed;
+inset: 0;
+z-index: -1;
+background: var(--body-overlay, transparent);
+pointer-events: none;
+}
+html.light body::before { --body-overlay: rgba(255, 255, 255, 0.35); }
+a { color: var(--links1); text-decoration: none; transition: ease .3s; }
+a:hover { color: var(--links2); }
+*::-webkit-scrollbar { width: 6px; }
+*::-webkit-scrollbar-track { background: var(--scroll-track); }
+*::-webkit-scrollbar-thumb { background: var(--scroll-thumb); }
+
+/* PAGE WRAP + RETOUR AU FORUM */
+.gbpagewrap { width: clamp(20rem, 85dvw, 1302px); margin-inline: auto; }
+.gbback {
+display: inline-flex; align-items: center; gap: .6em; margin-bottom: var(--gap);
+font: 700 var(--fs-h6) var(--f-titles); text-transform: uppercase; letter-spacing: .02em;
+background: linear-gradient(to right, var(--accent2), var(--accent1));
+-webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.gbback em { color: var(--accent1); -webkit-text-fill-color: var(--accent1); }
+.gbback:hover { filter: brightness(1.25); }
+
+/* GUIDEBOOK - STRUCTURE GENERALE */
+#guidebook { margin-bottom: var(--margin); }
+.gbenv {
+display: flex; align-items: stretch; overflow: hidden;
+border: var(--border2); outline: var(--border1); outline-offset: -1px;
+background: var(--cuerpo); backdrop-filter: blur(8px);
+min-height: 32rem; max-height: calc(100dvh - 6rem);
+position: relative;
+}
+.gbenv::before {
+content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+background: linear-gradient(to right, var(--accent2), var(--accent1), var(--accent2)); z-index: 3;
+}
+.gbenv::after {
+content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 4;
+background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,.35) 100%);
+}
+
+/* MENU LATERAL */
+.gbside { width: 17rem; flex-shrink: 0; background: var(--dbckg1); border-right: var(--border1); padding: var(--gap) 0; overflow-y: auto; min-height: 0; }
+.gbcatlist { list-style: none; margin: 0; padding: 0; }
+.gbcat-item { border-bottom: var(--border1); }
+.gbcat-toggle {
+width: 100%; display: flex; align-items: center; gap: .7em; background: transparent; border: 0;
+padding: 1em 1.25em; font: 700 var(--fs-small) var(--f-titles); text-transform: uppercase;
+letter-spacing: .03em; color: var(--subtitle); cursor: pointer; text-align: left; transition: ease .3s;
+}
+.gbcat-toggle > em { color: var(--accent1); font-size: var(--fs-h6); flex-shrink: 0; transition: ease .3s; }
+.gbcat-toggle:hover > em { color: #e0b060; font-size: calc(var(--fs-h6) * 1.2); filter: drop-shadow(0 0 6px rgba(224,176,96,.4)); }
+.gbcat-toggle > span { flex-grow: 1; }
+.gbcat-toggle:hover { color: var(--links2); }
+.gbchevron::before {
+content: '\f078'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: var(--fs-tiny);
+color: var(--text3); transition: transform .3s ease; display: inline-block;
+}
+.gbcat-item.open .gbchevron::before { transform: rotate(180deg); color: var(--accent1); }
+.gbsublist { list-style: none; margin: 0; padding: 0; max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+.gbcat-item.open .gbsublist { max-height: 40rem; }
+.gblink { display: block; padding: .6em 1.25em .6em 3em; font: var(--fs-small) var(--f-body); color: var(--text); border-left: 2px solid transparent; transition: ease .25s; }
+.gblink:hover { color: var(--links2); background: var(--dbckg2); }
+.gblink.active { color: var(--accent1); background: var(--dbckg2); border-left-color: var(--accent1); font-weight: 700; }
+
+/* ZONE DE CONTENU */
+.gbmain { flex-grow: 1; min-width: 0; min-height: 0; padding: calc(var(--padding) * 1.5); overflow-y: auto; position: relative; }
+.gbpage { display: none; }
+.gbpage.active { display: block; animation: gbfade .35s ease; }
+@keyframes gbfade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Bloc d'outils en haut du menu (thème + filtre) */
+.gbsidetools { padding: .9em 1.25em 1.1em; border-bottom: var(--border1); display: flex; flex-direction: column; gap: .9em; }
+#theme-switcher {
+display: flex; align-items: center; gap: .7em; width: 100%; box-sizing: border-box;
+background: transparent; border: var(--border1); border-radius: 6px; padding: .6em .9em;
+color: var(--text2); font: var(--fs-tiny) var(--f-mono); text-transform: uppercase; letter-spacing: .04em;
+cursor: pointer; transition: ease .3s;
+}
+#theme-switcher em { font-size: 1rem; }
+#theme-switcher:hover { color: var(--accent1); border-color: var(--accent2); }
+.icon-light { display: none; }
+html.light .icon-dark { display: none; }
+html.light .icon-light { display: inline; }
+
+.gbbreadcrumb {
+position: static;
+background: var(--cuerpo); backdrop-filter: blur(8px);
+font: 700 var(--fs-tiny) var(--f-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text3);
+padding: .85em calc(var(--padding) * 1.5); margin: 0 calc(var(--padding) * -1.5) 1.5em;
+border-bottom: var(--border1);
+}
+.gbbreadcrumb em { margin: 0 .6em; font-size: .65em; color: var(--accent2); }
+.gbbreadcrumb .gbcrumb-current { color: var(--accent1); }
+
+/* Barre de progression de lecture */
+.gbprogress { position: static; height: 3px; width: 100%; margin: 0 calc(var(--padding) * -1.5); background: var(--dbckg2); }
+.gbprogress-bar { height: 100%; width: 0%; background: linear-gradient(to right, var(--accent2), var(--accent1)); transition: width .1s linear; }
+
+.gbbanner { position: relative; margin: 0 calc(var(--padding) * -1.5) 1.5em; overflow: hidden; line-height: 0; }
+.gbbanner img { display: block; width: 100%; height: auto; position: relative; z-index: 0; filter: saturate(.9) contrast(1.05); }
+.gbbanner::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.55) 25%, rgba(0,0,0,.15) 50%, transparent 70%); }
+.gbbanner .gbheader { position: absolute; z-index: 2; bottom: 0; left: 0; right: 0; margin: 0; padding: 1.25em calc(var(--padding) * 1.5) 1.1em; border-bottom: 0; }
+.gbbanner .gbheader h2 { color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,.6); }
+.gbbanner .gbheader em { filter: drop-shadow(0 2px 6px rgba(0,0,0,.5)); }
+
+.gbheader { display: flex; align-items: center; gap: .6em; border-bottom: var(--border2); padding-bottom: .85em; margin-bottom: 1.5em; }
+.gbheader > em { color: var(--accent1); font-size: var(--fs-h4); flex-shrink: 0; }
+.gbheader > h2 { margin: 0; font: var(--fs-h3) var(--f-titles); text-transform: uppercase; color: var(--title); line-height: 1em; }
+
+.gbintro { border: var(--border1); border-left: 3px solid var(--accent1); background: var(--dbckg0); padding: 1em 1.5em; font: var(--fs-small) var(--f-body); color: var(--subtitle); margin-bottom: 2em; line-height: 1.5em; }
+
+.gbbody { display: flex; align-items: flex-start; gap: calc(var(--gap) * 2); }
+.gbsommaire { width: 12rem; flex-shrink: 0; position: sticky; top: 1em; background: var(--dbckg0); border: var(--border1); border-radius: 4px; padding: 1.2em 1.1em; }
+.gbsommaire h3 { font: 700 var(--fs-small) var(--f-titles); text-transform: uppercase; color: var(--accent1); margin: 0 0 .75em; line-height: 1em; padding-bottom: .6em; border-bottom: var(--border1); }
+.gbsommaire a { display: flex; align-items: center; gap: .5em; padding: .5em .4em; margin: 0 -.4em; border-radius: 3px; font: var(--fs-tiny) var(--f-body); color: var(--text2); transition: ease .25s; }
+.gbsommaire a::before { content: '\f105'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: .75em; color: var(--accent2); transition: ease .25s; }
+.gbsommaire a:hover { background: var(--dbckg2); color: var(--links2); padding-left: .7em; }
+.gbsommaire a:hover::before { color: var(--accent1); transform: translateX(2px); }
+.gbsommaire a.active { background: var(--dbckg2); color: var(--accent1); padding-left: .7em; }
+.gbsommaire a.active::before { color: var(--accent1); transform: translateX(2px); }
+.gbsommaire-group { display: block; margin: 1.1em 0 .4em; font: 700 var(--fs-tiny) var(--f-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--text3); padding-bottom: .3em; border-bottom: var(--border1); }
+.gbsommaire-group:first-of-type { margin-top: 0; }
+
+.gbreadtime { margin-left: 1em; color: var(--text3); }
+.gbreadtime em { margin-right: .35em; color: var(--text3); font-size: .9em; }
+
+/* Note du Maire */
+.gbnote {
+position: relative; background: var(--dbckg1); border: var(--border2); border-radius: 20px;
+padding: 1.6em 1.8em 1.6em 7rem; margin: 2.2em 0 1.5em;
+}
+.gbnote-avatar { position: absolute; top: -1.2em; left: -1em; width: 6rem; height: 6rem; z-index: 1; }
+.gbnote-avatar-img {
+width: 100%; height: 100%; border-radius: 14px; overflow: hidden;
+border: 3px solid var(--accent2); box-shadow: 0 6px 14px rgba(0,0,0,.4); transform: rotate(-4deg);
+}
+.gbnote-avatar-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gbnote-clip {
+position: absolute; top: -1.1em; left: 1.2em; font-size: 2rem; color: #ddd;
+transform: rotate(-20deg); text-shadow: 0 2px 4px rgba(0,0,0,.5); z-index: 2;
+}
+.gbnote-text { font: var(--fs-body) var(--f-body); line-height: 1.65em; color: var(--text); text-align: justify; }
+.gbnote-text strong { color: var(--accent1); }
+.gbnote-highlight { color: #e0b060; font-weight: 700; }
+
+/* ===== Fil de commentaires (le Maire commente la page) ===== */
+.gbcomments { margin: 3em 0 0; padding-top: 1.8em; border-top: var(--border1); }
+.gbcomments-label {
+display: flex; align-items: center; gap: .6em; margin-bottom: 1.4em;
+font: 700 var(--fs-tiny) var(--f-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text3);
+}
+.gbcomments-label em { color: var(--accent2); }
+
+.gbcomment { position: relative; display: flex; gap: 1em; }
+.gbcomment + .gbcomment { margin-top: 1.3em; }
+.gbcomment-thread { position: relative; }
+.gbcomment-avatar {
+width: 2.8rem; height: 2.8rem; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+border: 2px solid var(--accent2); background: var(--dbckg0); z-index: 1;
+}
+.gbcomment-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gbcomment-body { flex-grow: 1; min-width: 0; background: var(--dbckg1); border: var(--border1); border-radius: 14px; padding: 1em 1.3em; }
+.gbcomment-head { display: flex; align-items: baseline; gap: .6em; margin-bottom: .5em; flex-wrap: wrap; }
+.gbcomment-author { font: 700 var(--fs-small) var(--f-titles); color: var(--accent1); }
+.gbcomment-author em { font-style: normal; color: var(--text2); font-weight: 400; }
+.gbcomment-time { font: var(--fs-tiny) var(--f-mono); color: var(--text3); }
+.gbcomment-text { font: var(--fs-small) var(--f-body); color: var(--text); line-height: 1.6em; text-align: left; }
+.gbcomment-text p { margin: 0 0 .8em; }
+.gbcomment-text p:last-child { margin-bottom: 0; }
+.gbcomment-text em.gbcomment-italic { font-style: italic; color: var(--subtitle); }
+.gbcomment-votes {
+display: inline-flex; align-items: center; gap: .5em; margin-top: .8em; padding: .3em .7em;
+border: var(--border1); border-radius: 20px; background: var(--dbckg0); font: 700 var(--fs-tiny) var(--f-mono); color: var(--text2);
+}
+.gbcomment-votes em { color: var(--accent1); cursor: default; }
+
+/* Réponses imbriquées, reliées par un trait */
+.gbcomment-replies { position: relative; margin-top: 1em; padding-left: 2.3em; }
+.gbcomment-replies::before {
+content: ''; position: absolute; top: -1em; left: 1.35rem; bottom: 1.4rem; width: 2px;
+background: linear-gradient(to bottom, var(--accent2), transparent 95%); opacity: .6;
+}
+.gbcomment-replies .gbcomment { position: relative; }
+.gbcomment-replies .gbcomment::before {
+content: ''; position: absolute; top: 1.4rem; left: -1.15em; width: 1.15em; height: 2px;
+background: var(--accent2); opacity: .6;
+}
+.gbcomment-replies .gbcomment-avatar { width: 2.2rem; height: 2.2rem; }
+.gbcomment-replies .gbcomment + .gbcomment { margin-top: 1em; }
+
+/* Liste à puces stylisée */
+.gbtext ul.gblist { list-style: none; margin: 0 0 1.5em; padding: 0; display: flex; flex-direction: column; gap: .55em; }
+.gbtext ul.gblist li { position: relative; padding-left: 1.5em; }
+.gbtext ul.gblist li::before { content: '\f105'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; top: .15em; color: var(--accent1); font-size: .85em; }
+
+/* Bloc verrouillé par mot de passe */
+.gblocked { margin: 1.5em 0; border: 1px dashed var(--accent2); background: var(--dbckg1); padding: 1.5em 1.75em; }
+.gblocked-form { display: flex; flex-direction: column; align-items: center; text-align: center; gap: .75em; }
+.gblocked-form > em { font-size: 1.8rem; color: var(--accent2); }
+.gblocked-form p { margin: 0; font: var(--fs-small) var(--f-body); color: var(--text2); }
+.gblocked-inputrow { display: flex; gap: .6em; width: 100%; max-width: 22rem; }
+.gblocked-input { flex-grow: 1; background: var(--dbckg0); border: var(--border1); color: var(--text); padding: .6em .8em; font: var(--fs-small) var(--f-body); }
+.gblocked-input:focus { outline: none; border-color: var(--accent2); }
+.gblocked-submit { background: transparent; border: 1px solid var(--accent1); color: var(--accent1); padding: .6em 1.1em; font: 700 var(--fs-tiny) var(--f-mono); text-transform: uppercase; letter-spacing: .05em; cursor: pointer; transition: ease .3s; }
+.gblocked-submit:hover { background: var(--accent1); color: var(--dbckg0); }
+.gblocked-error { color: var(--accent1) !important; font: var(--fs-tiny) var(--f-mono) !important; text-transform: uppercase; }
+.gblocked-content { font: var(--fs-body) var(--f-body); line-height: 1.65em; color: var(--text); text-align: justify; }
+
+.gbtext { flex-grow: 1; min-width: 0; font: var(--fs-body) var(--f-body); line-height: 1.65em; color: var(--text); text-align: justify; }
+.gbtext h3 { font: 700 var(--fs-h6) var(--f-titles); color: var(--subtitle); text-transform: uppercase; margin: 1.5em 0 .6em; line-height: 1em; }
+.gbtext h3:first-child { margin-top: 0; }
+.gbtext p { margin: 0 0 1em; }
+.gbtext strong { color: var(--accent1); }
+
+.gbcallout { border: var(--border1); background: var(--dbckg1); padding: 1em 1.5em; margin: 1.5em 0; }
+.gbcallout h4 { margin: 0 0 .5em; font: 700 var(--fs-small) var(--f-titles); text-transform: uppercase; color: var(--accent1); line-height: 1em; }
+.gbcallout p { margin: 0; font: var(--fs-small) var(--f-body); color: var(--subtitle); }
+
+.gbpending { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 1em; padding: 4em 2em; border: 1px dashed #16151a; color: var(--text2); }
+.gbpending em { font-size: 2.2rem; color: var(--accent2); }
+.gbpending p { margin: 0; font: italic var(--fs-small) var(--f-body); text-transform: uppercase; letter-spacing: .04em; max-width: 24rem; }
+
+/* Effet glitch au survol des titres */
+.gbheader h2 { transition: text-shadow .2s; }
+.gbheader h2:hover { animation: gbglitch .3s steps(2, end) infinite; }
+@keyframes gbglitch {
+0% { text-shadow: 2px 0 var(--accent1), -2px 0 #5fd3ff; }
+25% { text-shadow: -2px 0 var(--accent1), 2px 0 #5fd3ff; }
+50% { text-shadow: 2px 1px var(--accent1), -2px -1px #5fd3ff; }
+75% { text-shadow: -1px 2px var(--accent1), 1px -2px #5fd3ff; }
+100% { text-shadow: 2px 0 var(--accent1), -2px 0 #5fd3ff; }
+}
+
+/* Tags de page */
+.gbtag { display: inline-block; font: 700 var(--fs-tiny) var(--f-mono); text-transform: uppercase; letter-spacing: .05em; padding: .3em .7em; border-radius: 3px; margin-left: .75em; vertical-align: middle; }
+.gbtag-important { background: rgba(201,76,76,.15); color: var(--accent1); border: 1px solid var(--accent1); }
+.gbtag-update { background: rgba(143,179,217,.15); color: #8fb3d9; border: 1px solid #8fb3d9; }
+.gbtag-spoiler { background: rgba(122,59,59,.25); color: var(--accent2); border: 1px solid var(--accent2); }
+
+/* Tableaux de données */
+.gbtext table { width: 100%; border-collapse: collapse; margin: 1.5em 0; font: var(--fs-small) var(--f-body); }
+.gbtext th, .gbtext td { border: var(--border1); padding: .6em .9em; text-align: left; }
+.gbtext th { background: var(--dbckg1); color: var(--accent1); text-transform: uppercase; font: 700 var(--fs-tiny) var(--f-titles); letter-spacing: .05em; }
+.gbtext tr:nth-child(even) td { background: var(--dbckg0); }
+
+/* Citation style journal / rapport */
+.gbquote { position: relative; margin: 1.5em 0; padding: 1.2em 1.5em 1.2em 3em; border-left: 3px solid var(--accent2); background: var(--dbckg0); font: italic var(--fs-small) var(--f-body); color: var(--subtitle); }
+.gbquote::before { content: '\f10d'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 1em; top: 1.1em; color: var(--accent2); font-size: 1.1em; opacity: .6; }
+.gbquote cite { display: block; margin-top: .75em; font: 700 var(--fs-tiny) var(--f-mono); text-transform: uppercase; letter-spacing: .05em; color: var(--text3); font-style: normal; }
+
+/* Encart "classifié" — utilise <details>/<summary>, aucun JS requis */
+.gbclassified { margin: 1.5em 0; }
+.gbclassified summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: .6em; padding: .8em 1.1em; background: var(--dbckg1); border: 1px dashed var(--accent2); color: var(--text2); font: 700 var(--fs-tiny) var(--f-mono); text-transform: uppercase; letter-spacing: .05em; }
+.gbclassified summary::-webkit-details-marker { display: none; }
+.gbclassified summary::before { content: '\f023'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--accent2); }
+.gbclassified[open] summary::before { content: '\f09c'; }
+.gbclassified-content { padding: 1.1em 1.5em; border: 1px dashed var(--accent2); border-top: 0; background: var(--dbckg0); font: var(--fs-small) var(--f-body); color: var(--subtitle); line-height: 1.6em; }
+
+/* Spoiler générique — pour englober un bloc de contenu structuré (grilles, boutons, etc.) */
+.gbspoiler { margin: 1.5em 0; border: var(--border2); border-radius: 10px; background: var(--dbckg1); overflow: hidden; }
+.gbspoiler summary {
+list-style: none; cursor: pointer; display: flex; align-items: center; gap: .7em;
+padding: 1em 1.4em; font: 700 var(--fs-small) var(--f-titles); text-transform: uppercase;
+letter-spacing: .04em; color: var(--subtitle); transition: ease .25s;
+}
+.gbspoiler summary:hover { color: var(--links2); background: var(--dbckg2); }
+.gbspoiler summary::-webkit-details-marker { display: none; }
+.gbspoiler summary .gbspoiler-icon { color: var(--accent1); font-size: 1em; flex-shrink: 0; transition: transform .3s ease; }
+.gbspoiler[open] summary .gbspoiler-icon { transform: rotate(180deg); }
+.gbspoiler summary .gbspoiler-hint { margin-left: auto; font: var(--fs-tiny) var(--f-mono); text-transform: none; letter-spacing: .02em; color: var(--text3); }
+.gbspoiler[open] summary .gbspoiler-hint { display: none; }
+.gbspoiler-body { padding: 0 1.4em 1.6em; border-top: var(--border1); padding-top: 1.4em; animation: gbspoileropen .35s ease; }
+@keyframes gbspoileropen { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Effet scanline/CRT — uniquement sur la bannière */
+.gbbanner::after {
+content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none;
+background: repeating-linear-gradient(to bottom, rgba(0,0,0,.25) 0px, rgba(0,0,0,.25) 1px, transparent 1px, transparent 3px);
+opacity: .5;
+}
+
+/* Tampon d'encre officiel */
+.gbintro { position: relative; }
+.gbstamp {
+position: absolute; top: -1em; right: 1.5em;
+border: 3px solid var(--accent1); border-radius: 6px; color: var(--accent1);
+font: 900 var(--fs-small) var(--f-mono); text-transform: uppercase; letter-spacing: .15em;
+padding: .35em .8em; transform: rotate(-8deg); opacity: .8; background: var(--cuerpo);
+}
+
+/* Numérotation type dossier */
+.gbdocnum { font: 700 var(--fs-tiny) var(--f-mono); letter-spacing: .1em; color: var(--title); text-transform: uppercase; margin-left: auto; }
+
+/* Lexique avec infobulle */
+.gblex { position: relative; border-bottom: 1px dotted var(--accent2); cursor: help; color: var(--subtitle); }
+.gblex::after {
+content: attr(data-def); position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%);
+background: var(--deco); border: var(--border1); color: var(--text);
+font: var(--fs-tiny) var(--f-body); font-style: normal; text-align: left;
+padding: .6em .8em; width: max-content; max-width: 16rem;
+opacity: 0; pointer-events: none; transition: opacity .2s ease; z-index: 20; line-height: 1.4em;
+}
+.gblex:hover::after { opacity: 1; }
+
+/* Bouton retour en haut */
+.gbscrolltop {
+position: absolute; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%;
+display: flex; align-items: center; justify-content: center;
+background: var(--deco); border: var(--border1); color: var(--text3); cursor: pointer;
+opacity: 0; pointer-events: none; transform: translateY(10px); transition: ease .3s; z-index: 6;
+}
+.gbscrolltop.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.gbscrolltop:hover { color: var(--accent1); border-color: var(--accent2); }
+
+/* Fiche technique (grille clé/valeur) */
+.gbspecs { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 1px; margin: 1.5em 0; background: #16151a; border: var(--border1); }
+.gbspecs-item { background: var(--dbckg0); padding: .9em 1.1em; display: flex; flex-direction: column; gap: .3em; }
+.gbspecs-label { font: 700 var(--fs-tiny) var(--f-mono); text-transform: uppercase; letter-spacing: .05em; color: var(--accent1); }
+.gbspecs-value { font: var(--fs-small) var(--f-body); color: var(--subtitle); }
+
+/* Image censurée révélable — <details>, aucun JS requis */
+.gbcensored { margin: 1.5em 0; }
+.gbcensored summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: .6em; padding: .8em 1.1em; background: var(--dbckg1); border: 1px dashed var(--accent2); color: var(--text2); font: 700 var(--fs-tiny) var(--f-mono); text-transform: uppercase; letter-spacing: .05em; }
+.gbcensored summary::-webkit-details-marker { display: none; }
+.gbcensored summary::before { content: '\f030'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--accent2); }
+.gbcensored-content { border: 1px dashed var(--accent2); border-top: 0; overflow: hidden; }
+.gbcensored-content img { width: 100%; display: block; }
+
+/* FAQ en accordéon */
+.gbfaq { display: flex; flex-direction: column; gap: .75em; }
+.gbfaqitem summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 1em; padding: .9em 1.2em; background: var(--dbckg1); border: var(--border1); font: 700 var(--fs-small) var(--f-titles); color: var(--subtitle); }
+.gbfaqitem summary::-webkit-details-marker { display: none; }
+.gbfaqitem summary::after { content: '\f078'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: var(--fs-tiny); color: var(--accent1); transition: transform .3s; }
+.gbfaqitem[open] summary::after { transform: rotate(180deg); }
+.gbfaqitem .gbfaqanswer { padding: 1em 1.2em; border: var(--border1); border-top: 0; font: var(--fs-small) var(--f-body); color: var(--text); line-height: 1.6em; }
+
+/* Filtre par tag dans le menu */
+.gbfilterbar { display: flex; align-items: center; gap: .6em; font: var(--fs-tiny) var(--f-mono); text-transform: uppercase; letter-spacing: .03em; color: var(--text2); cursor: pointer; }
+.gbfilterbar input[type="checkbox"] { accent-color: var(--accent1); cursor: pointer; }
+.gbside.filter-important .gblink:not([data-tag~="important"]) { display: none; }
+.gbside.filter-important .gbcat-item:not(:has(.gblink[data-tag~="important"])) { display: none; }
+
+/* Effet machine à écrire */
+.gbtyping::after { content: '▌'; margin-left: 2px; color: var(--accent1); animation: gbcursorblink 1s steps(1) infinite; }
+@keyframes gbcursorblink { 50% { opacity: 0; } }
+
+/* ===== Simulateur de score d'engagement ===== */
+.gbscoreranks { display: flex; flex-wrap: wrap; gap: .6em; margin: 1.2em 0 1.8em; }
+.gbrankchip { flex: 1 1 8rem; display: flex; flex-direction: column; align-items: center; gap: .3em; padding: .8em .6em; border-radius: 6px; border: var(--border1); background: var(--dbckg0); text-align: center; }
+.gbrankchip .gbrankname { font: 700 var(--fs-small) var(--f-titles); text-transform: uppercase; letter-spacing: .03em; }
+.gbrankchip .gbrankrange { font: var(--fs-tiny) var(--f-mono); color: var(--text2); }
+
+.gbsimscore { border: var(--border2); background: var(--dbckg1); border-radius: 10px; padding: 1.6em 1.8em; margin: 1.8em 0; }
+.gbsim-top { display: flex; align-items: center; justify-content: space-between; gap: 1.5em; flex-wrap: wrap; margin-bottom: 1em; }
+.gbsim-readout { display: flex; align-items: baseline; gap: .35em; }
+.gbsim-score-value { font: 900 var(--fs-h1) var(--f-titles); line-height: 1em; transition: color .25s ease; }
+.gbsim-score-pct { font: 700 var(--fs-h6) var(--f-titles); color: var(--text2); }
+.gbsim-badge { font: 700 var(--fs-small) var(--f-mono); text-transform: uppercase; letter-spacing: .08em; padding: .4em .9em; border-radius: 20px; border: 2px solid var(--text3); transition: color .25s ease, border-color .25s ease; }
+
+/* Effet brillant sur le tag Gold / Platinum — même timing pour les deux */
+.gbshine-gold, .gbshine-platinum {
+position: relative;
+overflow: hidden;
+}
+.gbshine-gold::after, .gbshine-platinum::after {
+content: '';
+position: absolute;
+top: 0; left: -70%;
+width: 55%; height: 100%;
+background: linear-gradient(100deg, transparent 0%, rgba(255,255,255,.85) 50%, transparent 100%);
+mix-blend-mode: overlay;
+pointer-events: none;
+animation: gbsweep 2.8s ease-in-out infinite;
+}
+@keyframes gbsweep {
+0% { left: -70%; }
+100% { left: 130%; }
+}
+@media (prefers-reduced-motion: reduce) {
+.gbshine-gold::after, .gbshine-platinum::after { display: none; }
+}
+
+
+.gbsim-bar-wrap { position: relative; height: 1.4rem; border-radius: 8px; overflow: hidden; display: flex; border: var(--border1); margin-bottom: .5em; }
+.gbsim-bar-seg { height: 100%; }
+.gbsim-cursor { position: absolute; top: -4px; width: 3px; height: calc(100% + 8px); background: var(--title); box-shadow: 0 0 6px rgba(0,0,0,.6); transition: left .25s ease; }
+
+.gbsim-slider { width: 100%; margin: .3em 0 1.3em; accent-color: var(--accent1); cursor: pointer; }
+
+.gbsim-effects h4 { margin: 0 0 .6em; font: 700 var(--fs-small) var(--f-titles); text-transform: uppercase; color: var(--accent1); }
+.gbsim-effects ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .4em; }
+.gbsim-effects li { position: relative; padding-left: 1.4em; font: var(--fs-small) var(--f-body); color: var(--subtitle); line-height: 1.5em; }
+.gbsim-effects li::before { content: '\f105'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; top: .15em; color: currentColor; font-size: .8em; }
+
+.gbsim-actions { margin-top: 0; padding-top: 0; border-top: 0; }
+.gbsim-actions h4 { margin: 0 0 .8em; font: 700 var(--fs-small) var(--f-titles); text-transform: uppercase; color: var(--subtitle); }
+.gbsim-actiongrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: .6em; }
+.gbsimbtn { display: flex; align-items: center; gap: .7em; background: var(--dbckg0); border: var(--border1); padding: .7em 1em; font: var(--fs-small) var(--f-body); color: var(--text); border-radius: 4px; }
+.gbsimbtn .gbsimicon { flex-shrink: 0; font-size: .85em; }
+.gbsimbtn.positive .gbsimicon { color: #3fae82; }
+.gbsimbtn.negative .gbsimicon { color: var(--accent1); }
+#gbsimactionswrap { margin: 0; }
+.gbsimreset { margin-top: 1.2em; background: transparent; border: 1px dashed var(--text3); color: var(--text2); padding: .55em 1.1em; font: 700 var(--fs-tiny) var(--f-mono); text-transform: uppercase; letter-spacing: .05em; cursor: pointer; transition: ease .3s; }
+.gbsimreset:hover { color: var(--accent1); border-color: var(--accent2); }
+
+/* Accordéon détaillé des rangs */
+.gbrankdetail { margin: 0; }
+.gbrankdetail + .gbrankdetail { margin-top: .6em; }
+.gbrankdetail summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: .7em; padding: .9em 1.2em; border: var(--border1); background: var(--dbckg1); font: 700 var(--fs-small) var(--f-titles); text-transform: uppercase; color: var(--subtitle); }
+.gbrankdetail summary::-webkit-details-marker { display: none; }
+.gbrankdetail summary::after { content: '\f078'; font-family: 'Font Awesome 6 Free'; font-weight: 900; margin-left: auto; font-size: var(--fs-tiny); color: var(--accent1); transition: transform .3s; }
+.gbrankdetail[open] summary::after { transform: rotate(180deg); }
+.gbrankdetail .gbrankdot { width: .8em; height: .8em; border-radius: 50%; flex-shrink: 0; }
+.gbrankdetail-content { padding: 1.1em 1.4em; border: var(--border1); border-top: 0; font: var(--fs-small) var(--f-body); color: var(--text); line-height: 1.65em; }
+.gbrankdetail-content ul { margin: 0; padding-left: 1.3em; }
+.gbrankdetail-content li { margin-bottom: .5em; }
+
+/* Groupes d'affinité */
+.gbgroupsgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1.2em; margin: 1.5em 0 2em; }
+.gbgroupcard { background: var(--dbckg1); border: var(--border1); border-top: 3px solid var(--card-color, var(--accent1)); border-radius: 4px; padding: 1.3em 1.4em; }
+.gbgroupcard-head { display: flex; align-items: center; gap: .6em; margin: 0 0 .8em; }
+.gbgroupcard-titles { display: flex; flex-direction: column; gap: .2em; }
+.gbgroupcard-dot { width: .9em; height: .9em; border-radius: 50%; flex-shrink: 0; background: var(--card-color, var(--accent1)); box-shadow: 0 0 8px color-mix(in srgb, var(--card-color, var(--accent1)) 60%, transparent); }
+.gbgroupcard h4 { margin: 0; font: 700 var(--fs-h6) var(--f-titles); text-transform: uppercase; letter-spacing: .03em; color: var(--card-color, var(--accent1)); }
+.gbgroupcard-status { font: 700 var(--fs-tiny) var(--f-mono); text-transform: uppercase; letter-spacing: .05em; }
+.gbgroupcard-status.open { color: #3fae82; }
+.gbgroupcard-status.closed { color: var(--accent1); }
+.gbgroupcard p { margin: 0; font: var(--fs-small) var(--f-body); color: var(--text); line-height: 1.65em; text-align: justify; }
+
+/* Quiz d'affinité */
+.gbquiz { border: var(--border2); background: var(--dbckg1); border-radius: 10px; padding: 1.8em 2em; margin: 2em 0; }
+.gbquiz-intro { text-align: center; }
+.gbquiz-intro h4 { margin: 0 0 .7em; font: 700 var(--fs-h6) var(--f-titles); text-transform: uppercase; letter-spacing: .03em; color: var(--accent1); }
+.gbquiz-intro p { max-width: 32rem; margin: 0 auto 1.3em; font: var(--fs-small) var(--f-body); color: var(--subtitle); line-height: 1.6em; }
+.gbquiz-progress { height: .35rem; border-radius: 4px; background: var(--dbckg2); overflow: hidden; margin-bottom: 1.6em; }
+.gbquiz-progress-bar { height: 100%; width: 0%; background: linear-gradient(to right, var(--accent2), var(--accent1)); transition: width .3s ease; }
+.gbquiz-qnum { margin: 0 0 .5em; font: 700 var(--fs-tiny) var(--f-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text3); }
+.gbquiz-question h4 { margin: 0 0 1.2em; font: 700 var(--fs-h6) var(--f-titles); color: var(--title); line-height: 1.4em; text-transform: none; letter-spacing: normal; }
+.gbquiz-options { display: flex; flex-direction: column; gap: .6em; }
+.gbquiz-option { display: block; width: 100%; text-align: left; background: var(--dbckg0); border: var(--border1); padding: .8em 1.1em; font: var(--fs-small) var(--f-body); color: var(--text); border-radius: 4px; cursor: pointer; transition: ease .2s; }
+.gbquiz-option:hover { border-color: var(--accent2); color: var(--links2); background: var(--dbckg2); }
+.gbquiz-result { text-align: center; padding: .5em 0; }
+.gbquiz-result-dot { width: 3rem; height: 3rem; border-radius: 50%; margin: 0 auto 1em; background: var(--result-color, var(--accent1)); box-shadow: 0 0 20px color-mix(in srgb, var(--result-color, var(--accent1)) 50%, transparent); }
+.gbquiz-result h4 { margin: 0 0 .8em; font: 900 var(--fs-h3) var(--f-titles); text-transform: uppercase; letter-spacing: .04em; color: var(--result-color, var(--accent1)); }
+.gbquiz-result p { max-width: 34rem; margin: 0 auto 1.5em; font: var(--fs-small) var(--f-body); color: var(--subtitle); line-height: 1.6em; text-align: center; }
+
+/* Séparateur de méta-catégorie (règlement) */
+.gbregcat { display: flex; align-items: center; gap: .9em; margin: 3em 0 1.3em; }
+.gbregcat:first-child { margin-top: 0; }
+.gbregcat em { color: var(--accent1); font-size: 1.1em; flex-shrink: 0; }
+.gbregcat span { font: 700 var(--fs-small) var(--f-mono); text-transform: uppercase; letter-spacing: .18em; color: var(--accent1); flex-shrink: 0; }
+.gbregcat::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, var(--accent2), transparent); }
+
+/* ===== Carte illustrée (image + texte, pour illustrer une section) ===== */
+.gbfeature { display: flex; gap: 1.5em; align-items: stretch; border: var(--border2); background: var(--dbckg1); border-radius: 8px; padding: 1.4em; margin: 1.8em 0; }
+.gbfeature-img { width: 11rem; flex-shrink: 0; border-radius: 6px; overflow: hidden; border: var(--border1); }
+.gbfeature-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gbfeature-body { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+.gbfeature-body h4 { margin: 0 0 .5em; font: 700 var(--fs-small) var(--f-titles); text-transform: uppercase; letter-spacing: .04em; color: var(--accent1); }
+.gbfeature-body p { margin: 0; font: var(--fs-small) var(--f-body); color: var(--text); line-height: 1.6em; text-align: justify; }
+.gbfeature.gbfeature-reverse { flex-direction: row-reverse; }
+@media (max-width: 40rem) {
+.gbfeature { flex-direction: column; }
+.gbfeature.gbfeature-reverse { flex-direction: column; }
+.gbfeature-img { width: 100%; height: 10rem; }
+}
+
+/* Bandeau image pleine largeur au sein d'un texte */
+.gbinlinebanner { margin: 1.8em 0; border-radius: 8px; overflow: hidden; border: var(--border1); position: relative; }
+.gbinlinebanner img { width: 100%; height: 14rem; object-fit: cover; display: block; filter: saturate(.9) contrast(1.05); }
+.gbinlinebanner-caption { padding: .7em 1.1em; background: var(--dbckg1); border-top: var(--border1); font: italic var(--fs-tiny) var(--f-mono); text-transform: uppercase; letter-spacing: .05em; color: var(--text3); }
+
+/* Grille de vignettes (mosaïque d'images) */
+.gbimggrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr)); gap: .8em; margin: 1.8em 0; }
+.gbimggrid figure { margin: 0; border-radius: 6px; overflow: hidden; border: var(--border1); background: var(--dbckg0); }
+.gbimggrid img { width: 100%; height: 8rem; object-fit: cover; display: block; }
+.gbimggrid figcaption { padding: .5em .7em; font: 700 var(--fs-tiny) var(--f-mono); text-transform: uppercase; letter-spacing: .04em; color: var(--text2); text-align: center; }
+
+/* ===== Fiches Staff (dossiers de personnel) ===== */
+.gbstaffintro { margin-bottom: 2em; }
+.gbstaffgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); gap: 1.6em; margin: 1.5em 0 2em; }
+
+.gbstaffcard {
+position: relative; background: var(--dbckg1); border: var(--border2);
+border-radius: 6px; padding: 1.6em 1.6em 1.5em; overflow: visible;
+}
+.gbstaffcard::before {
+content: ''; position: absolute; top: 0; left: 1.6em; right: 1.6em; height: 2px;
+background: linear-gradient(to right, var(--accent2), var(--accent1), var(--accent2));
+}
+
+.gbstaffhead { display: flex; align-items: flex-start; gap: 1.1em; margin-bottom: 1.1em; }
+
+.gbstaffphoto {
+position: relative; width: 5.2rem; height: 5.2rem; flex-shrink: 0;
+border-radius: 10px; overflow: hidden; border: 3px solid var(--accent2);
+box-shadow: 0 6px 14px rgba(0,0,0,.4); transform: rotate(-3deg);
+background: var(--dbckg0);
+}
+.gbstaffphoto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gbstaffphoto .gbstaffphoto-empty { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text3); font-size: 1.4rem; }
+
+.gbstaffnames { flex-grow: 1; min-width: 0; padding-top: .2em; }
+.gbstaffnames h4 { margin: 0 0 .35em; font: 700 var(--fs-h6) var(--f-titles); text-transform: uppercase; letter-spacing: .02em; color: var(--title); line-height: 1.1em; }
+.gbstaffrole {
+display: inline-block; font: 700 var(--fs-tiny) var(--f-mono); text-transform: uppercase; letter-spacing: .08em;
+color: var(--accent1); border: 1px solid var(--accent1); border-radius: 3px; padding: .25em .6em;
+background: rgba(201,76,76,.1);
+}
+
+.gbstaffmsg {
+position: relative; font: italic var(--fs-small) var(--f-body); color: var(--subtitle); line-height: 1.6em;
+padding: 1em 1.2em; margin: 0 0 1.1em; background: var(--dbckg0); border-left: 3px solid var(--accent2);
+text-align: justify;
+}
+.gbstaffmsg em.gbstaffquote { position: absolute; top: .3em; left: .35em; font-size: 1.3em; color: var(--accent2); opacity: .5; font-style: normal; }
+
+.gbstaffmp {
+display: inline-flex; align-items: center; gap: .55em; font: 700 var(--fs-tiny) var(--f-mono);
+text-transform: uppercase; letter-spacing: .05em; color: var(--accent1); border: 1px solid var(--accent1);
+border-radius: 3px; padding: .55em 1em; margin-bottom: 1.1em; transition: ease .3s;
+}
+.gbstaffmp:hover { background: var(--accent1); color: var(--dbckg0); }
+
+.gbstaffaccounts { border-top: var(--border1); padding-top: .9em; }
+.gbstaffaccounts-label {
+display: flex; align-items: center; gap: .5em; font: 700 var(--fs-tiny) var(--f-mono); text-transform: uppercase;
+letter-spacing: .08em; color: var(--text3); margin-bottom: .6em;
+}
+.gbstaffaccounts-label em { color: var(--accent2); }
+.gbstaffaccounts-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .35em; }
+.gbstaffaccounts-list li { position: relative; padding-left: 1.2em; font: var(--fs-small) var(--f-body); color: var(--text); }
+.gbstaffaccounts-list li::before { content: '\f105'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; top: .1em; color: var(--accent1); font-size: .8em; }
+.gbstaffaccounts-list a { color: var(--text); }
+.gbstaffaccounts-list a:hover { color: var(--accent1); }
+
+.gbstaffdocnum {
+position: absolute; top: -.75em; right: 1.2em; font: 700 var(--fs-tiny) var(--f-mono); letter-spacing: .1em;
+color: var(--text3); background: var(--cuerpo); padding: .2em .6em; border: var(--border1); border-radius: 3px;
+}
+
+/* Variante compacte pour la page Crédits */
+.gbcreditsgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1.2em; margin: 1.5em 0; }
+.gbcreditcard {
+background: var(--dbckg1); border: var(--border1); border-radius: 6px; padding: 1.1em 1.3em;
+display: flex; align-items: center; gap: 1em;
+}
+.gbcreditcard em.gbcrediticon { flex-shrink: 0; width: 2.6rem; height: 2.6rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--dbckg0); border: 1px solid var(--accent2); color: var(--accent1); font-size: 1.1rem; }
+.gbcreditcard-text h4 { margin: 0 0 .2em; font: 700 var(--fs-small) var(--f-titles); text-transform: uppercase; color: var(--subtitle); }
+.gbcreditcard-text p { margin: 0; font: var(--fs-tiny) var(--f-body); color: var(--text2); line-height: 1.4em; }
+.gbcreditcard-text a { color: var(--text2); }
+.gbcreditcard-text a:hover { color: var(--accent1); }
+
+/* Filigrane retiré */
+
+@media (max-width: 55rem) {
+.gbenv { flex-direction: column; max-height: none; }
+.gbside { width: auto; border-right: 0; border-bottom: var(--border1); }
+.gbbody { flex-direction: column; }
+.gbsommaire { width: auto; border-right: 0; border-bottom: var(--border1); padding-right: 0; padding-bottom: var(--gap); position: static; }
+}
+</style>
+</head>
+<body><div class="gbpagewrap">
+
+<a href="https://shinsei-city.forumactif.com/?tt=1" class="gbback"><em class="fa-solid fa-arrow-left"></em> Retour au forum</a><div id="guidebook"><div class="gbenv">
+
+<!-- ================== MENU LATERAL ================== -->
+<nav class="gbside"><div class="gbsidetools">
+<button id="theme-switcher" title="Changer de thème">
+<em class="fa-solid fa-sun icon-dark"></em><em class="fa-solid fa-moon icon-light"></em>
+<span>Changer de thème</span>
+</button>
+<label class="gbfilterbar"><input type="checkbox" id="gbfilterimportant"> Afficher uniquement "Important"</label>
+</div>
+<ul class="gbcatlist">
+
+<li class="gbcat-item">
+<button class="gbcat-toggle"><em class="fa-solid fa-lightbulb"></em><span>Généralités</span><i class="gbchevron"></i></button>
+<ul class="gbsublist">
+<li><a href="#reglement" class="gblink" data-tag="important">Règlement</a></li>
+<li><a href="#contexte" class="gblink" data-tag="important">Contexte</a></li>
+<li><a href="#groupes" class="gblink" data-tag="important">Groupes</a></li>
+<li><a href="#faq" class="gblink">Foire aux questions</a></li>
+</ul>
+</li>
+
+<li class="gbcat-item">
+<button class="gbcat-toggle"><em class="fa-solid fa-star"></em><span>Lore</span><i class="gbchevron"></i></button>
+<ul class="gbsublist">
+<li><a href="#score" class="gblink" data-tag="important">Score d'engagement</a></li>
+<li><a href="#credits-engagement" class="gblink">Crédits d'engagement</a></li>
+<li><a href="#education" class="gblink">Éducation</a></li>
+<li><a href="#travail" class="gblink">Travail</a></li>
+<li><a href="#communication" class="gblink">Communication & Internet</a></li>
+<li><a href="#groupes-affinite" class="gblink">Loyalistes, Détracteurs & co</a></li>
+</ul>
+</li>
+
+<li class="gbcat-item">
+<button class="gbcat-toggle"><em class="fa-solid fa-comments"></em><span>Vie du forum</span><i class="gbchevron"></i></button>
+<ul class="gbsublist">
+<li><a href="#events" class="gblink">Events et fonctionnement</a></li>
+<li><a href="#staff" class="gblink">Staff</a></li>
+<li><a href="#credits" class="gblink">Crédits</a></li>
+</ul>
+</li>
+
+</ul>
+</nav>
+
+<!-- ================== ZONE DE CONTENU ================== --><div class="gbmain"><div class="gbprogress"><div class="gbprogress-bar" id="gbprogressbar"></div></div><div class="gbbreadcrumb" id="gbbreadcrumb"></div><button class="gbscrolltop" id="gbscrolltop" title="Retour en haut"><em class="fa-solid fa-chevron-up"></em></button>
+
+<!-- ==== PAGE: ACCUEIL ==== --><div class="gbpage active" id="welcome"><div class="gbheader"><em class="fa-solid fa-atom"></em><h2>Bienvenue dans le Guidebook</h2></div><div class="gbtext">Cliquez sur une catégorie dans le menu à gauche pour déplier ses sections, puis sur un lien pour afficher son contenu.</div>
+</div>
+
+<!-- ==== PAGE: REGLEMENT ==== --><div class="gbpage" id="reglement"><div class="gbbanner">
+<img data-img-dark="https://2img.net/i.imgur.com/yLCb8EL.jpeg?text=Bannière+Règlement" data-img-light="https://2img.net/i.imgur.com/yLCb8EL.jpeg?text=Bannière+Règlement" src="hhttps://2img.net/i.imgur.com/yLCb8EL.jpeg?text=Bannière+Règlement" alt=""><div class="gbheader"><em class="fa-solid fa-sparkles"></em><h2>Règlement</h2><span class="gbtag gbtag-important">Important</span><span class="gbdocnum">DOC. 001-A</span></div>
+</div><div class="gbintro">Ce règlement doit être lu et respecté par l'ensemble des membres. Il s'applique aux sujets, aux messages privés et à la chatbox. Son non-respect peut entraîner un avertissement, ou une exclusion du forum, selon la gravité des faits.</div><div class="gbbody">
+<aside class="gbsommaire">
+<h3>Sommaire</h3>
+<span class="gbsommaire-group">Généralités</span>
+<a href="#reg-courtoisie">Savoir-vivre</a>
+<a href="#reg-discrimination">Discrimination</a>
+<a href="#reg-consentement">Consentement & TW</a>
+<a href="#reg-age">Limite d'âge</a>
+<a href="#reg-activite">Absences & activité</a>
+<a href="#reg-multi">Multi-comptes</a>
+<span class="gbsommaire-group">Fiche & personnage</span>
+<a href="#reg-fiche">Fiche de personnage</a>
+<a href="#reg-avatars">Avatars & pseudos</a>
+<span class="gbsommaire-group">Écriture & RP</span>
+<a href="#reg-ecriture">Écriture & mise en forme</a>
+<a href="#reg-sensible">Contenus sensibles</a>
+<a href="#reg-power">Roleplay & grosbillisme</a>
+<a href="#reg-theories">Théories In-RP</a>
+<span class="gbsommaire-group">Vie du forum</span>
+<a href="#reg-suggestions">Suggestions & Feedback</a>
+<a href="#reg-chatbox">La Chatbox</a>
+</aside><div class="gbtext"><div class="gbregcat"><em class="fa-solid fa-scale-balanced"></em><span>Généralités</span></div>
+<h3 id="reg-courtoisie">Savoir-vivre</h3>
+<ul class="gblist">
+
+<li>Respect, politesse, patience et compréhension entre membres : Shinsei City repose avant tout sur une communauté saine et bienveillante.</li>
+<li>Le plagiat, qu'il concerne des fiches, des textes de roleplay ou des créations graphiques, n'est pas toléré.</li>
+<li>L'utilisation de l'intelligence artificielle pour générer des RP ou des images destinés au forum est interdite.</li>
+<li>En cas de comportement problématique de la part d'un autre membre, ou pour toute suggestion concernant le forum, n'hésitez pas à contacter le staff en message privé.</li>
+<li>Toute publicité pour d'autres forums est interdite, y compris sur la chatbox ou en message privé.</li>
+</ul>
+
+<h3 id="reg-discrimination">Discrimination</h3>
+<ul class="gblist">
+<li>Le racisme, le sexisme, la LGBTQIA+phobie, le validisme et le cyberharcèlement sont strictement interdits, sans exception. Tout manquement à ces règles sera traité avec fermeté.</li>
+</ul><div class="gbcallout">
+<h4>Espace sûr</h4>
+<p>Shinsei City se veut un espace accueillant pour les communautés LGBTQIA+, racisées et en situation de handicap. En vous inscrivant, vous vous engagez à respecter cet esprit.</p>
+</div>
+
+<h3 id="reg-consentement">Consentement et Trigger Warnings</h3>
+<ul class="gblist">
+<li>Assurez-vous toujours du consentement de vos partenaires de roleplay avant d'aborder un thème sensible dans vos écrits.</li>
+<li>Aucun membre n'est tenu d'écrire ou de lire un texte qui le mettrait mal à l'aise : n'hésitez pas à le communiquer à votre partenaire.</li>
+<li>Les Trigger Warnings sont à indiquer systématiquement en début de sujet sous la forme <strong>TW : sujet abordé</strong> dès lors qu'un thème sensible est traité. De plus, un champ Trigger Warning est disponible sur chaque profil afin que chacun puisse indiquer ces limites. Allez consulter celui de vos partenaires pour éviter tout malentendu.</li>
+</ul>
+
+<h3 id="reg-age">Limite d'âge</h3>
+<ul class="gblist">
+<li>Le forum aborde des thématiques matures. Ainsi, les membres doivent être âgés de 18 ans minimum.</li>
+</ul>
+
+<h3 id="reg-activite">Absences, départs et activité</h3>
+<ul class="gblist">
+<li>Prévenez, dans la mesure du possible, vos partenaires et le staff en cas d'absence ou de départ, afin que chacun sache à quoi s'en tenir. Bien sûr, les imprévus ça arrive. Tout comme le manque de motivation. Mais, si vous savez que vous allez être absent pendant une période définie, n'hésitez pas à aller prévenir dans le sujet des absences.</li>
+<li>Nous savons que la vie IRL peut être chargée. Nous savons aussi, que parfois, il est difficile de se motiver. Ainsi, nous ne souhaitons pas être trop durs concernant l'activité sur le forum. C'est pourquoi, au bout de 2 mois sans RP, votre compte sera marqué comme inactif et un MP vous sera envoyé pour vous prévenir. Si pendant encore un mois vous ne postez pas de RP, là, vous serez supprimés.</li>
+<li>Si vous souhaitez quitter le forum de votre plein gré, il n'y a aucun souci ! Nous ne mordons pas, et c'est plus chouette de pouvoir vous dire au revoir. N'hésitez pas à poser sur le topic des absences, indiquant qu'il s'agit d'un départ. Nous archiverons vos fiches et vous pourrez les récupérer plus tard, si un jour vous souhaitez revenir.</li>
+</ul>
+
+<h3 id="reg-multi">Multi-comptes</h3>
+<ul class="gblist">
+<li>Les multicomptes sont autorisés, à condition de rester actif sur l'ensemble de vos comptes précédents.</li>
+<li>Les modalités et demandes de multi-comptes se trouvent dans le sujet dédié, disponible <a href="#">ici</a>.</li>
+</ul><div class="gbregcat"><em class="fa-solid fa-id-card"></em><span>Fiche & personnage</span></div>
+<h3 id="reg-fiche">Fiche de personnage</h3>
+<ul class="gblist">
+<li><strong>Délais :</strong> après inscription, vous disposez d'une semaine pour poster votre fiche. Même si celle-ci n'est pas terminée. Par contre, à compter de la date d'inscription, vous disposez de deux semaines pour terminer votre fiche.</li>
+<li><strong>Âge des personnages :</strong> tous les personnages joués doivent être majeurs, sans exception.</li>
+<li><strong>Crédibilité et cohérence :</strong> votre personnage doit s'inscrire de façon cohérente dans l'univers de Shinsei City. Les personnages omniscients ou parfaits sont à proscrire.</li>
+<li><strong>Historique :</strong> Nous savons que nous aimons voir nos personnages souffrir. Néanmoins, évitez les passés uniquement composés de malheurs. Si votre fiche aborde des thèmes sombres, n'oubliez pas d'y indiquer les Trigger Warnings correspondants. Pour rappel, un personnage venu de l'extérieur conserve l'intégralité de ses souvenirs d'avant Shinsei City : il n'y a pas d'amnésie à prévoir dans son histoire.</li>
+<li><strong>Consentement In-RP :</strong> lors de roleplays encadrés par le staff (missions, événements), des conséquences plus ou moins durables peuvent affecter votre personnage. Votre consentement vous sera systématiquement demandé avant l'application d'un effet permanent.</li>
+<li><strong>Accueil :</strong> n'hésitez pas à passer souhaiter la bienvenue sur les fiches des nouveaux membres, ça fait toujours plaisir !</li>
+</ul>
+
+<h3 id="reg-avatars">Avatars et pseudonymes</h3>
+<ul class="gblist">
+<li>Les avatars doivent être illustrés ou de style manga, en 200x320 ou 200x400 pixels. Aucune photographie réelle n'est acceptée.</li>
+<li>Les avatars dénudés ou à caractère pornographique sont interdits.</li>
+<li>Un écart de 10 ans maximum est toléré entre l'âge du faceclaim et l'âge du personnage.</li>
+<li>Les personnages basés sur des personnes réelles ne sont pas autorisés.</li>
+<li>Le pseudonyme doit être composé d'un prénom et d'un nom (ex : Prénom Nom) et dans cet ordre précis. Les pseudonymes fantaisistes ne sont pas autorisés.</li>
+<li>Les noms de famille similaires sont acceptés.</li>
+</ul><div class="gbregcat"><em class="fa-solid fa-feather-pointed"></em><span>Écriture & RP</span></div>
+<h3 id="reg-ecriture">Écriture et mise en forme</h3>
+<ul class="gblist">
+<li>Même si nous ne souhaitons pas imposer de minimum de mots, veillez à produire des textes compréhensibles par toutes et tous.</li>
+<li>Privilégiez une taille d'écriture et une couleur d'écriture lisible, par respect pour les yeux de vos lecteurs. Pensez à l'accessibilité, du rose sur un fond rose, c'est pas accessible ni lisible.</li>
+<li>Les codes de roleplay et signatures sont autorisés, tant qu'ils ne déforment pas la structure du forum. Le forum proposant un thème clair et un thème sombre, veillez à ce que vos couleurs de texte restent lisibles dans les deux.</li>
+<li>Vous pourrez trouver des codes prêts à l'usage pour embellir vos RP dans le Libre Service.</li>
+</ul>
+
+<h3 id="reg-sensible">Contenus sensibles</h3>
+<ul class="gblist">
+<li>Les textes présentant explicitement des scènes à caractère sexuel sont autorisés. Néanmoins, veuillez utiliser les balises hide afin que les textes ne soient visibles que pour les participants au RP.</li>
+<li>Les écrits présentant de la violence ou de l'horreur sont autorisés, à condition de mentionner les Trigger Warning associé en début de post.</li>
+<li>N'oubliez pas, ce n'est pas parce que votre partenaire est d'accord pour un RP avec scènes de sexe, ou scènes de violence, qu'il faut y aller à fond. N'hésitez pas à continuer à discuter avec votre partenaire. Pour voir s'il n'est pas mal à l'aise, et si ça lui convient de continuer. Le consentement, c'est important.</li>
+<li>Les RP flashback, solo, ou libres sont autorisés.</li>
+</ul>
+
+<h3 id="reg-power">Roleplay et grosbillisme</h3>
+<ul class="gblist">
+<li>Les personnages grosbill ne sont pas acceptés. Et même si nous ne souhaitons pas de systèmes de statistiques ou de jets de dés, en cas de confrontation entre personnages, restez raisonnables, votre personnage n'est pas invincible, et mettez-vous d'accord avec votre partenaire en amont ou au fil des réponses.</li>
+<li>Vous gérez vos roleplays comme bon vous semble : notre seule demande, c'est de respecter vos partenaires et de communiquer sur votre rythme d'écriture.</li>
+</ul>
+
+<h3 id="reg-theories">Théories et connaissances In-RP</h3>
+<ul class="gblist">
+<li>Le contexte se veut cryptique. Vous pouvez donc avoir des théories sur la ville, son fonctionnement ou le Maire, et nous serons ravis que vous les partagiez hors-RP.</li>
+<li>Des théories peuvent également être amenées en roleplay comme de simples suppositions de votre personnage, jamais comme des certitudes : votre personnage peut s'interroger, mais ne détient pas la vérité. Aussi, attention au HRP. Si vous apprenez quelque chose en HRP, votre personnage n'est pas sensé le savoir comme par magie.</li>
+<li>Toutes les informations que vos personnages connaissent officiellement se trouvent dans ce guidebook, mis à jour régulièrement.</li>
+<li>Au fur et à mesure des events liés au contexte, des indices ou éléments de contexte pourraient être découverts ou dévoilés. Si cela arrive, votre personnage en sera donc informé.</li>
+</ul><div class="gbregcat"><em class="fa-solid fa-comments"></em><span>Vie du forum</span></div>
+<h3 id="reg-suggestions">Suggestions et Feedback</h3>
+ <ul class="gblist">
+<li>Les suggestions sont les bienvenues dans le sujet dédié. Que ce soit pour des events, des mécaniques de jeu, ou des modifications sur le forum, aucune suggestion n'est bête et toutes les suggestions seront étudiées attentivement par le Staff. L'idée, c'est de créer un forum sur lequel chacun a sa voix. Le but, c'est qu'on s'amuse avant tout.</li>
+<li>Pareil pour les feedback et retours. Si vous voulez nous donner votre avis sur le forum, un event, ou encore un choix du Staff, n'hésitez pas !</li>
+</ul>
+
+<h3 id="reg-chatbox">La Chatbox</h3>
+<ul class="gblist">
+<li>Les règles du forum s'appliquent également sur la chatbox. Évitez les sujets sensibles si un membre fait part d'un malaise, et n'hésitez pas à signaler au staff tout sujet qui vous mettrait mal à l'aise.</li>
+<li>Veillez à ne pas exclure un membre présent sur la chatbox, et accueillez volontiers les nouveaux arrivants qui s'y présentent.</li>
+<li>Le roleplay sur la chatbox n'est pas autorisé.</li>
+<li>Bien entendu, un membre non validé peut se rendre sur la Chatbox pour rencontrer les autres. Veillez à lui faire bon accueil et à être agréable !</li>
+</ul>
+
+</div>
+</div>
+</div>
+
+<!-- ==== PAGE: CONTEXTE ==== --><div class="gbpage" id="contexte"><div class="gbbanner">
+<img data-img-dark="https://2img.net/i.imgur.com/oYSAKzi.jpeg?text=Contexte" data-img-light="https://2img.net/i.imgur.com/6UWDp2c.jpeg?text=Contexte" src="https://placehold.co/1200x400/1a1a1a/666?text=Contexte" alt=""><div class="gbheader"><em class="fa-solid fa-sparkles"></em><h2>Contexte</h2><span class="gbtag gbtag-important">Important</span><span class="gbdocnum">DOC. 002-A</span></div>
+</div><div class="gbtext">
+<h3>Bienvenue à Shinsei (新生) City</h3>
+  <p><strong>Personne ne sait, quand cette ville a été construite ni même où elle se trouve</strong>. Aucun document, aucun registre, aucune archive ne permet de dater sa fondation. Pour certains habitants, la ville a toujours existée. D'autres, eux, continuent d'essayer de remonter jusqu'à la date de sa création. Cette incertitude n'est pas un oubli. C'est un mystère <strong>caractéristique de Shinsei City. Que ce soit concernant la ville, ou encore l'identité même du Maire. Étrange créature se présentant sous la forme d'une mascotte sympathique.</strong></p>
+<p>Votre personnage peut s'être retrouvé à Shinsei City de deux manières différentes. Soit de son plein gré, soit parce que sa famille est entrée là avant lui.</p>
+  <p>Il y a <strong>ceux qui sont nés ici</strong>. Leur famille vit à Shinsei City depuis des générations, parfois depuis si longtemps que le monde extérieur n'est plus qu'une notion abstraite, quelque chose qu'ils ne connaissent plus vraiment. Pour eux, la ville n'est pas un choix. Elle est simplement leur monde. Le contrat, ils ne l'ont jamais signé personnellement : il a été signé pour eux, par une lignée qui remonte parfois trop loin pour être retracée.</p>
+<p>Et il y a les autres. <strong>Ceux qui ont connu autre chose. Une vie avant</strong>. Un monde en dehors de Shinsei City. Comme s'ils s'étaient endormis dans un train et réveillés dans une autre ville, ils n'ont ni sensation étrange ni amnésie. Ils se souviennent de la rencontre avec le Maire à un moment où ça n'allait pas. Ils se souviennent, avoir perdu connaissance. Et à leur réveil, dans leur nouveau logement, leur contrat signé de leur main les attendait posé sur une table.</p>
+  <p><strong>Certains se souviennent avoir signé sans hésiter. D'autres se souviennent avoir douté, ne pas avoir été intéressés par l'idée.</strong> Pourtant, le contrat est là, et c'est bien leur signature. Aucun doute possible. Alors, ont-ils vraiment choisi ? Chacun y répond à sa manière. Mais peu importe en réalité, car maintenant, ils sont eux aussi enfermés ici.</p>
+  
+ <p>Ceux qui ont connu la vie avant Shinsei City s'en souviennent encore. Ici, leurs souvenirs ne sont pas effacés. Et le Maire ne cherche pas à les pousser à oublier. Certains tentent donc parfois de s'échapper, pour retrouver leurs proches, leur vie, d'autres, eux, rejettent leur ancienne vie et n'en parlent plus. Plongeant dans le système. Soit par douleur, soit car Shinsei City leur plaît.</p>
+<p>Entre ces deux populations, ceux nés ici, et ceux ayant signé le contrat de leur main, aucun conflit ouvert n'existe officiellement. Après tout, la ville a été pensée pour que chacun y trouve sa place, quelle que soit son histoire. Mais dans les faits, un écart demeure. Ceux qui sont nés ici regardent parfois les nouveaux arrivants avec une curiosité teintée de méfiance, ou d'envie parfois. Les nouveaux venus, eux, ne peuvent s'empêcher d'observer les natifs avec une forme de fascination inquiète, se demandant ce que signifie réellement grandir sans jamais avoir connu autre chose que Shinsei City.</p>
+  <p>Car c'est bien là toute la promesse de la ville. Que l'on soit né dans ses rues ou que l'on y ait posé le pied pour la première fois hier, <strong>la vie ici est censée être meilleure</strong>. Plus juste. <strong>Plus douce. Plus sereine. Le contrat le garantit. Le système le garantit.</strong></p>
+<p>N'est-ce pas ?</p><div class="gbcomments">
+<span class="gbcomments-label"><em class="fa-solid fa-comment-dots"></em>3 commentaires sur cette page</span><div class="gbcomment"><div class="gbcomment-avatar"><img src="https://placehold.co/100x100/c94c4c/1a1a1a?text=%F0%9F%90%B1" alt=""></div><div class="gbcomment-body"><div class="gbcomment-head">
+<span class="gbcomment-author">le_maire</span>
+<span class="gbcomment-time">Il y a 12h</span>
+</div><div class="gbcomment-text">
+  <p>"Étrange créature se présentant sous la forme d'une mascotte sympathique", j'ai fait encadrer cette phrase, elle est au-dessus de mon litw</p>
+<p>ps : Si vous lisez ceci, cher Fondateur, je voulais juste dire que le rouge me va très bien, merci</p>
+</div><span class="gbcomment-votes"><em class="fa-solid fa-arrow-up"></em>1 004<em class="fa-solid fa-arrow-down"></em></span><div class="gbcomment-replies"><div class="gbcomment"><div class="gbcomment-avatar"><img src="https://placehold.co/100x100/4a6a7a/1a1a1a?text=%3F" alt=""></div><div class="gbcomment-body"><div class="gbcomment-head">
+<span class="gbcomment-author">Fondateur du Forum</span>
+<span class="gbcomment-time">il y a 12h</span>
+</div><div class="gbcomment-text">
+  <p>Euh... tu n'es pas censé savoir que je choisis tes couleurs, ni même me demander celle que tu préfères.</p>
+<p>ps : Le rouge reste, mais uniquement parce que je n'ai pas eu le temps de choisir autre chose ni d'itérer d'avantage sur ton design.</p>
+</div><span class="gbcomment-votes"><em class="fa-solid fa-arrow-up"></em>62<em class="fa-solid fa-arrow-down"></em></span>
+</div>
+</div><div class="gbcomment"><div class="gbcomment-avatar"><img src="https://placehold.co/100x100/c94c4c/1a1a1a?text=%F0%9F%90%B1" alt=""></div><div class="gbcomment-body"><div class="gbcomment-head">
+<span class="gbcomment-author">le_maire</span>
+<span class="gbcomment-time">il y a 9h</span>
+</div><div class="gbcomment-text">
+<p>p"je n'ai pas eu le temps" d'accord d'accord, je vais m'en souvenir la prochaine fois qu'on me demandera pourquoi ma ville n'a ni date de fondation ni localisation connue. Entre nous, c'est vous aussi qui n'avez pas eu le temps de coder ça, ou c'est un vrai mystère narratif ? je veux juste savoir si je dois continuer à faire semblant hihihi ❤️</p>
+</div><span class="gbcomment-votes"><em class="fa-solid fa-arrow-up"></em>340<em class="fa-solid fa-arrow-down"></em></span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ==== PAGE: GROUPES ==== --><div class="gbpage" id="groupes"><div class="gbbanner">
+<img data-img-dark="https://2img.net/i.imgur.com/I1j7llo.jpeg?text=Groupes" data-img-light="https://2img.net/i.imgur.com/I1j7llo.jpeg?text=Groupes" src="hhttps://2img.net/i.imgur.com/I1j7llo.jpeg?text=Groupes" alt=""><div class="gbheader"><em class="fa-solid fa-sparkles"></em><h2>Groupes</h2><span class="gbtag gbtag-important">Important</span><span class="gbdocnum">DOC. 003-A</span></div>
+</div><div class="gbtext">
+
+<p>Face au système mis en place par le Maire, chaque résident finit tôt ou tard par se positionner. Ce positionnement n'a rien d'officiel, aucun tampon ne vient le valider, mais il façonne malgré tout la manière dont un personnage est perçu, et dont il perçoit la ville. Quatre grandes tendances se distinguent.</p><div class="gbgroupsgrid"><div class="gbgroupcard" style="--card-color:#1F7A5C"><div class="gbgroupcard-head"><span class="gbgroupcard-dot"></span><div class="gbgroupcard-titles"><h4>Loyalistes</h4><span class="gbgroupcard-status open">Groupe ouvert</span></div></div>
+<p>Ils croient au système du Maire. Pour eux, Shinsei City n'est pas une prison mais une opportunité. Ils participent, s'investissent, et cherchent sans relâche à faire progresser leur score de fiabilité, prouvant qu'ils méritent leur place. L'ordre les rassure. La structure leur donne un but. Ils jouent le jeu, et parfois, ils le maîtrisent.</p>
+</div><div class="gbgroupcard" style="--card-color:#B23A48"><div class="gbgroupcard-head"><span class="gbgroupcard-dot"></span><div class="gbgroupcard-titles"><h4>Détracteurs</h4><span class="gbgroupcard-status open">Groupe ouvert</span></div></div>
+<p>Ils rejettent le système et méprisent le Maire, que ce soit en silence ou ouvertement. Leur ancienne vie leur manque. Certains sabotent dans l'ombre, d'autres feignent la conformité pour survivre. Ils cherchent une faille, une échappatoire, ou un moyen de renverser l'équilibre des pouvoirs. Shinsei City n'est pas une bénédiction. C'est une cage.</p>
+</div><div class="gbgroupcard" style="--card-color:#4A6A7A"><div class="gbgroupcard-head"><span class="gbgroupcard-dot"></span><div class="gbgroupcard-titles"><h4>Indifférents</h4><span class="gbgroupcard-status open">Groupe ouvert</span></div></div>
+<p>Ils ont accepté. Ni pour, ni contre, simplement réalistes. Ils vivent leur vie sans chercher à s'élever ni à se rebeller. Le système existe, alors ils s'adaptent. Ils s'impliquent quand cela leur profite, se retirent quand il le faut, et avancent sans trop y réfléchir.</p>
+</div><div class="gbgroupcard" style="--card-color:#6A4C93"><div class="gbgroupcard-head"><span class="gbgroupcard-dot"></span><div class="gbgroupcard-titles"><h4>Fanatiques</h4><span class="gbgroupcard-status open">Groupe ouvert</span></div></div>
+<p>Pour eux, Shinsei City est bien plus qu'une ville : un symbole, un jugement, peut-être même un purgatoire ou un enfer. Certains voient le Maire comme une entité divine, d'autres comme le Diable. Ils interprètent le contrat comme un pacte. Obsédés par leur score ou par l'idée de faire tomber le système, ils vivent la ville comme une prophétie en cours d'accomplissement. Les plus imprévisibles.</p>
+</div>
+
+</div><div class="gbcallout">
+<h4>À noter</h4>
+<p>Ces groupes ne sont pas des factions organisées ni des rôles à cocher sur une fiche. Ce sont des tendances, souvent instinctives, qui peuvent évoluer au fil du roleplay selon les épreuves traversées par un personnage.</p>
+</div>
+
+<h3>Test d'affinité citoyenne</h3>
+<p>Un questionnaire informel, sans valeur officielle, pour situer instinctivement votre personnage face au système de Shinsei City.</p><div class="gbquiz" id="gbquiz"><div class="gbquiz-intro" id="gbquizintro">
+<h4>Où vous situez-vous ?</h4>
+<p>Six questions, une minute, aucune conséquence sur le score réel de votre personnage (probablement). Répondez comme lui répondrait, pas comme vous répondriez.</p>
+<button class="gbsimreset" id="gbquizstart" type="button">Commencer le test</button>
+</div><div class="gbquiz-progress" id="gbquizprogresswrap" hidden><div class="gbquiz-progress-bar" id="gbquizprogressbar"></div></div><div class="gbquiz-question" id="gbquizquestion" hidden>
+<p class="gbquiz-qnum" id="gbquizqnum"></p>
+<h4 id="gbquizqtext"></h4><div class="gbquiz-options" id="gbquizoptions"></div>
+</div><div class="gbquiz-result" id="gbquizresult" hidden><div class="gbquiz-result-dot" id="gbquizresultdot"></div>
+<h4 id="gbquizresulttitle"></h4>
+<p id="gbquizresulttext"></p>
+<button class="gbsimreset" id="gbquizrestart" type="button">Refaire le test</button>
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- ==== PAGE: FAQ ==== --><div class="gbpage" id="faq"><div class="gbheader"><em class="fa-solid fa-sparkles"></em><h2>Foire aux questions</h2></div><div class="gbfaq">
+<details class="gbfaqitem"><summary>Puis-je jouer plusieurs personnages ?</summary><div class="gbfaqanswer">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed tortor rutrum, mattis dui in, blandit mauris.</div></details>
+<details class="gbfaqitem"><summary>Comment fonctionne le score d'engagement ?</summary><div class="gbfaqanswer">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sapien nunc, ultrices non laoreet vel, egestas sit amet eros.</div></details>
+<details class="gbfaqitem"><summary>Que faire en cas de conflit avec un autre membre ?</summary><div class="gbfaqanswer">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum euismod, nulla facilisi cursus fringilla.</div></details>
+<details class="gbfaqitem"><summary>Le forum a-t-il un Discord ?</summary><div class="gbfaqanswer">Pour l'instant, le forum ne dispose pas de Discord officiel. Nous ne sommes pas fermés à l'idée et étudions le sujet.</div></details>
+</div>
+</div>
+
+<!-- ==== PAGE: EVENTS ==== --><div class="gbpage" id="events"><div class="gbbanner">
+<img data-img-dark="https://placehold.co/1200x400/1a1a1a/666?text=Events" data-img-light="https://placehold.co/1200x400/f5ebe0/865438?text=Events" src="https://placehold.co/1200x400/1a1a1a/666?text=Events" alt=""><div class="gbheader"><h2>Events et fonctionnement</h2></div>
+</div><div class="gbtext">
+<p>WIP</p>
+<p>WIP</p>
+</div>
+</div>
+
+<!-- ==== PAGE: STAFF ==== --><div class="gbpage" id="staff"><div class="gbheader"><em class="fa-solid fa-user-shield"></em><h2>Staff</h2><span class="gbdocnum">DOC. 010-S</span></div><div class="gbintro">Le personnel administratif de Shinsei City, chargé de veiller au bon fonctionnement de la ville et à l'application du règlement. N'hésitez pas à les contacter en message privé pour toute question.</div><div class="gbstaffgrid"><div class="gbstaffcard"><div class="gbstaffhead"><div class="gbstaffphoto"><img src="https://placehold.co/150x150/1a1a1a/666?text=Photo" alt=""></div><div class="gbstaffnames">
+<h4>Pseudo du membre</h4>
+<span class="gbstaffrole">Fondateur·rice</span>
+</div>
+</div><div class="gbstaffmsg"><em class="fa-solid fa-quote-left gbstaffquote"></em>
+Un petit message de présentation, ton, humour ou sérieux, comme vous le souhaitez. Décrivez-vous, votre rôle, ce que vous aimez sur le forum.
+</div>
+<a href="#" class="gbstaffmp"><em class="fa-solid fa-envelope"></em> Envoyer un MP</a><div class="gbstaffaccounts">
+<span class="gbstaffaccounts-label"><em class="fa-solid fa-address-book"></em>Comptes recensés</span>
+<ul class="gbstaffaccounts-list">
+<li><a href="#">Prénom Nom</a></li>
+<li><a href="#">Prénom Nom</a></li>
+</ul>
+</div>
+</div><div class="gbstaffcard"><div class="gbstaffhead"><div class="gbstaffphoto"><img src="https://placehold.co/150x150/1a1a1a/666?text=Photo" alt=""></div><div class="gbstaffnames">
+<h4>Pseudo du membre</h4>
+<span class="gbstaffrole">Administrateur·rice</span>
+</div>
+</div><div class="gbstaffmsg"><em class="fa-solid fa-quote-left gbstaffquote"></em>
+Un petit message de présentation, ton, humour ou sérieux, comme vous le souhaitez. Décrivez-vous, votre rôle, ce que vous aimez sur le forum.
+</div>
+<a href="#" class="gbstaffmp"><em class="fa-solid fa-envelope"></em> Envoyer un MP</a><div class="gbstaffaccounts">
+<span class="gbstaffaccounts-label"><em class="fa-solid fa-address-book"></em>Comptes recensés</span>
+<ul class="gbstaffaccounts-list">
+<li><a href="#">Prénom Nom</a></li>
+</ul>
+</div>
+</div><div class="gbstaffcard"><div class="gbstaffhead"><div class="gbstaffphoto"><img src="https://placehold.co/150x150/1a1a1a/666?text=Photo" alt=""></div><div class="gbstaffnames">
+<h4>Pseudo du membre</h4>
+<span class="gbstaffrole">Modérateur·rice</span>
+</div>
+</div><div class="gbstaffmsg"><em class="fa-solid fa-quote-left gbstaffquote"></em>
+Un petit message de présentation, ton, humour ou sérieux, comme vous le souhaitez. Décrivez-vous, votre rôle, ce que vous aimez sur le forum.
+</div>
+<a href="#" class="gbstaffmp"><em class="fa-solid fa-envelope"></em> Envoyer un MP</a><div class="gbstaffaccounts">
+<span class="gbstaffaccounts-label"><em class="fa-solid fa-address-book"></em>Comptes recensés</span>
+<ul class="gbstaffaccounts-list">
+<li><a href="#">Prénom Nom</a></li>
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- ==== PAGE: CREDITS ==== --><div class="gbpage" id="credits"><div class="gbheader"><em class="fa-solid fa-scroll"></em><h2>Crédits</h2><span class="gbdocnum">DOC. 011-S</span></div><div class="gbintro">Shinsei City n'existerait pas sans le travail de designers, codeurs et créateurs de contenu, dont nous remercions ici le travail.</div><div class="gbcreditsgrid"><div class="gbcreditcard"><em class="fa-solid fa-palette gbcrediticon"></em><div class="gbcreditcard-text">
+<h4>Thème graphique</h4>
+<p>Blood Upon The Snow — thème acheté auprès d'un développeur espagnol.</p>
+</div>
+</div><div class="gbcreditcard"><em class="fa-solid fa-font gbcrediticon"></em><div class="gbcreditcard-text">
+<h4>Polices</h4>
+<p>Google Fonts — Lato, Electrolize, IBM Plex Mono.</p>
+</div>
+</div><div class="gbcreditcard"><em class="fa-solid fa-icons gbcrediticon"></em><div class="gbcreditcard-text">
+<h4>Iconographie</h4>
+<p>Font Awesome Pro.</p>
+</div>
+</div><div class="gbcreditcard"><em class="fa-solid fa-image gbcrediticon"></em><div class="gbcreditcard-text">
+<h4>Visuels & avatars</h4>
+<p>Crédits des illustrations et faceclaims à ajouter au cas par cas.</p>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- ==== PAGE: CREDITS ENGAGEMENT ==== --><div class="gbpage" id="credits-engagement"><div class="gbbanner">
+<img data-img-dark="https://2img.net/i.imgur.com/jjV2Uqg.jpeg?text=Crédits+d%27engagement" data-img-light="https://2img.net/i.imgur.com/jjV2Uqg.jpeg?text=Crédits+d%27engagement" src="https://2img.net/i.imgur.com/jjV2Uqg.jpeg?text=Crédits+d%27engagement" alt=""><div class="gbheader"><h2>Crédits d'engagement</h2><span class="gbdocnum">DOC. 004-A</span></div>
+</div><div class="gbintro">Shinsei City fonctionne selon des règles qui lui sont propres, aussi bien sur le plan économique que social. Aucun besoin fondamental n'y est payant, mais la ville a développé ses propres mécanismes pour récompenser l'investissement de ses habitants.</div><div class="gbtext"><div class="gbregcat"><em class="fa-solid fa-coins"></em><span>Économie</span></div>
+<h3 id="hist-credits">Crédits d'engagement</h3>
+<p>Ici, le concept de monnaie n'a pas disparu, mais il ne fonctionne pas comme là où vous viviez avant. Car si à l'époque l'argent vous servait à survivre, ici, à Shinsei City, <strong>tous les besoins fondamentaux ne demandent aucun paiement</strong>. Votre logement vous est fourni par le Maire, la nourriture est librement accessible dans les supermarchés. L'éducation, la santé, la justice, ou encore les transports publics… Tout est fourni sans frais. Et chaque nouvel arrivant commence sa vie ici sur le même pied d'égalité.</p><div class="gbcallout">
+<h4>À noter</h4>
+<p>Personne, à Shinsei City, ne meurt de faim et ne dort dehors du moment qu'il respecte les règles et s'investit dans la communauté.</p>
+</div>
+
+<p>Mais l'égalité n'efface bien entendu pas l'ambition.</p>
+
+<p>Pour encourager l'investissement personnel et l'envie de faire prospérer Shinsei City tout en rendant la vie des autres habitants plus agréable, une monnaie existe tout de même : les <strong>crédits d'engagement</strong>.</p>
+
+<p>Plus un habitant s'implique dans la vie de Shinsei City, par son travail, sa position, ses initiatives, etc., plus il en accumule. Ces crédits, s'ils ne servent pas à survivre, servent plutôt à obtenir du confort et à s'élever au sein de la société.</p>
+
+<p>Ils permettent par exemple d'obtenir un bien dans un quartier plus prisé et réputé, des logements plus spacieux, du mobilier d'exception… Mais ils ouvrent aussi les portes de clubs privés et l'accès à des événements réservés à l'élite, permettant par exemple de rencontrer ses stars préférées. Ici, le confort devient donc un signe d'implication. Si un habitant a pu obtenir tout ça, ce n'est pas parce qu'il est né riche ou qu'il a eu de la chance. Mais bien parce qu'il a dédié son temps, sa vie, à servir Shinsei City et ses habitants.</p><div class="gbfeature"><div class="gbfeature-img"><img src="https://placehold.co/400x400/1a1a1a/666?text=Quartier+Gold" alt=""></div><div class="gbfeature-body">
+<h4>Le confort, une récompense</h4>
+<p>Des quartiers résidentiels aux clubs privés, chaque palier de crédits d'engagement débloque un accès un peu plus exclusif à la ville. Le décor change, littéralement, selon l'implication de chacun.</p>
+</div>
+</div><div class="gbquote">
+Officiellement, Shinsei City est bâtie sur un système juste. Un système égalitaire. Mais si l'ascension est simple et claire quant à la façon de l'obtenir, la chute, elle, peut aussi être très violente si vous ne participez pas à la vie de la communauté.
+</div>
+
+</div>
+</div>
+
+<!-- ==== PAGE: EDUCATION ==== --><div class="gbpage" id="education"><div class="gbbanner">
+<img data-img-dark="https://placehold.co/1200x400/1a1a1a/666?text=Éducation" data-img-light="https://placehold.co/1200x400/f5ebe0/865438?text=Éducation" src="https://placehold.co/1200x400/1a1a1a/666?text=Éducation" alt=""><div class="gbheader"><h2>Éducation</h2><span class="gbdocnum">DOC. 004-B</span></div>
+</div><div class="gbintro">Des crèches aux universités, Shinsei City dispose d'un système éducatif complet et moderne, mais tourné vers un seul horizon : la ville elle-même.</div><div class="gbtext"><div class="gbregcat"><em class="fa-solid fa-graduation-cap"></em><span>Société</span></div>
+<h3 id="hist-education">Éducation</h3>
+<p>À Shinsei City, l'éducation est gratuite et obligatoire au moins jusqu'à l'âge de seize ans. Néanmoins, aucune personne mineure n'est jamais arrachée au monde extérieur : le Maire ne propose des contrats qu'aux personnes majeures. Les écoles accueillent donc soit des personnes fraîchement arrivées avant d'avoir terminé leurs études, soit des adultes voulant se réorienter, soit tout simplement des enfants nés à Shinsei City. Car pour eux, la ville constitue leur seule réalité connue. Ce monde, c'est leur monde, bien qu'ils aient tous déjà entendu parler de l'ancien monde dans le programme scolaire.</p>
+
+<p>Des crèches aux universités, le système éducatif est complet, moderne et performant. Les infrastructures sont impeccables et tout laisse suggérer que des moyens ont été mis en œuvre afin de pouvoir éduquer convenablement les jeunes. En apparence, l'enseignement n'a rien à envier aux meilleures écoles du monde extérieur. Ici, comme dehors, les élèves étudient diverses matières et peuvent participer à diverses activités ou s'inscrire à divers clubs.</p><div class="gbfeature gbfeature-reverse"><div class="gbfeature-img"><img src="https://placehold.co/400x400/1a1a1a/666?text=Université" alt=""></div><div class="gbfeature-body">
+<h4>Des campus impeccables</h4>
+<p>Des crèches aux universités, les infrastructures rivalisent avec les meilleures écoles du monde extérieur. Un enseignement moderne, mais toujours tourné vers un seul horizon : Shinsei City elle-même.</p>
+</div>
+</div>
+
+<p>Les manuels d'histoire évoquent l'ancien monde, l'Histoire avec un grand H, simplement pour que celle-ci ne se répète pas.</p><div class="gbcallout">
+<h4>À noter</h4>
+<p>L'éducation à Shinsei City met l'accent sur l'engagement citoyen, la coopération et la bienveillance. Très jeunes, les enfants sont déjà formés à l'idée de devoir s'investir dans le développement de la ville, à travers des modules obligatoires qui font l'éloge du système et des activités comme le nettoyage d'une rue, pour les sensibiliser à l'action citoyenne.</p>
+</div>
+
+<p>Les écoles supérieures forment des médecins, des ingénieurs, des artistes, des chercheurs, des entrepreneurs… Mais toujours dans une optique interne, dans le seul but de continuer à développer Shinsei City. Et Shinsei City uniquement.</p>
+
+</div>
+</div>
+
+<!-- ==== PAGE: TRAVAIL ==== --><div class="gbpage" id="travail"><div class="gbbanner">
+<img data-img-dark="https://placehold.co/1200x400/1a1a1a/666?text=Travail" data-img-light="https://placehold.co/1200x400/f5ebe0/865438?text=Travail" src="https://placehold.co/1200x400/1a1a1a/666?text=Travail" alt=""><div class="gbheader"><h2>Travail</h2><span class="gbdocnum">DOC. 004-C</span></div>
+</div><div class="gbintro">Le travail n'est pas obligatoire pour survivre à Shinsei City, mais il reste la principale source de crédits d'engagement, et le meilleur rempart contre la chute dans le classement.</div><div class="gbtext"><div class="gbregcat"><em class="fa-solid fa-briefcase"></em><span>Société</span></div>
+<h3 id="hist-travail">Travail</h3>
+<p>Certes, le travail n'est pas indispensable à l'arrivée à Shinsei City pour bénéficier d'un logement, de soins, ou encore de nourriture. Il reste néanmoins indispensable pour qui ne souhaite pas descendre dans le classement de la ville. Personne n'est officiellement contraint de travailler. Pourtant, la plupart des habitants choisissent d'exercer une activité professionnelle.</p>
+
+<p>Car travailler, c'est s'investir. Et s'investir, c'est réduire les risques de descendre dans le classement.</p>
+
+<p>Travailler, c'est également la principale source de <span class="gblex" data-def="Monnaie interne à Shinsei City, obtenue par l'implication d'un habitant dans la vie de la ville, et permettant d'accéder à plus de confort et de prestige.">crédits d'engagement</span>. Plus un citoyen contribue au développement de la ville, plus il en accumule, et plus son confort augmente. Travailler est donc un moyen de se faire plaisir, tout en garantissant ses chances de grimper dans le classement.</p>
+
+<p>Les secteurs d'activité sont nombreux, et pratiquement tous les métiers existent et sont importants ici. La ville étant néanmoins autosuffisante et coupée du monde, certains métiers n'existent plus, comme ceux liés au commerce international, à la diplomatie étrangère, au tourisme extérieur ou au transport intercontinental… Il n'existe ni ambassade, ni douane, ni compagnie aérienne.</p>
+
+<p>D'autres professions ont été retravaillées pour s'adapter à la politique de la ville. Une chaîne de télé, par exemple, sera destinée uniquement à la diffusion pour Shinsei City, tandis qu'un chef d'entreprise sait qu'il ne pourra pas développer son entreprise en dehors de la ville. Mais Shinsei City étant une ville d'environ dix millions d'habitants, il y a de quoi faire, et le business y est florissant.</p><div class="gbinlinebanner">
+<img src="https://placehold.co/1200x400/1a1a1a/666?text=Quartier+d%27affaires+de+Shinsei+City" alt=""><div class="gbinlinebanner-caption">Le quartier d'affaires, cœur battant de l'économie de la ville</div>
+</div><div class="gbcallout">
+<h4>À noter</h4>
+<p>Le chômage, officiellement, n'existe pas. Offrir du travail à Shinsei City est une obligation : pas de refus arbitraire, pas de discrimination à l'embauche. Ceux qui choisissent de ne pas travailler conservent dans un premier temps leur logement et leurs droits fondamentaux, mais voient petit à petit leur score de fiabilité baisser, jusqu'à être considérés comme ne s'impliquant pas dans la ville. Les conséquences peuvent alors être désastreuses.</p>
+</div>
+
+</div>
+</div>
+
+<!-- ==== PAGE: COMMUNICATION ==== --><div class="gbpage" id="communication"><div class="gbbanner">
+<img data-img-dark="https://placehold.co/1200x400/1a1a1a/666?text=Communication+%26+Internet" data-img-light="https://placehold.co/1200x400/f5ebe0/865438?text=Communication+%26+Internet" src="https://placehold.co/1200x400/1a1a1a/666?text=Communication+%26+Internet" alt=""><div class="gbheader"><h2>Communication & Internet</h2><span class="gbdocnum">DOC. 004-D</span></div>
+</div><div class="gbintro">Shinsei City fonctionne sur un réseau entièrement fermé. Internet et les télécommunications existent, mais restent cloisonnés à la ville, coupés de tout contact avec le monde extérieur.</div><div class="gbtext"><div class="gbregcat"><em class="fa-solid fa-tower-broadcast"></em><span>Société</span></div>
+<h3 id="hist-communication">Communication et Internet</h3>
+<p>Les communications à Shinsei City fonctionnent sur un réseau entièrement fermé. Que ce soit via Internet ou le réseau téléphonique, n'espérez pas contacter le monde extérieur ni même recevoir la moindre nouvelle de celui-ci. Toute tentative d'envoi de SMS vers un numéro externe est accompagnée d'un message d'erreur. Les appels ne passent pas, les mails non plus.</p>
+
+<p>D'après le Maire, cette fermeture vise à maintenir l'harmonie et l'équilibre de la vie à Shinsei City. En signant le contrat, chacun a accepté de tourner la page sur sa vie d'avant. Contacter le monde extérieur mettrait donc en péril cette harmonie. Le réseau fonctionne ainsi en circuit autonome, et ses infrastructures ne dépendent d'aucun réseau ni d'aucune entreprise extérieure.</p>
+
+<p>Pourtant, Internet et le réseau téléphonique existent bel et bien. Mais ils sont cloisonnés, limités à celles et ceux qui vivent ici, à Shinsei City. Il est par exemple possible de naviguer sur Instagram, de publier des photos, de discuter avec ses amis, de regarder des vidéos… Mais on n'y verra que les profils des habitants de Shinsei City, ceux qui, comme vous, ont signé le contrat. Les anciens profils et comptes n'existent plus et ne sont plus accessibles : en arrivant à Shinsei City, de tout nouveaux comptes sur les réseaux sociaux ont été créés pour l'occasion.</p>
+
+<p>C'est la même chose pour les contenus publiés. Les reels, les vidéos YouTube, les chaînes de télévision… Tout ce qui est diffusé a été fait par quelqu'un de Shinsei City, et pour le peuple de Shinsei City.</p><div class="gbimggrid">
+<figure><img src="https://placehold.co/300x200/1a1a1a/666?text=Réseaux+sociaux" alt=""><figcaption>Réseaux sociaux internes</figcaption></figure>
+<figure><img src="https://placehold.co/300x200/1a1a1a/666?text=Studios+TV" alt=""><figcaption>Studios de production locale</figcaption></figure>
+<figure><img src="https://placehold.co/300x200/1a1a1a/666?text=Central+réseau" alt=""><figcaption>Le central du réseau fermé</figcaption></figure>
+</div><div class="gbcallout">
+<h4>À noter</h4>
+<p>Personne ne sait réellement comment ce circuit fermé fonctionne, ni par quel procédé le Maire a réussi à isoler totalement la ville du reste du monde. Pour l'instant, personne n'a encore réussi à le contourner. Et si certains prétendent avoir essayé, rien n'a jamais été confirmé.</p>
+</div>
+
+</div>
+</div>
+
+<!-- ==== PAGE: SCORE ==== --><div class="gbpage" id="score"><div class="gbbanner">
+<img data-img-dark="https://2img.net/i.imgur.com/HRU9aJE.jpeg" data-img-light="https://2img.net/i.imgur.com/y8eDdaF.jpeg" src="https://2img.net/i.imgur.com/HRU9aJE.jpeg" alt=""><div class="gbheader"><h2>Score d'engagement</h2><span class="gbtag gbtag-important">Important</span><span class="gbdocnum">DOC. 014-C</span></div>
+</div><div class="gbintro">Chaque résident de Shinsei City est évalué en continu par un indicateur de fiabilité, noté de 0 à 100%. Ce score conditionne le logement, l'emploi, l'accès aux soins, aux loisirs, et parfois l'attention personnelle du Maire.</div><div class="gbtext"><div class="gbcallout">
+<h4>À noter</h4>
+<p>Tout nouvel arrivant à Shinsei City débute avec un score de fiabilité de <strong>55%</strong>, soit le rang <strong>Silver</strong>.</p>
+</div>
+
+<h3>Les cinq rangs</h3>
+<p>La fiabilité d'un résident le place dans l'un de ces cinq paliers, chacun avec ses propres droits et restrictions.</p><div class="gbscoreranks" id="gbscoreranks"></div>
+
+<h3>Simulateur de fiabilité</h3>
+<p>Déplacez le curseur et voyez comment les rangs d'engagement fonctionnent à Shinsei City : chaque palier de fiabilité change concrètement le quotidien d'un résident, de son logement à sa dernière demeure.</p><div class="gbsimscore" id="gbsimscore"><div class="gbsim-top"><div class="gbsim-readout">
+<span class="gbsim-score-value" id="gbsimvalue">55</span><span class="gbsim-score-pct">%</span>
+</div>
+<span class="gbsim-badge" id="gbsimbadge">Silver</span>
+</div><div class="gbsim-bar-wrap" id="gbsimbarwrap"><div class="gbsim-cursor" id="gbsimcursor"></div>
+</div>
+<input type="range" min="0" max="100" value="55" class="gbsim-slider" id="gbsimslider" aria-label="Curseur de score de fiabilité"><div class="gbsim-effects" id="gbsimeffects">
+<h4 id="gbsimeffectstitle">Avantages et Inconvénients de ce rang</h4>
+<ul id="gbsimeffectslist"></ul>
+</div>
+</div>
+
+<h3>Les rangs en détail</h3><div id="gbrankdetails"></div>
+
+<h3>Exemples d'actions ayant un impact sur le score</h3><details class="gbspoiler"><summary><em class="fa-solid fa-chevron-down gbspoiler-icon"></em><span>Consulter le dossier de suivi comportemental</span><span class="gbspoiler-hint">Cliquez pour dérouler</span></summary><div class="gbspoiler-body"><div class="gbsim-actions" id="gbsimactionswrap">
+<h4>Exemples d'actions qui impactent positivement votre note</h4><div class="gbsim-actiongrid" id="gbsimpositive"></div>
+<h4 style="margin-top:1.2em;">Exemples d'actions qui impactent négativement votre note</h4><div class="gbsim-actiongrid" id="gbsimnegative"></div>
+</div>
+</div>
+</details>
+
+</div>
+</div>
+
+<!-- ==== PAGE: GROUPES AFFINITE ==== --><div class="gbpage" id="groupes-affinite"><div class="gbbanner">
+<img data-img-dark="https://placehold.co/1200x400/1a1a1a/666?text=Loyalistes%2C+Détracteurs+%26+co" data-img-light="https://placehold.co/1200x400/f5ebe0/865438?text=Loyalistes%2C+Détracteurs+%26+co" src="https://placehold.co/1200x400/1a1a1a/666?text=Loyalistes%2C+Détracteurs+%26+co" alt=""><div class="gbheader"><h2>Loyalistes, Détracteurs & co</h2></div>
+</div><div class="gbtext">
+<p>WIP</p>
+<p>WIP</p>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+var guidebook = document.getElementById('guidebook');
+if (!guidebook) return;
+
+var catToggles = guidebook.querySelectorAll('.gbcat-toggle');
+var links = guidebook.querySelectorAll('.gblink');
+var pages = guidebook.querySelectorAll('.gbpage');
+var gbmain = guidebook.querySelector('.gbmain');
+var progressBar = document.getElementById('gbprogressbar');
+var scrollTopBtn = document.getElementById('gbscrolltop');
+
+function updateProgress() {
+if (!gbmain || !progressBar) return;
+var scrollable = gbmain.scrollHeight - gbmain.clientHeight;
+var pct = scrollable > 0 ? (gbmain.scrollTop / scrollable) * 100 : 0;
+progressBar.style.width = pct + '%';
+
+if (scrollTopBtn) {
+if (gbmain.scrollTop > 200) scrollTopBtn.classList.add('visible');
+else scrollTopBtn.classList.remove('visible');
+}
+}
+
+if (gbmain) {
+gbmain.addEventListener('scroll', updateProgress);
+}
+
+if (scrollTopBtn && gbmain) {
+scrollTopBtn.addEventListener('click', function () {
+gbmain.scrollTo({ top: 0, behavior: 'smooth' });
+});
+}
+
+/* ---- Filtre par tag dans le menu ---- */
+var filterCheckbox = document.getElementById('gbfilterimportant');
+var gbside = guidebook.querySelector('.gbside');
+if (filterCheckbox && gbside) {
+filterCheckbox.addEventListener('change', function () {
+if (filterCheckbox.checked) {
+gbside.classList.add('filter-important');
+guidebook.querySelectorAll('.gbcat-item').forEach(function (item) { item.classList.add('open'); });
+} else {
+gbside.classList.remove('filter-important');
+}
+});
+}
+
+/* ---- Effet machine à écrire sur l'accueil ---- */
+function typewriter(el, text, speed) {
+el.textContent = '';
+el.classList.add('gbtyping');
+var i = 0;
+function step() {
+if (i <= text.length) {
+el.textContent = text.slice(0, i);
+i++;
+setTimeout(step, speed);
+} else {
+el.classList.remove('gbtyping');
+}
+}
+step();
+}
+
+var welcomeText = guidebook.querySelector('#welcome .gbtext');
+if (welcomeText) {
+var fullText = welcomeText.textContent.trim();
+typewriter(welcomeText, fullText, 20);
+}
+
+/* ---- Blocs verrouillés par mot de passe (SHA-256 natif du navigateur) ---- */
+function gbSha256Hex(message) {
+var enc = new TextEncoder().encode(message);
+return crypto.subtle.digest('SHA-256', enc).then(function (buf) {
+return Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+});
+}
+
+function gbBase64ToText(b64) {
+return decodeURIComponent(escape(atob(b64.trim())));
+}
+
+guidebook.querySelectorAll('.gblocked').forEach(function (block) {
+var input = block.querySelector('.gblocked-input');
+var button = block.querySelector('.gblocked-submit');
+var errorEl = block.querySelector('.gblocked-error');
+var content = block.querySelector('.gblocked-content');
+var encodedEl = block.querySelector('.gblocked-encoded');
+var expectedHash = block.getAttribute('data-hash');
+
+function tryUnlock() {
+gbSha256Hex(input.value).then(function (hash) {
+if (hash === expectedHash) {
+content.innerHTML = gbBase64ToText(encodedEl.textContent);
+content.hidden = false;
+block.querySelector('.gblocked-form').style.display = 'none';
+} else {
+errorEl.hidden = false;
+input.value = '';
+input.focus();
+}
+});
+}
+
+if (button) button.addEventListener('click', tryUnlock);
+if (input) input.addEventListener('keydown', function (e) {
+if (e.key === 'Enter') tryUnlock();
+});
+});
+
+/* ---- Surlignage automatique du sommaire pendant le scroll ---- */
+var sommaireLinks = guidebook.querySelectorAll('.gbsommaire a');
+if (sommaireLinks.length && gbmain && 'IntersectionObserver' in window) {
+var sectionMap = {};
+sommaireLinks.forEach(function (link) {
+var id = link.getAttribute('href').substring(1);
+var targetEl = document.getElementById(id);
+if (targetEl) sectionMap[id] = link;
+});
+
+var sommaireObserver = new IntersectionObserver(function (entries) {
+entries.forEach(function (entry) {
+var link = sectionMap[entry.target.id];
+if (!link || !entry.isIntersecting) return;
+sommaireLinks.forEach(function (l) { l.classList.remove('active'); });
+link.classList.add('active');
+});
+}, { root: gbmain, rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+
+Object.keys(sectionMap).forEach(function (id) {
+sommaireObserver.observe(document.getElementById(id));
+});
+}
+
+catToggles.forEach(function (btn) {
+btn.addEventListener('click', function () {
+var item = btn.closest('.gbcat-item');
+item.classList.toggle('open');
+});
+});
+
+function updateBreadcrumb(categoryName, pageTitle, readTime) {
+var el = document.getElementById('gbbreadcrumb');
+if (!el) return;
+var html = '';
+if (!categoryName) {
+html = '<span class="gbcrumb-current">Accueil</span>';
+} else {
+html = categoryName + ' <em class="fa-solid fa-chevron-right"></em> <span class="gbcrumb-current">' + pageTitle + '</span>';
+}
+if (readTime) {
+html += ' <span class="gbreadtime"><em class="fa-solid fa-clock"></em>' + readTime + '</span>';
+}
+el.innerHTML = html;
+}
+
+function showPage(id) {
+var target = document.getElementById(id);
+if (!target || !target.classList.contains('gbpage')) return;
+
+pages.forEach(function (p) { p.classList.remove('active'); });
+target.classList.add('active');
+
+links.forEach(function (l) { l.classList.remove('active'); });
+var activeLink = guidebook.querySelector('.gblink[href="#' + id + '"]');
+var categoryName = null;
+
+if (activeLink) {
+activeLink.classList.add('active');
+var parentItem = activeLink.closest('.gbcat-item');
+if (parentItem) {
+parentItem.classList.add('open');
+var catLabel = parentItem.querySelector('.gbcat-toggle span');
+if (catLabel) categoryName = catLabel.textContent.trim();
+}
+}
+
+var titleEl = target.querySelector('.gbheader h2');
+var pageTitle = titleEl ? titleEl.textContent.trim() : '';
+
+var textEl = target.querySelector('.gbtext');
+var readTime = '';
+if (textEl) {
+var wordCount = textEl.textContent.trim().split(/\s+/).filter(Boolean).length;
+var minutes = Math.max(1, Math.round(wordCount / 200));
+readTime = minutes + ' min de lecture';
+}
+
+updateBreadcrumb(categoryName, pageTitle, readTime);
+
+if (gbmain) gbmain.scrollTop = 0;
+updateProgress();
+
+guidebook.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+links.forEach(function (link) {
+link.addEventListener('click', function (e) {
+e.preventDefault();
+var id = link.getAttribute('href').substring(1);
+showPage(id);
+history.replaceState(null, '', '#' + id);
+});
+});
+
+var hash = window.location.hash.substring(1);
+if (hash && document.getElementById(hash)) {
+showPage(hash);
+} else {
+var firstCat = guidebook.querySelector('.gbcat-item');
+if (firstCat) firstCat.classList.add('open');
+updateBreadcrumb(null, '');
+}
+
+});
+</script>
+
+<script>
+(function () {
+var root = document.documentElement;
+var stored = localStorage.getItem('scGuidebookTheme');
+if (stored === 'light') root.classList.add('light');
+
+function gbUpdateBannerImages() {
+var isLight = root.classList.contains('light');
+document.querySelectorAll('.gbbanner img[data-img-dark]').forEach(function (img) {
+var url = isLight
+? (img.getAttribute('data-img-light') || img.getAttribute('data-img-dark'))
+: img.getAttribute('data-img-dark');
+if (url && img.getAttribute('src') !== url) img.setAttribute('src', url);
+});
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+gbUpdateBannerImages();
+var btn = document.getElementById('theme-switcher');
+if (!btn) return;
+btn.addEventListener('click', function () {
+root.classList.toggle('light');
+localStorage.setItem('scGuidebookTheme', root.classList.contains('light') ? 'light' : 'dark');
+gbUpdateBannerImages();
+});
+});
+})();
+</script>
+
+<!-- ==== Simulateur de score d'engagement ==== -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+var scorePage = document.getElementById('score');
+if (!scorePage) return;
+
+var ranks = [
+{
+key: 'obsidian', name: 'Obsidian', min: 0, max: 19, color: '#8a5fa8',
+quick: [
+'Logement dégradé, coupures d\'eau chaude fréquentes',
+'Aucun avocat commis d\'office, défense assurée seul',
+'Priorité de soins la plus basse de la ville',
+'Convocations imprévisibles à l\'hôtel de ville'
+],
+full: [
+'La zone critique : les habitants de ce rang sont considérés comme instables, non coopératifs, n\'y mettant pas du leur.',
+'Relogement dans des quartiers défavorisés, dans des logements petits et sans réel avantage, avec des coupures d\'eau chaude fréquentes « pour raisons de rationnement ».',
+'Temps d\'attente rallongé pour toute démarche administrative (prêt, document, plainte, rendez-vous médical, prise en charge à l\'hôpital…).',
+'Aucun avocat commis d\'office en cas de procès : la défense est assurée par le prévenu lui-même, ou par un autre Obsidian bénévole sans formation juridique.',
+'En cas d\'hospitalisation grave, la priorité de soins est la plus basse de la ville. Les Obsidian meurent statistiquement deux fois plus souvent en salle d\'attente que tout autre rang.',
+'Accès très limité à l\'emploi : cantonnés aux postes les moins qualifiés et les moins considérés (nettoyage, manutention, tâches répétitives), sans aucune chance de promotion tant que le score reste dans cette fourchette.',
+'Aucun prêt de crédits d\'engagement accordé par les banques.',
+'Restriction d\'accès à certains établissements et à certains rayons de magasins. Une bonne raison est nécessaire pour pouvoir entrer dans un quartier Platinum.',
+'Impossible d\'acheter des billets pour les événements culturels prisés, relégation à des divertissements de seconde zone.',
+'Le Maire peut convoquer un Obsidian à tout instant à l\'hôtel de ville pour s\'entretenir avec lui. On dit que peu en ressortent indemnes. Certains ne ressortent pas du tout.',
+'Des missions peuvent être proposées par le Maire pour prouver sa fiabilité à la ville.',
+'Les évaluations négatives données par un Obsidian pèsent moins fort dans l\'algorithme.',
+'En cas de décès en détention administrative ou lors d\'une « convocation », la famille n\'a droit à aucune enquête indépendante : le rapport officiel du Maire fait foi.',
+'Sépulture en fosse commune, dans un terrain vague en périphérie de la ville. Aucune stèle, aucun nom, simplement un numéro gravé sur un piquet de bois, qui finit souvent par pourrir ou disparaître avec le temps.'
+]
+},
+{
+key: 'bronze', name: 'Bronze', min: 20, max: 49, color: '#a9673b',
+quick: [
+'Aucune invitation aux événements exclusifs',
+'Avocat commis d\'office, mais dossier partagé',
+'Un mois d\'attente moyen pour un spécialiste',
+'Promotions quasi impossibles, CV non prioritaires'
+],
+full: [
+'Engagement considéré comme en dessous de la moyenne. Les droits déjà acquis sont conservés, avec quelques limitations.',
+'Non prioritaire sur la vente de billets pour les loisirs, aucune invitation aux événements exclusifs.',
+'Un avocat commis d\'office est attribué, mais son dossier est partagé entre plusieurs clients simultanément : le temps réellement consacré à chaque affaire dépasse rarement une heure.',
+'Accès aux soins standards, mais tout traitement non vital passe en liste d\'attente, avec un mois d\'attente en moyenne pour une consultation spécialisée.',
+'Restriction d\'accès à certains établissements et à certains rayons de magasins. Une bonne raison est nécessaire pour pouvoir entrer dans un quartier Platinum.',
+'Opportunités professionnelles limitées : accès aux postes les moins recherchés, embauche difficile face à des candidats mieux notés, promotions quasi impossibles tant que le score reste dans cette fourchette, CV non prioritaires.',
+'Les banques seront plus difficiles à convaincre pour un prêt de crédits d\'engagement.',
+'Sépulture dans le cimetière municipal, mais dans sa section la plus reculée et la moins entretenue : une simple plaque de métal gravée, sans fleurs ni entretien prévu. La famille doit payer de sa poche pour tout ajout ou embellissement.'
+]
+},
+{
+key: 'silver', name: 'Silver', min: 50, max: 74, color: '#9aa1a8',
+quick: [
+'Rang standard : logement et emploi corrects',
+'Avocat commis d\'office réellement suivi',
+'Accès aux soins dans des délais normaux',
+'Prêts bancaires accessibles'
+],
+full: [
+'Le rang considéré comme standard. Chaque nouvel arrivant à Shinsei City débute avec un score de fiabilité de 55% et est de rang Silver.',
+'Emplois variés, chances de promotion dans la moyenne.',
+'Logements corrects dans des quartiers agréables.',
+'Activités culturelles, avec des invitations occasionnelles à des événements comme des Meet & Greet.',
+'Avocat commis d\'office avec un dossier réellement suivi, et un délai de traitement raisonnable.',
+'Accès aux soins dans des délais normaux, avec un choix limité de praticien.',
+'Possibilité de faire des prêts à la banque.',
+'Accès à des formations et ateliers financés par la ville, pour développer un talent ou apprendre un métier.',
+'Sépulture dans le cimetière municipal, section standard : pierre tombale simple mais correcte, entretien de base assuré par la ville (tonte, allées dégagées).'
+]
+},
+{
+key: 'gold', name: 'Gold', min: 75, max: 90, color: '#d8b34a',
+quick: [
+'Priorité sur les démarches administratives',
+'Avocat personnel assigné, dossier suivi de près',
+'Accès à une clinique premium, délai quasi nul',
+'Relogement dans un quartier prisé, services inclus'
+],
+full: [
+'Un citoyen considéré comme fiable et impliqué dans la ville, quelqu\'un avec qui il est bon de passer du temps.',
+'Accès prioritaire à certains postes et aux promotions.',
+'Priorité dans le choix des établissements scolaires pour les enfants.',
+'Un avocat personnel est assigné plutôt qu\'un commis d\'office : consultations proactives, dossier suivi de près.',
+'Accès à une clinique premium, avec des rendez-vous rapides, un choix de spécialiste et un délai d\'attente quasi nul.',
+'Traitement prioritaire pour les démarches administratives (prêt, document, plainte, rendez-vous médical, prise en charge à l\'hôpital…).',
+'Invitations plus nombreuses aux événements culturels, dont certains réservés aux Gold, et parfois aux Platinum.',
+'Relogement dans des quartiers prisés : biens plus spacieux, plus modernes, mieux équipés, avec services gratuits de jardinage, ménage ou garde d\'enfant. Aucun Obsidian ne peut y accéder.',
+'Accès à des rayons réservés en magasin (nourriture bio, produits animaux de meilleure qualité).',
+'Accès à des lignes de métro réservées aux Gold et Platinum.',
+'Sépulture dans une section réservée du cimetière, ombragée et fleurie, entretenue régulièrement par les services de la ville. Pierre tombale en marbre, avec possibilité de personnalisation (épitaphe, gravures).'
+]
+},
+{
+key: 'platinum', name: 'Platinum', min: 91, max: 100, color: '#5bc0e8',
+quick: [
+'Priorité absolue sur tous les services',
+'Cabinet d\'avocats dédié, jugements sans attente',
+'Médecin personnel, prise en charge immédiate',
+'Cadeau mensuel personnel du Maire'
+],
+full: [
+'L\'élite de Shinsei City. Le rang le plus récompensé, mais aussi le plus difficile à atteindre : la fourchette étant plus étroite, il est très rapide de perdre ses avantages et de redescendre Gold.',
+'Relogement dans les quartiers les plus prisés et les plus sûrs : logements à plusieurs étages, piscines, grands jardins.',
+'Priorité absolue sur tous les services de la ville.',
+'Un cabinet d\'avocats dédié est disponible sur demande. Un Platinum n\'attend jamais un jugement, et les infractions mineures sont généralement classées sans suite avant même l\'audience.',
+'Un médecin personnel est assigné, avec une prise en charge immédiate en cas d\'urgence : pas de liste d\'attente, pas d\'exception.',
+'Accès à tous les rayons des magasins, dont la nourriture bio, la meilleure viande et le meilleur poisson.',
+'Les évaluations données par un Platinum, positives comme négatives, pèsent plus fort dans l\'algorithme.',
+'Reçoivent chaque mois un cadeau du Maire réservé aux Platinum, livré directement chez eux.',
+'Possibilité de suggérer des améliorations directement au Maire.',
+'Invitations à des événements exclusifs aux Platinum, ou partagés avec les Gold.',
+'Chaque jour, les noms des Platinum décédés sont affichés sur un écran à l\'entrée de l\'hôtel de ville, en hommage, les remerciant pour leurs services à faire de Shinsei City une ville agréable à vivre.',
+'Sépulture dans un cimetière privé et fermé, réservé exclusivement aux Platinum, aux abords de l\'hôtel de ville. Mausolées de pierre blanche, jardins impeccables, statues commémoratives. Le Maire assiste personnellement à certaines funérailles.'
+]
+}
+];
+
+function rankFor(score) {
+if (score >= 91) return ranks[4];
+if (score >= 75) return ranks[3];
+if (score >= 50) return ranks[2];
+if (score >= 20) return ranks[1];
+return ranks[0];
+}
+
+/* ---- Chips des rangs ---- */
+var chipsWrap = document.getElementById('gbscoreranks');
+if (chipsWrap) {
+ranks.forEach(function (r) {
+var chip = document.createElement('div');
+chip.className = 'gbrankchip';
+chip.style.borderColor = r.color;
+chip.innerHTML = '<span class="gbrankname" style="color:' + r.color + '">' + r.name + '</span><span class="gbrankrange">' + r.min + '–' + r.max + '%</span>';
+chipsWrap.appendChild(chip);
+});
+}
+
+/* ---- Barre segmentée ---- */
+var barWrap = document.getElementById('gbsimbarwrap');
+var cursor = document.getElementById('gbsimcursor');
+if (barWrap && cursor) {
+ranks.forEach(function (r) {
+var seg = document.createElement('div');
+seg.className = 'gbsim-bar-seg';
+seg.style.flex = String(r.max - r.min + 1);
+seg.style.background = r.color;
+seg.style.opacity = '0.55';
+barWrap.insertBefore(seg, cursor);
+});
+}
+
+var slider = document.getElementById('gbsimslider');
+var valueEl = document.getElementById('gbsimvalue');
+var badgeEl = document.getElementById('gbsimbadge');
+var effectsList = document.getElementById('gbsimeffectslist');
+var currentScore = 55;
+
+function render() {
+currentScore = Math.max(0, Math.min(100, currentScore));
+if (slider) slider.value = currentScore;
+if (valueEl) valueEl.textContent = currentScore;
+if (cursor) cursor.style.left = currentScore + '%';
+
+var r = rankFor(currentScore);
+if (badgeEl) {
+badgeEl.textContent = r.name;
+badgeEl.style.color = r.color;
+badgeEl.style.borderColor = r.color;
+badgeEl.classList.remove('gbshine-gold', 'gbshine-platinum');
+if (r.key === 'gold') badgeEl.classList.add('gbshine-gold');
+else if (r.key === 'platinum') badgeEl.classList.add('gbshine-platinum');
+}
+if (valueEl) {
+valueEl.style.color = r.color;
+}
+
+var effectsTitle = document.getElementById('gbsimeffectstitle');
+if (effectsTitle) effectsTitle.style.color = r.color;
+
+if (effectsList) {
+effectsList.innerHTML = '';
+r.quick.forEach(function (txt) {
+var li = document.createElement('li');
+li.style.color = r.color;
+var span = document.createElement('span');
+span.style.color = 'var(--subtitle)';
+span.textContent = txt;
+li.appendChild(span);
+effectsList.appendChild(li);
+});
+}
+}
+
+if (slider) {
+slider.addEventListener('input', function () {
+currentScore = parseInt(slider.value, 10);
+render();
+});
+}
+
+/* ---- Boutons d'actions ---- */
+var actions = {
+positive: [
+{ label: 'Participer à une association', delta: 5 },
+{ label: 'Aider un citoyen dans le besoin', delta: 4 },
+{ label: 'Être apprécié par vos collègues', delta: 3 },
+{ label: 'Dénoncer un comportement suspect aux autorités', delta: 8 },
+{ label: 'Se porter volontaire pour une mission confiée par le Maire', delta: 10 },
+{ label: 'Respecter scrupuleusement le couvre-feu', delta: 2 },
+{ label: 'Faire un don à la ville', delta: 4 },
+{ label: 'Réussir un entretien avec un représentant municipal', delta: 6 }
+],
+negative: [
+{ label: 'Attaquer un autre citoyen', delta: -15 },
+{ label: 'Ne pas vous rendre à un rendez-vous administratif', delta: -5 },
+{ label: 'Tenter de vous échapper de la ville', delta: -25 },
+{ label: 'Traîner avec des Obsidian si vous êtes Gold ou Platinum', delta: -8 },
+{ label: 'Critiquer publiquement le Maire ou la ville', delta: -12 },
+{ label: 'Être surpris en possession d\'objets interdits', delta: -10 },
+{ label: 'Manquer de respect à un représentant de l\'autorité', delta: -7 },
+{ label: 'Aider un Obsidian recherché par les autorités', delta: -20 }
+]
+};
+
+function buildButtons(list, wrap, cls) {
+if (!wrap) return;
+var iconClass = cls === 'positive' ? 'fa-arrow-up' : 'fa-arrow-down';
+list.forEach(function (a) {
+var row = document.createElement('div');
+row.className = 'gbsimbtn ' + cls;
+row.innerHTML = '<em class="fa-solid ' + iconClass + ' gbsimicon"></em><span>' + a.label + '</span>';
+wrap.appendChild(row);
+});
+}
+buildButtons(actions.positive, document.getElementById('gbsimpositive'), 'positive');
+buildButtons(actions.negative, document.getElementById('gbsimnegative'), 'negative');
+
+/* ---- Détail complet par rang ---- */
+var detailWrap = document.getElementById('gbrankdetails');
+if (detailWrap) {
+ranks.forEach(function (r, i) {
+var det = document.createElement('details');
+det.className = 'gbrankdetail';
+var summary = document.createElement('summary');
+summary.innerHTML = '<span class="gbrankdot" style="background:' + r.color + '"></span><span>' + r.name + ' : ' + r.min + '–' + r.max + '%</span>';
+var content = document.createElement('div');
+content.className = 'gbrankdetail-content';
+var ul = document.createElement('ul');
+r.full.forEach(function (txt) {
+var li = document.createElement('li');
+li.textContent = txt;
+ul.appendChild(li);
+});
+content.appendChild(ul);
+det.appendChild(summary);
+det.appendChild(content);
+detailWrap.appendChild(det);
+});
+}
+
+render();
+
+});
+</script>
+
+<!-- ==== Quiz d'affinité citoyenne ==== -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+var quizRoot = document.getElementById('gbquiz');
+if (!quizRoot) return;
+
+var quizGroups = {
+loyalistes: { name: 'Loyalistes', color: '#1F7A5C', text: 'Vous croyez en la ville, en son ordre, en la place qu\'elle vous a donnée. Vous jouez le jeu du Maire avec sérieux, convaincu que la réussite se mérite. La structure ne vous pèse pas : elle vous rassure.' },
+detracteurs: { name: 'Détracteurs', color: '#B23A48', text: 'Vous n\'avez jamais accepté Shinsei City comme un foyer. Derrière une façade de conformité ou une résistance ouverte, vous cherchez la faille du système, et un moyen d\'y échapper.' },
+indifferents: { name: 'Indifférents', color: '#4A6A7A', text: 'Vous n\'êtes ni pour ni contre. La ville existe, alors vous vivez avec, sans grand enthousiasme ni grande révolte. Vous avancez, pragmatique, en évitant les vagues.' },
+fanatiques: { name: 'Fanatiques', color: '#6A4C93', text: 'Pour vous, Shinsei City dépasse la simple ville. C\'est un signe, un jugement, peut-être un destin. Vous interprétez chaque détail du système comme la part d\'un dessein plus grand.' }
+};
+
+var quizQuestions = [
+{
+text: 'Vous croisez un habitant de rang Obsidian visiblement en difficulté dans la rue. Vous...',
+options: [
+{ label: 'Signalez la situation aux autorités, par précaution.', group: 'loyalistes' },
+{ label: 'Détournez le regard, ce n\'est pas votre problème.', group: 'indifferents' },
+{ label: 'L\'aidez discrètement, quoi qu\'il en coûte à votre score.', group: 'detracteurs' },
+{ label: 'Y voyez un signe, une leçon que la ville veut vous enseigner.', group: 'fanatiques' }
+]
+},
+{
+text: 'Votre score de fiabilité vient de baisser de plusieurs points sans explication claire. Vous...',
+options: [
+{ label: 'Redoublez d\'efforts pour le faire remonter au plus vite.', group: 'loyalistes' },
+{ label: 'Haussez les épaules, ça remontera bien un jour.', group: 'indifferents' },
+{ label: 'Enragez intérieurement contre un système que vous jugez arbitraire.', group: 'detracteurs' },
+{ label: 'Interprétez cela comme une épreuve envoyée par le Maire.', group: 'fanatiques' }
+]
+},
+{
+text: 'On vous propose un poste au sein d\'un comité de surveillance de quartier. Vous...',
+options: [
+{ label: 'Acceptez avec enthousiasme, l\'occasion de prouver votre valeur.', group: 'loyalistes' },
+{ label: 'Acceptez sans grand enthousiasme, ça fera l\'affaire.', group: 'indifferents' },
+{ label: 'Refusez net, vous ne participerez jamais à ça.', group: 'detracteurs' },
+{ label: 'Y voyez une opportunité de vous rapprocher du Maire.', group: 'fanatiques' }
+]
+},
+{
+text: 'Que pensez-vous réellement du Maire ?',
+options: [
+{ label: 'Un dirigeant compétent, à qui la ville doit beaucoup.', group: 'loyalistes' },
+{ label: 'Une figure comme une autre, ni pire ni meilleure qu\'ailleurs.', group: 'indifferents' },
+{ label: 'Un tyran déguisé en mascotte sympathique.', group: 'detracteurs' },
+{ label: 'Une entité qui dépasse la simple notion de dirigeant.', group: 'fanatiques' }
+]
+},
+{
+text: 'Un ami vous propose un plan pour quitter la ville. Vous...',
+options: [
+{ label: 'Le dénoncez, ou du moins refusez fermement d\'y participer.', group: 'loyalistes' },
+{ label: 'Déclinez poliment, la vie ici vous convient très bien.', group: 'indifferents' },
+{ label: 'Envisagez sérieusement de le suivre.', group: 'detracteurs' },
+{ label: 'Le prévenez que personne ne quitte Shinsei City sans l\'accord du Maire.', group: 'fanatiques' }
+]
+},
+{
+text: 'Si vous deviez résumer votre vie à Shinsei City en un mot, ce serait...',
+options: [
+{ label: '« Opportunité »', group: 'loyalistes' },
+{ label: '« Quotidien »', group: 'indifferents' },
+{ label: '« Cage »', group: 'detracteurs' },
+{ label: '« Destin »', group: 'fanatiques' }
+]
+}
+];
+
+var introEl = document.getElementById('gbquizintro');
+var progressWrap = document.getElementById('gbquizprogresswrap');
+var progressBar = document.getElementById('gbquizprogressbar');
+var questionEl = document.getElementById('gbquizquestion');
+var qnumEl = document.getElementById('gbquizqnum');
+var qtextEl = document.getElementById('gbquizqtext');
+var optionsEl = document.getElementById('gbquizoptions');
+var resultEl = document.getElementById('gbquizresult');
+var resultDot = document.getElementById('gbquizresultdot');
+var resultTitle = document.getElementById('gbquizresulttitle');
+var resultText = document.getElementById('gbquizresulttext');
+var startBtn = document.getElementById('gbquizstart');
+var restartBtn = document.getElementById('gbquizrestart');
+
+var currentIndex = 0;
+var scores = {};
+
+function resetQuiz() {
+currentIndex = 0;
+scores = { loyalistes: 0, detracteurs: 0, indifferents: 0, fanatiques: 0 };
+}
+
+function renderQuestion() {
+var q = quizQuestions[currentIndex];
+qnumEl.textContent = 'Question ' + (currentIndex + 1) + ' / ' + quizQuestions.length;
+qtextEl.textContent = q.text;
+optionsEl.innerHTML = '';
+q.options.forEach(function (opt) {
+var btn = document.createElement('button');
+btn.type = 'button';
+btn.className = 'gbquiz-option';
+btn.textContent = opt.label;
+btn.addEventListener('click', function () {
+scores[opt.group]++;
+currentIndex++;
+if (currentIndex < quizQuestions.length) {
+renderQuestion();
+progressBar.style.width = (currentIndex / quizQuestions.length * 100) + '%';
+} else {
+showResult();
+}
+});
+optionsEl.appendChild(btn);
+});
+}
+
+function showResult() {
+progressBar.style.width = '100%';
+questionEl.hidden = true;
+progressWrap.hidden = true;
+
+var bestKey = 'loyalistes';
+var bestScore = -1;
+['loyalistes', 'detracteurs', 'indifferents', 'fanatiques'].forEach(function (key) {
+if (scores[key] > bestScore) {
+bestScore = scores[key];
+bestKey = key;
+}
+});
+
+var g = quizGroups[bestKey];
+resultDot.style.setProperty('--result-color', g.color);
+resultTitle.style.setProperty('--result-color', g.color);
+resultTitle.textContent = g.name;
+resultText.textContent = g.text;
+resultEl.hidden = false;
+}
+
+startBtn.addEventListener('click', function () {
+resetQuiz();
+introEl.hidden = true;
+progressWrap.hidden = false;
+questionEl.hidden = false;
+progressBar.style.width = '0%';
+renderQuestion();
+});
+
+restartBtn.addEventListener('click', function () {
+resultEl.hidden = true;
+introEl.hidden = false;
+});
+
+});
+</script>
+
+</body>
+</html>
