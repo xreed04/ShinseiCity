@@ -891,9 +891,6 @@ display: flex; align-items: center; gap: 1em;
 <p>Pour eux, Shinsei City est bien plus qu'une ville : un symbole, un jugement, peut-être même un purgatoire ou un enfer. Certains voient le Maire comme une entité divine, d'autres comme le Diable. Ils interprètent le contrat comme un pacte. Obsédés par leur score ou par l'idée de faire tomber le système, ils vivent la ville comme une prophétie en cours d'accomplissement. Les plus imprévisibles.</p>
 </div>
 
-</div><div class="gbcallout">
-<h4>À noter</h4>
-<p>Ces groupes ne sont pas des factions organisées ni des rôles à cocher sur une fiche. Ce sont des tendances, souvent instinctives, qui peuvent évoluer au fil du roleplay selon les épreuves traversées par un personnage.</p>
 </div>
 
 <h3>Test d'affinité citoyenne</h3>
@@ -932,12 +929,12 @@ display: flex; align-items: center; gap: 1em;
 </div>
 </div>
 
-<!-- ==== PAGE: STAFF ==== --><div class="gbpage" id="staff"><div class="gbheader"><em class="fa-solid fa-user-shield"></em><h2>Staff</h2><span class="gbdocnum">DOC. 010-S</span></div><div class="gbintro">Le personnel administratif de Shinsei City, chargé de veiller au bon fonctionnement de la ville et à l'application du règlement. N'hésitez pas à les contacter en message privé pour toute question.</div><div class="gbstaffgrid"><div class="gbstaffcard"><div class="gbstaffhead"><div class="gbstaffphoto"><img src="https://placehold.co/150x150/1a1a1a/666?text=Photo" alt=""></div><div class="gbstaffnames">
-<h4>Pseudo du membre</h4>
-<span class="gbstaffrole">Fondateur·rice</span>
+<!-- ==== PAGE: STAFF ==== --><div class="gbpage" id="staff"><div class="gbheader"><em class="fa-solid fa-user-shield"></em><h2>Staff</h2><span class="gbdocnum">DOC. 010-S</span></div><div class="gbintro">Le personnel administratif de Shinsei City, chargé de veiller bénévolement au bon développement et fonctionnement du forum. N'hésitez pas à les contacter en message privé pour toute question.</div><div class="gbstaffgrid"><div class="gbstaffcard"><div class="gbstaffhead"><div class="gbstaffphoto"><img src="https://2img.net/i.imgur.com/PZb5g1Q.jpeg?text=Photo" alt=""></div><div class="gbstaffnames">
+<h4>Reed</h4>
+<span class="gbstaffrole">Fondateur</span>
 </div>
 </div><div class="gbstaffmsg"><em class="fa-solid fa-quote-left gbstaffquote"></em>
-Un petit message de présentation, ton, humour ou sérieux, comme vous le souhaitez. Décrivez-vous, votre rôle, ce que vous aimez sur le forum.
+  Hello world ! Moi c'est Reed, le cerveau un peu malade derrière Shinsei City. Je fais du RP depuis plus de quinze années et j'ai toujours aimé les forums City, les univers un peu dark, et l'horreur psychologique. Alors, créer Shinsei City m'est apparu d'abord comme une idée. Puis comme une évidence.<br /><br /> Au delà de ça, j'aime l'Art, le café, Spider-Man, Silent Hill, la musique... Mais surtout, créer des choses et faire travailler mon imagination. Ah, et j'aime les trucs mignons aussi, oui, promis.<br /><br /> Plus sérieusement, n'hésitez pas à me MP pour la moindre question ou le moindre souci !
 </div>
 <a href="#" class="gbstaffmp"><em class="fa-solid fa-envelope"></em> Envoyer un MP</a><div class="gbstaffaccounts">
 <span class="gbstaffaccounts-label"><em class="fa-solid fa-address-book"></em>Comptes recensés</span>
