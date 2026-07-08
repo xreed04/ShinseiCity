@@ -13,6 +13,14 @@
   box-sizing: border-box;
 }
 
+/* Verrou : neutralise tout <p> que l'éditeur ForumActif
+   pourrait insérer en convertissant des retours à la ligne.
+   Ce composant n'utilise aucun <p> lui-même. */
+#rm-root p {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 #rm-root {
   --rm-bg: #121013;
   --rm-panel: #1a171b;
@@ -28,12 +36,13 @@
   position: relative;
   max-width: 560px;
   margin: 2em auto;
-  padding: 1.75em;
+  padding: 1.5em;
   background: var(--rm-bg);
   border: 1px solid var(--rm-line);
   border-radius: 3px;
   color: var(--rm-ink);
   font-family: var(--rm-font-body);
+  line-height: 1.4;
 }
 
 #rm-root::before {
@@ -52,21 +61,23 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 1em;
-  padding-bottom: 1em;
-  margin-bottom: 1.25em;
+  padding-bottom: 0.8em;
+  margin-bottom: 1em;
   border-bottom: 1px solid var(--rm-line);
 }
 
 .rm-tag {
+  display: block;
   font-family: var(--rm-font-mono);
   font-size: 0.7rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--rm-red-br);
+  line-height: 1.2;
 }
 
 #rm-head > div:first-child .rm-tag {
-  margin-bottom: 0.4em;
+  margin-bottom: 0.35em;
 }
 
 #rm-clock.rm-tag {
@@ -76,20 +87,20 @@
 
 .rm-title {
   font-family: var(--rm-font-display);
-  font-size: 1.25rem;
-  line-height: 1.3;
+  font-size: 1.2rem;
+  line-height: 1.25;
 }
 
 /* ---------- formulaire ---------- */
 .rm-row {
   display: flex;
   gap: 1em;
-  margin-bottom: 1em;
+  margin-bottom: 0.85em;
 }
 
 .rm-field {
   flex: 1;
-  margin-bottom: 1em;
+  margin-bottom: 0.85em;
 }
 
 .rm-row .rm-field {
@@ -102,11 +113,13 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--rm-ink-dim);
-  margin-bottom: 0.5em;
+  line-height: 1.2;
+  margin-bottom: 0.4em;
 }
 
 .rm-select,
 .rm-textarea {
+  display: block;
   width: 100%;
   background: var(--rm-panel);
   border: 1px solid var(--rm-line);
@@ -114,7 +127,8 @@
   color: var(--rm-ink);
   font-family: var(--rm-font-body);
   font-size: 0.9rem;
-  padding: 0.6em 0.7em;
+  line-height: 1.4;
+  padding: 0.55em 0.7em;
 }
 
 .rm-select {
@@ -131,9 +145,8 @@
 }
 
 .rm-textarea {
-  min-height: 110px;
+  min-height: 90px;
   resize: vertical;
-  line-height: 1.5;
 }
 
 .rm-textarea::placeholder {
@@ -148,9 +161,11 @@
 
 #rm-send,
 #rm-copy,
+#rm-copy-html,
 #rm-reset {
   font-family: var(--rm-font-body);
   font-size: 0.8rem;
+  line-height: 1.2;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   border: 1px solid var(--rm-red);
@@ -164,6 +179,7 @@
 
 #rm-send:hover,
 #rm-copy:hover,
+#rm-copy-html:hover,
 #rm-reset:hover {
   background: var(--rm-red-br);
   border-color: var(--rm-red-br);
@@ -171,20 +187,23 @@
 
 #rm-send:focus-visible,
 #rm-copy:focus-visible,
+#rm-copy-html:focus-visible,
 #rm-reset:focus-visible {
   outline: 2px solid var(--rm-ink);
   outline-offset: 2px;
 }
 
 #rm-copy,
+#rm-copy-html,
 #rm-reset {
   background: transparent;
   border-color: var(--rm-line);
   color: var(--rm-ink-dim);
-  margin-right: 0.6em;
+  margin: 0 0.6em 0.5em 0;
 }
 
 #rm-copy:hover,
+#rm-copy-html:hover,
 #rm-reset:hover {
   background: transparent;
   border-color: var(--rm-ink-dim);
@@ -201,7 +220,7 @@
   font-family: var(--rm-font-mono);
   font-size: 0.85rem;
   color: var(--rm-ink-dim);
-  margin-bottom: 0.9em;
+  margin-bottom: 0.8em;
 }
 
 .rm-bar {
@@ -230,29 +249,31 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--rm-ink-dim);
-  margin-bottom: 0.9em;
+  line-height: 1.2;
+  margin-bottom: 0.8em;
 }
 
 #rm-out {
   font-family: var(--rm-font-mono);
   font-size: 0.85rem;
-  line-height: 1.6;
+  line-height: 1.5;
   white-space: pre-wrap;
   background: var(--rm-panel);
   border-left: 2px solid var(--rm-red);
   padding: 1em 1.2em;
-  margin-bottom: 1em;
+  margin-bottom: 0.9em;
 }
 
 .rm-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6em;
-  margin-bottom: 1.25em;
+  gap: 0.5em;
+  margin-bottom: 1em;
 }
 
 .rm-chip {
   font-size: 0.72rem;
+  line-height: 1.2;
   color: var(--rm-ink-dim);
   border: 1px solid var(--rm-line);
   border-radius: 2px;
@@ -275,7 +296,7 @@
   display: none;
   font-size: 0.78rem;
   color: var(--rm-red-br);
-  margin-left: 0.4em;
+  margin-left: 0.2em;
 }
 
 #rm-result[style*="block"] {
@@ -290,16 +311,16 @@
 /* ---------- responsive ---------- */
 @media (max-width: 480px) {
   #rm-root {
-    padding: 1.25em;
+    padding: 1.1em;
     margin: 1em;
   }
   .rm-row {
     flex-direction: column;
-    gap: 0.9em;
+    gap: 0.7em;
   }
   #rm-head {
     flex-direction: column;
-    gap: 0.5em;
+    gap: 0.4em;
   }
 }
 
