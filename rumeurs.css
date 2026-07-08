@@ -59,7 +59,7 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 1em;
-  padding: 1.5em 1.75em;
+  padding: 1.4em 1.6em;
   border-bottom: var(--border1);
   background: var(--dbckg0);
 }
@@ -117,7 +117,7 @@
 /* ============ FORMULAIRE ============ */
 
 #rm-body {
-  padding: 1.75em;
+  padding: 1.5em;
 }
 
 .rm-row {
@@ -133,26 +133,54 @@
   outline: var(--border1);
   outline-offset: -1px;
   background: var(--dbckg1);
-  padding: 0.6em 0.9em 0.65em;
+  transition: background 0.15s ease;
 }
 
 .rm-row .rm-field {
   margin-bottom: 0;
+  padding: 0;
 }
 
 #rm-body > .rm-field:last-of-type {
   margin-top: 1px;
+  padding: 0.55em 0.85em 0.6em;
+}
+
+/* ---- champs "Catégorie / Source / Votre rang" ----
+   Le <select> occupe TOUTE la carte (label incluse, via
+   son propre padding-top) : n'importe quel clic dans la
+   carte touche donc directement le <select> réel et ouvre
+   le menu, y compris sur le libellé ou sur la flèche. ---- */
+
+.rm-row .rm-select {
+  width: 100%;
+  padding: 1.35em 1.7em 0.5em 0.85em;
+  background: transparent;
+}
+
+.rm-row .rm-field:hover,
+.rm-row .rm-field:focus-within {
+  background: color-mix(in srgb, var(--accent1) 10%, var(--dbckg1));
+}
+
+.rm-row .rm-label {
+  position: absolute;
+  top: 0.55em;
+  left: 0.85em;
+  right: 1.8em;
+  margin-bottom: 0;
+  pointer-events: none;
 }
 
 .rm-label {
   display: block;
   font-family: var(--f-mono);
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   font-weight: 700;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text3);
-  line-height: 1.2;
+  line-height: 1.15;
   margin-bottom: 0.35em;
 }
 
@@ -164,8 +192,8 @@
   border: 0;
   color: var(--text);
   font-family: var(--f-body);
-  font-size: 0.95rem;
-  line-height: 1.4;
+  font-size: 0.92rem;
+  line-height: 1.35;
   padding: 0;
 }
 
@@ -173,23 +201,26 @@
   appearance: none;
   -webkit-appearance: none;
   cursor: pointer;
-  padding-right: 1.5em;
 }
 
-.rm-field:has(.rm-select)::after {
+.rm-field::after {
   content: '\f078';
   font-family: 'font awesome 6 pro';
   font-weight: 400;
-  font-size: 0.65em;
-  color: var(--accent2);
+  font-size: 0.7em;
+  color: var(--accent1);
   position: absolute;
-  right: 1em;
-  bottom: 0.75em;
+  right: 0.9em;
+  bottom: 0.65em;
   pointer-events: none;
 }
 
+#rm-body > .rm-field:last-of-type::after {
+  content: none;
+}
+
 .rm-textarea {
-  min-height: 130px;
+  min-height: 115px;
   resize: vertical;
 }
 
@@ -197,7 +228,7 @@
   color: var(--text3);
 }
 
-.rm-field:focus-within {
+#rm-body > .rm-field:last-of-type:focus-within {
   outline-color: var(--accent1);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent1) 20%, transparent);
 }
@@ -214,7 +245,7 @@
   align-items: center;
   gap: 0.6em;
   width: fit-content;
-  margin: 1.75em auto 0;
+  margin: 1.6em auto 0;
   font-family: var(--f-mono);
   font-size: 0.9rem;
   font-weight: 700;
@@ -223,7 +254,7 @@
   border: 1px solid var(--accent1);
   background: linear-gradient(135deg, var(--accent2), var(--accent1));
   color: var(--subtitle-img, #fff);
-  padding: 0.9em 2em;
+  padding: 0.85em 2em;
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
@@ -252,10 +283,10 @@
   #rm-head {
     flex-direction: column;
     gap: 0.5em;
-    padding: 1.25em 1.4em;
+    padding: 1.1em 1.25em;
   }
   #rm-body {
-    padding: 1.4em;
+    padding: 1.25em;
   }
   .rm-row {
     flex-direction: column;
@@ -276,7 +307,7 @@
 #rm-scan,
 #rm-result {
   display: none;
-  padding: 0 1.75em 1.75em;
+  padding: 0 1.5em 1.5em;
 }
 
 .rm-line {
