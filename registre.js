@@ -18,6 +18,37 @@
       .replace(/>/g, '&gt;');
   }
 
+  function fetchSourceLabel(topicUrl) {
+    return fetch(topicUrl, { credentials: 'same-origin' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.text();
+      })
+      .then(function (html) {
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+
+        var marker = doc.querySelector('[data-mrm-source]');
+        if (marker) {
+          var val = marker.getAttribute('data-mrm-source');
+          if (val) return val;
+        }
+
+        var blocks = doc.querySelectorAll('.postbody .content, .content');
+        for (var i = 0; i < blocks.length; i++) {
+          var t = blocks[i].textContent || '';
+          var m = t.match(/Source\s*:\s*([^\n.]{2,60})/i);
+          if (m) {
+            var raw = m[1].toLowerCase();
+            if (raw.indexOf('anonyme') !== -1) return 'Anonyme';
+            if (raw.indexOf('témoin') !== -1 || raw.indexOf('temoin') !== -1) return 'Témoin direct';
+            if (raw.indexOf('ouï') !== -1 || raw.indexOf('oui-dire') !== -1) return 'Ouï-dire';
+          }
+        }
+        return null;
+      })
+      .catch(function () { return null; });
+  }
+
   function initOne(root) {
     if (root.getAttribute('data-mr-init')) return;
     root.setAttribute('data-mr-init', '1');
@@ -66,14 +97,9 @@
           if (seenHrefs[href]) continue;
           seenHrefs[href] = true;
 
-          var topicRow = a.closest('.ftopic');
-          var authorEl = topicRow ? topicRow.querySelector('.ftauthor') : null;
-          var author = authorEl ? authorEl.textContent.trim().replace(/^par\s+/i, '') : '';
-
           items.push({
             code: m[0].toUpperCase(),
-            href: href,
-            author: author
+            href: href
           });
 
           if (items.length >= max) break;
@@ -85,12 +111,24 @@
           return;
         }
 
+        var sourceFetches = items.map(function (it) {
+          return fetchSourceLabel(it.href).then(function (src) {
+            it.source = src;
+            return it;
+          });
+        });
+
+        return Promise.all(sourceFetches);
+      })
+      .then(function (finalItems) {
+        if (!finalItems) return;
+
         var htmlOut = '';
-        for (var j = 0; j < items.length; j++) {
-          var it = items[j];
+        for (var j = 0; j < finalItems.length; j++) {
+          var it = finalItems[j];
           htmlOut += '<a class="mr-item" href="' + escapeHtml(it.href) + '">'
             + '<span class="mr-item-code">' + escapeHtml(it.code) + '</span>'
-            + (it.author ? '<span class="mr-item-meta">Rapporté par ' + escapeHtml(it.author) + '</span>' : '')
+            + (it.source ? '<span class="mr-item-meta">Rapporté par ' + escapeHtml(it.source) + '</span>' : '')
             + '</a>';
         }
         listEl.innerHTML = htmlOut;
