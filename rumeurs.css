@@ -5,11 +5,9 @@
    Composant scope sous #rm-root.
 
    Tout le widget (formulaire ET résultat) réutilise
-   directement les variables du thème du forum (--accent1,
-   --cuerpo, --border1, --text, --f-body, --f-titles,
-   --f-mono, etc.) : les couleurs basculent donc
-   automatiquement avec le thème clair/sombre du forum
-   (classe .light posée par le theme-switcher).
+   directement les variables du thème du forum : les
+   couleurs basculent automatiquement avec le thème
+   clair/sombre du forum (classe .light).
 =================================================== */
 
 #rm-root,
@@ -32,9 +30,7 @@
   margin: 2em auto;
   background: var(--cuerpo);
   backdrop-filter: var(--ft-blur);
-  border: var(--border2);
-  outline: var(--border1);
-  outline-offset: -1px;
+  border: 1px solid color-mix(in srgb, var(--accent1) 30%, var(--border1-c));
   color: var(--text);
   font-family: var(--f-body);
   font-size: 1rem;
@@ -50,6 +46,66 @@
   right: 0;
   height: 2px;
   background: linear-gradient(to right, var(--accent2), var(--accent1), var(--accent2));
+  z-index: 2;
+}
+
+/* ============ BANNIÈRE (effet CRT) ============
+   La hauteur vient uniquement de l'image (width:100%;
+   height:auto) : pas de hauteur fixée en dur. Choisir une
+   image large et pas trop haute (ex. ratio 4:1 à 6:1) pour
+   un bandeau discret. */
+
+.rm-banner {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.rm-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: var(--gm-filter);
+}
+
+.rm-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.28) 0px,
+    rgba(0, 0, 0, 0.28) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
+  animation: rm-crt-flicker 5s infinite;
+  pointer-events: none;
+}
+
+.rm-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.6) 100%);
+  pointer-events: none;
+}
+
+@keyframes rm-crt-flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.75; }
+  94% { opacity: 1; }
+  97% { opacity: 0.85; }
+  98% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rm-banner::before {
+    animation: none !important;
+  }
 }
 
 /* ============ EN-TÊTE ============ */
@@ -60,8 +116,8 @@
   align-items: flex-start;
   gap: 1em;
   padding: 1.4em 1.6em;
-  border-bottom: var(--border1);
-  background: var(--dbckg0);
+  border-bottom: var(--border2);
+  background: var(--dbckg4);
 }
 
 .rm-tag {
@@ -130,9 +186,9 @@
 .rm-field {
   flex: 1;
   position: relative;
-  outline: var(--border1);
+  outline: var(--border2);
   outline-offset: -1px;
-  background: var(--dbckg1);
+  background: var(--dbckg4);
   transition: background 0.15s ease;
 }
 
@@ -146,12 +202,6 @@
   padding: 0.55em 0.85em 0.6em;
 }
 
-/* ---- champs "Catégorie / Source / Votre rang" ----
-   Le <select> occupe TOUTE la carte (label incluse, via
-   son propre padding-top) : n'importe quel clic dans la
-   carte touche donc directement le <select> réel et ouvre
-   le menu, y compris sur le libellé ou sur la flèche. ---- */
-
 .rm-row .rm-select {
   width: 100%;
   padding: 1.35em 1.7em 0.5em 0.85em;
@@ -160,7 +210,7 @@
 
 .rm-row .rm-field:hover,
 .rm-row .rm-field:focus-within {
-  background: color-mix(in srgb, var(--accent1) 10%, var(--dbckg1));
+  background: color-mix(in srgb, var(--accent1) 12%, var(--dbckg4));
 }
 
 .rm-row .rm-label {
@@ -179,7 +229,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text3);
+  color: var(--text2);
   line-height: 1.15;
   margin-bottom: 0.35em;
 }
@@ -190,7 +240,7 @@
   width: 100%;
   background: transparent;
   border: 0;
-  color: var(--text);
+  color: var(--subtitle);
   font-family: var(--f-body);
   font-size: 0.92rem;
   line-height: 1.35;
@@ -300,8 +350,7 @@
 
 /* ===================================================
    SECTION "RÉSULTAT" — une fois la rumeur générée.
-   Utilise elle aussi les variables du thème : s'adapte
-   au clair/sombre comme le reste du widget.
+   Utilise elle aussi les variables du thème.
 =================================================== */
 
 #rm-scan,
@@ -352,8 +401,8 @@
   font-size: 0.85rem;
   line-height: 1.55;
   white-space: pre-wrap;
-  background: var(--dbckg2);
-  color: var(--text);
+  background: var(--dbckg4);
+  color: var(--subtitle);
   border-left: 2px solid var(--accent1);
   padding: 1em 1.2em;
   margin-bottom: 0.9em;
@@ -372,7 +421,7 @@
   font-size: 0.7rem;
   line-height: 1.2;
   color: var(--text2);
-  border: var(--border1);
+  border: var(--border2);
   border-radius: 2px;
   padding: 0.35em 0.6em;
 }
