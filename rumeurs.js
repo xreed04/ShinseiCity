@@ -54,12 +54,14 @@
     var chipId = root.querySelector('#rm-chip-id');
     var copiedEl = root.querySelector('#rm-copied');
 
-    // Garde-fou : si un élément attendu manque (ID modifié, collage
-    // corrompu par ForumActif...), on le dit clairement dans la console
-    // au lieu de planter silencieusement au clic.
+    // Garde-fou : si un élément essentiel manque (ID modifié, collage
+    // corrompu par ForumActif, page pas encore mise à jour...), on le dit
+    // clairement dans la console au lieu de planter silencieusement au clic.
+    // Le bouton "Copier en HTML" est traité séparément, plus bas : son
+    // absence ne doit jamais empêcher le reste du widget de fonctionner.
     var required = {
       'rm-clock': clockEl, 'rm-send': sendBtn, 'rm-copy': copyBtn,
-      'rm-copy-html': copyHtmlBtn, 'rm-reset': resetBtn, 'rm-scan': scanBox,
+      'rm-reset': resetBtn, 'rm-scan': scanBox,
       'rm-result': resultBox, 'rm-body': bodyBox, 'rm-scan-txt': scanTxt,
       'rm-text': textEl, 'rm-cat': catEl, 'rm-src': srcEl, 'rm-out': outEl,
       'rm-chip-prop': chipProp, 'rm-chip-grp': chipGrp,
@@ -70,6 +72,9 @@
         console.warn('[Réseau du Murmure] élément introuvable dans le DOM : #' + key + ' — le widget ne peut pas s\'initialiser.');
         return true;
       }
+    }
+    if (!copyHtmlBtn) {
+      console.warn('[Réseau du Murmure] #rm-copy-html absent — bouton "Copier en HTML" indisponible sur cette page, le reste fonctionne normalement.');
     }
 
     function tick() {
@@ -201,14 +206,16 @@
       }).catch(function () { /* silencieux : copie manuelle toujours possible */ });
     });
 
-    copyHtmlBtn.addEventListener('click', function () {
-      if (!lastGen) return;
-      if (!navigator.clipboard || !navigator.clipboard.writeText) return;
-      var html = buildHtmlCard(lastGen);
-      navigator.clipboard.writeText(html).then(function () {
-        flashCopied('Copié (HTML).');
-      }).catch(function () { /* silencieux : copie manuelle toujours possible */ });
-    });
+    if (copyHtmlBtn) {
+      copyHtmlBtn.addEventListener('click', function () {
+        if (!lastGen) return;
+        if (!navigator.clipboard || !navigator.clipboard.writeText) return;
+        var html = buildHtmlCard(lastGen);
+        navigator.clipboard.writeText(html).then(function () {
+          flashCopied('Copié (HTML).');
+        }).catch(function () { /* silencieux : copie manuelle toujours possible */ });
+      });
+    }
 
     resetBtn.addEventListener('click', function () {
       textEl.value = '';
