@@ -4,17 +4,12 @@
    <link rel="stylesheet" href="https://xreed04.github.io/ShinseiCity/rumeurs.css">
    Composant scope sous #rm-root.
 
-   Le formulaire réutilise directement les variables du
-   thème du forum (--accent1, --cuerpo, --border1, --text,
-   --f-body, --f-titles, --f-mono, etc.) : les couleurs
-   basculent donc automatiquement avec le thème clair/sombre
-   du forum (classe .light posée par le theme-switcher),
-   sans média-requête séparée à maintenir.
-
-   La section "résultat" (une fois la rumeur générée :
-   #rm-out, .rm-meta, .rm-chip, #rm-copy-html, #rm-reset)
-   garde des couleurs fixes, indépendantes du thème —
-   voulu, ne pas toucher.
+   Tout le widget (formulaire ET résultat) réutilise
+   directement les variables du thème du forum (--accent1,
+   --cuerpo, --border1, --text, --f-body, --f-titles,
+   --f-mono, etc.) : les couleurs basculent donc
+   automatiquement avec le thème clair/sombre du forum
+   (classe .light posée par le theme-switcher).
 =================================================== */
 
 #rm-root,
@@ -138,7 +133,7 @@
   outline: var(--border1);
   outline-offset: -1px;
   background: var(--dbckg1);
-  padding: 0.9em 1.1em 1em;
+  padding: 0.6em 0.9em 0.65em;
 }
 
 .rm-row .rm-field {
@@ -152,13 +147,13 @@
 .rm-label {
   display: block;
   font-family: var(--f-mono);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--text3);
   line-height: 1.2;
-  margin-bottom: 0.6em;
+  margin-bottom: 0.35em;
 }
 
 .rm-select,
@@ -169,8 +164,8 @@
   border: 0;
   color: var(--text);
   font-family: var(--f-body);
-  font-size: 1rem;
-  line-height: 1.5;
+  font-size: 0.95rem;
+  line-height: 1.4;
   padding: 0;
 }
 
@@ -178,18 +173,18 @@
   appearance: none;
   -webkit-appearance: none;
   cursor: pointer;
-  padding-right: 1.6em;
+  padding-right: 1.5em;
 }
 
 .rm-field:has(.rm-select)::after {
   content: '\f078';
   font-family: 'font awesome 6 pro';
   font-weight: 400;
-  font-size: 0.7em;
+  font-size: 0.65em;
   color: var(--accent2);
   position: absolute;
-  right: 1.1em;
-  bottom: 1.05em;
+  right: 1em;
+  bottom: 0.75em;
   pointer-events: none;
 }
 
@@ -273,9 +268,9 @@
 }
 
 /* ===================================================
-   À PARTIR D'ICI : section "résultat" une fois la rumeur
-   générée. Couleurs fixes volontairement, indépendantes
-   du thème clair/sombre — ne pas modifier.
+   SECTION "RÉSULTAT" — une fois la rumeur générée.
+   Utilise elle aussi les variables du thème : s'adapte
+   au clair/sombre comme le reste du widget.
 =================================================== */
 
 #rm-scan,
@@ -285,15 +280,15 @@
 }
 
 .rm-line {
-  font-family: 'Courier New', ui-monospace, monospace;
-  font-size: 0.85rem;
-  color: #948d84;
+  font-family: var(--f-mono);
+  font-size: 0.82rem;
+  color: var(--text2);
   margin-bottom: 0.8em;
 }
 
 .rm-bar {
   height: 3px;
-  background: #2c2830;
+  background: var(--border1-c);
   border-radius: 2px;
   overflow: hidden;
 }
@@ -302,7 +297,7 @@
   display: block;
   height: 100%;
   width: 0%;
-  background: #a8393f;
+  background: var(--accent1);
   animation: rm-fill 2.1s ease forwards;
 }
 
@@ -312,22 +307,23 @@
 }
 
 .rm-res-label {
-  font-size: 0.75rem;
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #948d84;
+  color: var(--text3);
   line-height: 1.2;
   margin-bottom: 0.8em;
 }
 
 #rm-out {
-  font-family: 'Courier New', ui-monospace, monospace;
+  font-family: var(--f-mono);
   font-size: 0.85rem;
-  line-height: 1.5;
+  line-height: 1.55;
   white-space: pre-wrap;
-  background: #1a171b;
-  color: #e8e2d8;
-  border-left: 2px solid #7d2027;
+  background: var(--dbckg2);
+  color: var(--text);
+  border-left: 2px solid var(--accent1);
   padding: 1em 1.2em;
   margin-bottom: 0.9em;
 }
@@ -335,66 +331,70 @@
 .rm-meta {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.5em;
-  margin-bottom: 1em;
+  margin-bottom: 1.1em;
 }
 
 .rm-chip {
-  font-size: 0.72rem;
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
   line-height: 1.2;
-  color: #948d84;
-  border: 1px solid #2c2830;
+  color: var(--text2);
+  border: var(--border1);
   border-radius: 2px;
   padding: 0.35em 0.6em;
 }
 
 .rm-chip b {
-  color: #e8e2d8;
-  font-weight: 600;
-  font-family: 'Courier New', ui-monospace, monospace;
+  color: var(--title);
+  font-weight: 700;
 }
 
 .rm-actions {
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
+  gap: 0.8em;
 }
 
 #rm-copy-html,
 #rm-reset {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 0.8rem;
+  font-family: var(--f-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
   line-height: 1.2;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  border: 1px solid #2c2830;
-  background: transparent;
-  color: #948d84;
-  padding: 0.7em 1.3em;
-  border-radius: 2px;
+  border: 1px solid var(--accent2);
+  background: color-mix(in srgb, var(--accent2) 12%, transparent);
+  color: var(--subtitle);
+  padding: 0.75em 1.5em;
+  border-radius: 3px;
   cursor: pointer;
-  margin: 0 0.6em 0.5em 0;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
 }
 
 #rm-copy-html:hover,
 #rm-reset:hover {
-  background: transparent;
-  border-color: #948d84;
-  color: #e8e2d8;
+  background: color-mix(in srgb, var(--accent1) 22%, transparent);
+  border-color: var(--accent1);
+  color: var(--title);
+  transform: translateY(-1px);
 }
 
 #rm-copy-html:focus-visible,
 #rm-reset:focus-visible {
-  outline: 2px solid #e8e2d8;
+  outline: 2px solid var(--accent1);
   outline-offset: 2px;
 }
 
 .rm-copied {
   display: none;
-  font-size: 0.78rem;
-  color: #a8393f;
-  margin-left: 0.2em;
+  font-family: var(--f-mono);
+  font-size: 0.76rem;
+  color: var(--accent1);
 }
 
 #rm-result[style*="block"] {
