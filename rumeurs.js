@@ -13,21 +13,24 @@
       .replace(/>/g, '&gt;');
   }
 
-  function buildHtmlCard(gen) {
-    var body = "[RUMEUR — " + gen.cat.toUpperCase() + "]\n\n"
-             + gen.opener + "\n\n"
-             + gen.text + "\n\n"
-             + gen.srcLabel + "\n"
-             + "Réf. registre : " + gen.id;
-    var bodyHtml = escapeHtml(body).replace(/\n/g, '<br>');
+  function buildTractHtml(gen) {
+    var textHtml = escapeHtml(gen.text).replace(/\n/g, '<br>');
+    var srcHtml = escapeHtml(gen.srcLabel);
 
-    return '<div style="background:#1a171b;border:1px solid #2c2830;border-left:3px solid #7d2027;'
-      + 'border-radius:2px;padding:1em 1.2em;max-width:520px;font-family:\'Courier New\',monospace;'
-      + 'font-size:0.9rem;line-height:1.6;color:#e8e2d8;">' + bodyHtml + '</div>'
-      + '<div style="margin-top:0.6em;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,sans-serif;'
-      + 'font-size:0.72rem;color:#948d84;">Propagation : <b style="color:#e8e2d8;">' + escapeHtml(gen.prop) + '</b>'
-      + ' &middot; Premier relais : <b style="color:#e8e2d8;">' + escapeHtml(gen.grp) + '</b>'
-      + ' &middot; ID : <b style="color:#e8e2d8;">' + escapeHtml(gen.id) + '</b></div>';
+    return '<div style="max-width:480px;background:#e9e2d0;color:#211f1a;border:2px dashed #3a352c;'
+      + 'padding:1.3em 1.5em;transform:rotate(-0.6deg);box-shadow:4px 4px 0 rgba(0,0,0,0.18);'
+      + 'font-family:Georgia,\'Times New Roman\',serif;">'
+      + '<div style="font-weight:700;font-size:1.05rem;text-transform:uppercase;letter-spacing:0.03em;'
+      + 'border-bottom:3px solid #7d2027;padding-bottom:0.4em;margin-bottom:0.8em;">'
+      + 'Rumeur &mdash; ' + escapeHtml(gen.cat) + '</div>'
+      + '<div style="font-size:0.92rem;line-height:1.65;white-space:pre-wrap;margin-bottom:0.9em;">' + textHtml + '</div>'
+      + '<div style="font-size:0.82rem;font-style:italic;color:#4a4640;margin-bottom:1em;">' + srcHtml + '</div>'
+      + '<div style="border-top:1px dashed #8a8474;padding-top:0.6em;font-family:\'Courier New\',monospace;'
+      + 'font-size:0.68rem;letter-spacing:0.04em;text-transform:uppercase;color:#5c584f;">'
+      + 'Propagation : <strong style="color:#7d2027;">' + escapeHtml(gen.prop) + '</strong>'
+      + '&nbsp;&middot;&nbsp;Premier relais : <strong style="color:#7d2027;">' + escapeHtml(gen.grp) + '</strong>'
+      + '&nbsp;&middot;&nbsp;Réf. : <strong style="color:#7d2027;">' + escapeHtml(gen.id) + '</strong></div>'
+      + '</div>';
   }
 
   function initOne(root) {
@@ -86,34 +89,6 @@
 
     var propLevels = ['Faible', 'Modérée', 'Modérée', 'Virale'];
     var groups = ['Loyalistes', 'Détracteurs', 'Indifférents', 'Fanatiques'];
-
-    var openLines = {
-      Politique: [
-        "Il paraît qu'en haut, ça ne s'entend plus du tout.",
-        "On dit que la dernière annonce cachait autre chose.",
-        "Une voix qui en sait plus qu'elle ne devrait a parlé."
-      ],
-      Criminelle: [
-        "Dans la file de ce matin, on ne parlait que de ça.",
-        "Quelque chose a été vu, et personne ne veut le répéter fort.",
-        "Un dossier aurait disparu là où il n'aurait pas dû."
-      ],
-      Industrielle: [
-        "Les chiffres du dernier quota ne collent pas.",
-        "Une ligne aurait été arrêtée sans qu'on en parle.",
-        "Ce qui sort de l'usine ce mois-ci n'est pas ce qu'on croit."
-      ],
-      Personnelle: [
-        "On raconte que quelqu'un a changé, du jour au lendemain.",
-        "Une histoire qui circule sur un voisin, un visage familier.",
-        "Ce qu'on chuchote à propos d'elle, ou de lui, ne s'arrête pas."
-      ],
-      Brume: [
-        "Quelque chose est revenu de la Brume différent.",
-        "On dit qu'un bruit s'en est échappé, cette nuit-là.",
-        "Un enfant né ici s'en approcherait sans jamais avoir peur."
-      ]
-    };
 
     var srcTag = {
       'Anonyme': "Source : anonyme, transmise sans visage.",
@@ -176,13 +151,11 @@
         var prop = pick(propLevels);
         var grp = pick(groups);
         var id = genId();
-        var opener = pick(openLines[cat]);
         var srcLabel = srcTag[src];
 
-        lastGen = { cat: cat, opener: opener, text: text, srcLabel: srcLabel, prop: prop, grp: grp, id: id };
+        lastGen = { cat: cat, text: text, srcLabel: srcLabel, prop: prop, grp: grp, id: id };
 
         var out = "[RUMEUR — " + cat.toUpperCase() + "]\n\n"
-                + opener + "\n\n"
                 + text + "\n\n"
                 + srcLabel + "\n"
                 + "Réf. registre : " + id;
@@ -208,7 +181,7 @@
       copyHtmlBtn.addEventListener('click', function () {
         if (!lastGen) return;
         if (!navigator.clipboard || !navigator.clipboard.writeText) return;
-        var html = buildHtmlCard(lastGen);
+        var html = buildTractHtml(lastGen);
         navigator.clipboard.writeText(html).then(function () {
           flashCopied('Copié (HTML).');
         }).catch(function () { /* silencieux : copie manuelle toujours possible */ });
