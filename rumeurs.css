@@ -2,13 +2,19 @@
    Réseau du Murmure — feuille de style
    Hébergée sur GitHub (xreed04/ShinseiCity), chargée via
    <link rel="stylesheet" href="https://xreed04.github.io/ShinseiCity/rumeurs.css">
-   Composant entièrement scope sous #rm-root : ne dépend
-   d'aucune variable ou classe du thème principal.
+   Composant scope sous #rm-root.
 
-   NOTE : la section "résultat" (#rm-out, .rm-meta, .rm-chip,
-   les boutons #rm-copy-html/#rm-reset) utilise des couleurs
-   fixes (pas de variables) pour rester identique quel que
-   soit le thème clair/sombre — c'est voulu, ne pas toucher.
+   Le formulaire réutilise directement les variables du
+   thème du forum (--accent1, --cuerpo, --border1, --text,
+   --f-body, --f-titles, --f-mono, etc.) : les couleurs
+   basculent donc automatiquement avec le thème clair/sombre
+   du forum (classe .light posée par le theme-switcher),
+   sans média-requête séparée à maintenir.
+
+   La section "résultat" (une fois la rumeur générée :
+   #rm-out, .rm-meta, .rm-chip, #rm-copy-html, #rm-reset)
+   garde des couleurs fixes, indépendantes du thème —
+   voulu, ne pas toucher.
 =================================================== */
 
 #rm-root,
@@ -23,40 +29,22 @@
   padding: 0 !important;
 }
 
+/* ============ CONTENEUR ============ */
+
 #rm-root {
-  --rm-bg: #121013;
-  --rm-panel: #1a171b;
-  --rm-ink: #e8e2d8;
-  --rm-ink-dim: #948d84;
-  --rm-red: #7d2027;
-  --rm-red-br: #a8393f;
-  --rm-line: #2c2830;
-  --rm-font-display: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
-  --rm-font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --rm-font-mono: 'Courier New', ui-monospace, monospace;
-
   position: relative;
-  max-width: 600px;
+  max-width: 640px;
   margin: 2em auto;
-  padding: 2em;
-  background: var(--rm-bg);
-  border: 1px solid var(--rm-line);
-  border-radius: 4px;
-  color: var(--rm-ink);
-  font-family: var(--rm-font-body);
-  line-height: 1.5;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-}
-
-/* ---------- adaptation thème clair (basée sur la préférence système/navigateur) ---------- */
-@media (prefers-color-scheme: light) {
-  #rm-root {
-    --rm-bg: #f7f4ee;
-    --rm-panel: #ffffff;
-    --rm-ink: #201d1a;
-    --rm-ink-dim: #6b645c;
-    --rm-line: #ddd6cb;
-  }
+  background: var(--cuerpo);
+  backdrop-filter: var(--ft-blur);
+  border: var(--border2);
+  outline: var(--border1);
+  outline-offset: -1px;
+  color: var(--text);
+  font-family: var(--f-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow: hidden;
 }
 
 #rm-root::before {
@@ -66,145 +54,222 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: var(--rm-red);
+  background: linear-gradient(to right, var(--accent2), var(--accent1), var(--accent2));
 }
 
-/* ---------- en-tête ---------- */
+/* ============ EN-TÊTE ============ */
+
 #rm-head {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 1em;
-  padding-bottom: 1em;
-  margin-bottom: 1.4em;
-  border-bottom: 1px solid var(--rm-line);
+  padding: 1.5em 1.75em;
+  border-bottom: var(--border1);
+  background: var(--dbckg0);
 }
 
 .rm-tag {
   display: block;
-  font-family: var(--rm-font-mono);
-  font-size: 0.8rem;
+  font-family: var(--f-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--rm-red-br);
+  color: var(--accent1);
   line-height: 1.3;
 }
 
 #rm-head > div:first-child .rm-tag {
-  margin-bottom: 0.4em;
-}
-
-#rm-clock.rm-tag {
-  color: var(--rm-ink-dim);
-  white-space: nowrap;
+  margin-bottom: 0.45em;
 }
 
 .rm-title {
-  font-family: var(--rm-font-display);
-  font-size: 1.55rem;
-  line-height: 1.3;
+  font-family: var(--f-titles);
+  font-size: 1.4rem;
+  line-height: 1.25;
+  text-transform: uppercase;
   letter-spacing: 0.01em;
+  color: var(--title);
 }
 
-/* ---------- formulaire ---------- */
+#rm-clock.rm-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  color: var(--text2);
+  white-space: nowrap;
+  padding-top: 0.15em;
+}
+
+#rm-clock.rm-tag::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #2ecc71;
+  box-shadow: 0 0 0 rgba(46, 204, 113, 0.6);
+  animation: signal-pulse 2s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #rm-clock.rm-tag::before {
+    animation: none !important;
+  }
+}
+
+/* ============ FORMULAIRE ============ */
+
+#rm-body {
+  padding: 1.75em;
+}
+
 .rm-row {
   display: flex;
-  gap: 1.2em;
-  margin-bottom: 1.2em;
+  gap: 1px;
+  overflow: hidden;
+  margin-bottom: 1px;
 }
 
 .rm-field {
   flex: 1;
-  margin-bottom: 1.2em;
+  position: relative;
+  outline: var(--border1);
+  outline-offset: -1px;
+  background: var(--dbckg1);
+  padding: 0.9em 1.1em 1em;
 }
 
 .rm-row .rm-field {
   margin-bottom: 0;
 }
 
+#rm-body > .rm-field:last-of-type {
+  margin-top: 1px;
+}
+
 .rm-label {
   display: block;
-  font-size: 0.82rem;
-  letter-spacing: 0.07em;
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--rm-ink-dim);
-  line-height: 1.3;
-  margin-bottom: 0.5em;
-  font-weight: 600;
+  color: var(--text3);
+  line-height: 1.2;
+  margin-bottom: 0.6em;
 }
 
 .rm-select,
 .rm-textarea {
   display: block;
   width: 100%;
-  background: var(--rm-panel);
-  border: 1px solid var(--rm-line);
-  border-radius: 3px;
-  color: var(--rm-ink);
-  font-family: var(--rm-font-body);
-  font-size: 1.02rem;
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font-family: var(--f-body);
+  font-size: 1rem;
   line-height: 1.5;
-  padding: 0.75em 0.9em;
-  transition: border-color 0.15s ease;
+  padding: 0;
 }
 
 .rm-select {
   appearance: none;
   -webkit-appearance: none;
-  padding-right: 2.4em;
   cursor: pointer;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--rm-ink-dim) 50%),
-    linear-gradient(135deg, var(--rm-ink-dim) 50%, transparent 50%);
-  background-position: calc(100% - 18px) center, calc(100% - 13px) center;
-  background-size: 5px 5px, 5px 5px;
-  background-repeat: no-repeat;
+  padding-right: 1.6em;
+}
+
+.rm-field:has(.rm-select)::after {
+  content: '\f078';
+  font-family: 'font awesome 6 pro';
+  font-weight: 400;
+  font-size: 0.7em;
+  color: var(--accent2);
+  position: absolute;
+  right: 1.1em;
+  bottom: 1.05em;
+  pointer-events: none;
 }
 
 .rm-textarea {
-  min-height: 110px;
+  min-height: 130px;
   resize: vertical;
 }
 
 .rm-textarea::placeholder {
-  color: var(--rm-ink-dim);
+  color: var(--text3);
+}
+
+.rm-field:focus-within {
+  outline-color: var(--accent1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent1) 20%, transparent);
 }
 
 .rm-select:focus-visible,
 .rm-textarea:focus-visible {
   outline: none;
-  border-color: var(--rm-red-br);
 }
 
-/* ---------- bouton "Transmettre au réseau" (formulaire uniquement) ---------- */
+/* ============ BOUTON "TRANSMETTRE" ============ */
+
 #rm-send {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
   width: fit-content;
-  margin: 1.6em auto 0;
-  font-family: var(--rm-font-body);
-  font-size: 0.98rem;
-  font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: 0.04em;
+  margin: 1.75em auto 0;
+  font-family: var(--f-mono);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  border: 1px solid var(--rm-red);
-  background: var(--rm-red);
-  color: #f2ece2;
-  padding: 0.85em 2.2em;
-  border-radius: 3px;
+  border: 1px solid var(--accent1);
+  background: linear-gradient(135deg, var(--accent2), var(--accent1));
+  color: var(--subtitle-img, #fff);
+  padding: 0.9em 2em;
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+#rm-send::after {
+  content: '\f0da';
+  font-family: 'font awesome 6 pro';
+  font-weight: 400;
+  font-size: 0.85em;
 }
 
 #rm-send:hover {
-  background: var(--rm-red-br);
-  border-color: var(--rm-red-br);
-  transform: translateY(-1px);
+  filter: brightness(1.12);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent1) 45%, transparent);
 }
 
 #rm-send:focus-visible {
-  outline: 2px solid var(--rm-ink);
-  outline-offset: 2px;
+  outline: 2px solid var(--accent1);
+  outline-offset: 3px;
+}
+
+/* ============ RESPONSIVE ============ */
+
+@media (max-width: 40rem) {
+  #rm-head {
+    flex-direction: column;
+    gap: 0.5em;
+    padding: 1.25em 1.4em;
+  }
+  #rm-body {
+    padding: 1.4em;
+  }
+  .rm-row {
+    flex-direction: column;
+    gap: 1px;
+  }
+  #rm-send {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* ===================================================
@@ -213,14 +278,14 @@
    du thème clair/sombre — ne pas modifier.
 =================================================== */
 
-/* ---------- état "scan" ---------- */
 #rm-scan,
 #rm-result {
   display: none;
+  padding: 0 1.75em 1.75em;
 }
 
 .rm-line {
-  font-family: var(--rm-font-mono);
+  font-family: 'Courier New', ui-monospace, monospace;
   font-size: 0.85rem;
   color: #948d84;
   margin-bottom: 0.8em;
@@ -246,7 +311,6 @@
   100% { width: 100%; }
 }
 
-/* ---------- état "résultat" ---------- */
 .rm-res-label {
   font-size: 0.75rem;
   letter-spacing: 0.06em;
@@ -257,7 +321,7 @@
 }
 
 #rm-out {
-  font-family: var(--rm-font-mono);
+  font-family: 'Courier New', ui-monospace, monospace;
   font-size: 0.85rem;
   line-height: 1.5;
   white-space: pre-wrap;
@@ -287,7 +351,7 @@
 .rm-chip b {
   color: #e8e2d8;
   font-weight: 600;
-  font-family: var(--rm-font-mono);
+  font-family: 'Courier New', ui-monospace, monospace;
 }
 
 .rm-actions {
@@ -298,7 +362,7 @@
 
 #rm-copy-html,
 #rm-reset {
-  font-family: var(--rm-font-body);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 0.8rem;
   line-height: 1.2;
   letter-spacing: 0.06em;
@@ -342,26 +406,6 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ---------- responsive ---------- */
-@media (max-width: 480px) {
-  #rm-root {
-    padding: 1.3em;
-    margin: 1em;
-  }
-  .rm-row {
-    flex-direction: column;
-    gap: 0.9em;
-  }
-  #rm-head {
-    flex-direction: column;
-    gap: 0.4em;
-  }
-  #rm-send {
-    width: 100%;
-  }
-}
-
-/* ---------- accessibilité : mouvement réduit ---------- */
 @media (prefers-reduced-motion: reduce) {
   .rm-bar i,
   #rm-result[style*="block"] {
