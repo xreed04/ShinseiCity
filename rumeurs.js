@@ -6,6 +6,30 @@
 =================================================== */
 (function () {
 
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function buildHtmlCard(gen) {
+    var body = "[RUMEUR — " + gen.cat.toUpperCase() + "]\n\n"
+             + gen.opener + "\n\n"
+             + gen.text + "\n\n"
+             + gen.srcLabel + "\n"
+             + "Réf. registre : " + gen.id;
+    var bodyHtml = escapeHtml(body).replace(/\n/g, '<br>');
+
+    return '<div style="background:#1a171b;border:1px solid #2c2830;border-left:3px solid #7d2027;'
+      + 'border-radius:2px;padding:1em 1.2em;max-width:520px;font-family:\'Courier New\',monospace;'
+      + 'font-size:0.9rem;line-height:1.6;color:#e8e2d8;">' + bodyHtml + '</div>'
+      + '<div style="margin-top:0.6em;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,sans-serif;'
+      + 'font-size:0.72rem;color:#948d84;">Propagation : <b style="color:#e8e2d8;">' + escapeHtml(gen.prop) + '</b>'
+      + ' &middot; Premier relais : <b style="color:#e8e2d8;">' + escapeHtml(gen.grp) + '</b>'
+      + ' &middot; ID : <b style="color:#e8e2d8;">' + escapeHtml(gen.id) + '</b></div>';
+  }
+
   function initMurmure() {
     var root = document.getElementById('rm-root');
     if (!root) return false;
@@ -15,6 +39,7 @@
     var clockEl = root.querySelector('#rm-clock');
     var sendBtn = root.querySelector('#rm-send');
     var copyBtn = root.querySelector('#rm-copy');
+    var copyHtmlBtn = root.querySelector('#rm-copy-html');
     var resetBtn = root.querySelector('#rm-reset');
     var scanBox = root.querySelector('#rm-scan');
     var resultBox = root.querySelector('#rm-result');
@@ -34,9 +59,9 @@
     // au lieu de planter silencieusement au clic.
     var required = {
       'rm-clock': clockEl, 'rm-send': sendBtn, 'rm-copy': copyBtn,
-      'rm-reset': resetBtn, 'rm-scan': scanBox, 'rm-result': resultBox,
-      'rm-body': bodyBox, 'rm-scan-txt': scanTxt, 'rm-text': textEl,
-      'rm-cat': catEl, 'rm-src': srcEl, 'rm-out': outEl,
+      'rm-copy-html': copyHtmlBtn, 'rm-reset': resetBtn, 'rm-scan': scanBox,
+      'rm-result': resultBox, 'rm-body': bodyBox, 'rm-scan-txt': scanTxt,
+      'rm-text': textEl, 'rm-cat': catEl, 'rm-src': srcEl, 'rm-out': outEl,
       'rm-chip-prop': chipProp, 'rm-chip-grp': chipGrp,
       'rm-chip-id': chipId, 'rm-copied': copiedEl
     };
@@ -100,10 +125,21 @@
       "Attribution du premier relais"
     ];
 
+    var lastGen = null;
+
     function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
     function genId() {
       var n = Math.floor(1000 + Math.random() * 8999);
       return 'MRM-' + n;
+    }
+
+    function flashCopied(label) {
+      copiedEl.textContent = label;
+      copiedEl.style.display = 'inline';
+      setTimeout(function () {
+        copiedEl.style.display = 'none';
+        copiedEl.textContent = 'Copié.';
+      }, 1800);
     }
 
     sendBtn.addEventListener('click', function () {
@@ -138,11 +174,14 @@
         var grp = pick(groups);
         var id = genId();
         var opener = pick(openLines[cat]);
+        var srcLabel = srcTag[src];
+
+        lastGen = { cat: cat, opener: opener, text: text, srcLabel: srcLabel, prop: prop, grp: grp, id: id };
 
         var out = "[RUMEUR — " + cat.toUpperCase() + "]\n\n"
                 + opener + "\n\n"
                 + text + "\n\n"
-                + srcTag[src] + "\n"
+                + srcLabel + "\n"
                 + "Réf. registre : " + id;
 
         outEl.textContent = out;
@@ -156,12 +195,18 @@
 
     copyBtn.addEventListener('click', function () {
       var out = outEl.textContent;
-      if (!navigator.clipboard || !navigator.clipboard.writeText) {
-        return;
-      }
+      if (!navigator.clipboard || !navigator.clipboard.writeText) return;
       navigator.clipboard.writeText(out).then(function () {
-        copiedEl.style.display = 'inline';
-        setTimeout(function () { copiedEl.style.display = 'none'; }, 1800);
+        flashCopied('Copié.');
+      }).catch(function () { /* silencieux : copie manuelle toujours possible */ });
+    });
+
+    copyHtmlBtn.addEventListener('click', function () {
+      if (!lastGen) return;
+      if (!navigator.clipboard || !navigator.clipboard.writeText) return;
+      var html = buildHtmlCard(lastGen);
+      navigator.clipboard.writeText(html).then(function () {
+        flashCopied('Copié (HTML).');
       }).catch(function () { /* silencieux : copie manuelle toujours possible */ });
     });
 
