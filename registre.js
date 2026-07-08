@@ -68,7 +68,7 @@
 
           var topicRow = a.closest('.ftopic');
           var authorEl = topicRow ? topicRow.querySelector('.ftauthor') : null;
-          var author = authorEl ? authorEl.textContent.trim() : '';
+          var author = authorEl ? authorEl.textContent.trim().replace(/^par\s+/i, '') : '';
 
           items.push({
             code: m[0].toUpperCase(),
