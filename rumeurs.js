@@ -16,6 +16,7 @@
   function buildTractHtml(gen) {
     var textHtml = escapeHtml(gen.text).replace(/\n/g, '<br>');
     var srcHtml = escapeHtml(gen.srcLabel);
+    var srcTypeHtml = escapeHtml(gen.src || '');
     var catHtml = escapeHtml(gen.cat);
     var propHtml = escapeHtml(gen.prop);
     var idHtml = escapeHtml(gen.id);
@@ -37,7 +38,7 @@
       + '</div>'
       + '<div style="font:600 0.7rem var(--f-mono,monospace);letter-spacing:.03em;color:var(--text3);margin-bottom:1em;">Rumeur datant du : ' + timeHtml + '</div>'
       + '<div style="font-size:0.98rem;line-height:1.6;color:var(--subtitle);white-space:pre-wrap;margin-bottom:1em;">' + textHtml + '</div>'
-      + '<div style="font-size:0.82rem;font-style:italic;color:var(--text2);margin-bottom:1.1em;">' + srcHtml + '</div>'
+      + '<div data-mrm-source="' + srcTypeHtml + '" style="font-size:0.82rem;font-style:italic;color:var(--text2);margin-bottom:1.1em;">' + srcHtml + '</div>'
       + '<div style="border-top:1px dashed color-mix(in srgb, var(--accent2) 40%, var(--border1-c));padding-top:.8em;'
       + 'display:flex;flex-wrap:wrap;gap:.4em 1em;font:700 0.66rem var(--f-mono,monospace);text-transform:uppercase;letter-spacing:.03em;">'
       + '<span style="color:var(--text2);">Propagation : <b style="color:var(--accent1);">' + propHtml + '</b></span>'
@@ -97,9 +98,6 @@
     tick();
     setInterval(tick, 15000);
 
-    // Propagation pondérée par catégorie : certains types de rumeurs
-    // ont statistiquement plus de chances de devenir virales que
-    // d'autres, pour que le hasard raconte une histoire cohérente.
     var propPools = {
       'Brume': ['Faible', 'Modérée', 'Virale', 'Virale'],
       'Criminelle': ['Modérée', 'Modérée', 'Virale', 'Virale'],
@@ -196,15 +194,13 @@
         var cred = null;
         if (rankEl) {
           var tier = rankTier[rankEl.value] || 'mid';
-          // Une rumeur criminelle est prise au sérieux quel que soit le
-          // rang de qui la propage : jamais le pire tier de crédibilité.
           if (cat === 'Criminelle' && tier === 'low') {
             tier = 'mid';
           }
           cred = pick(credibilityPools[tier]);
         }
 
-        lastGen = { cat: cat, text: text, srcLabel: srcLabel, prop: prop, id: id, cred: cred, timestamp: timestamp };
+        lastGen = { cat: cat, text: text, src: src, srcLabel: srcLabel, prop: prop, id: id, cred: cred, timestamp: timestamp };
 
         var out = "[RUMEUR — " + cat.toUpperCase() + "]\n\n"
                 + text + "\n\n"
