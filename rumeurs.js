@@ -20,6 +20,7 @@
     var propHtml = escapeHtml(gen.prop);
     var idHtml = escapeHtml(gen.id);
     var credHtml = gen.cred ? escapeHtml(gen.cred) : null;
+    var timeHtml = escapeHtml(gen.timestamp);
 
     return '<div style="max-width:520px;margin:1em auto;background:var(--dbckg1);'
       + 'border:1px solid color-mix(in srgb, var(--accent1) 35%, var(--border1-c));'
@@ -34,6 +35,7 @@
       + 'padding:.3em .7em;border:1px solid color-mix(in srgb, var(--accent2) 55%, var(--border1-c));'
       + 'color:var(--subtitle);border-radius:2px;white-space:nowrap;">' + catHtml + '</span>'
       + '</div>'
+      + '<div style="font:600 0.7rem var(--f-mono,monospace);letter-spacing:.03em;color:var(--text3);margin-bottom:1em;">Rumeur datant du : ' + timeHtml + '</div>'
       + '<div style="font-size:0.98rem;line-height:1.6;color:var(--subtitle);white-space:pre-wrap;margin-bottom:1em;">' + textHtml + '</div>'
       + '<div style="font-size:0.82rem;font-style:italic;color:var(--text2);margin-bottom:1.1em;">' + srcHtml + '</div>'
       + '<div style="border-top:1px dashed color-mix(in srgb, var(--accent2) 40%, var(--border1-c));padding-top:.8em;'
@@ -139,6 +141,15 @@
       var n = Math.floor(1000 + Math.random() * 8999);
       return 'MRM-' + n;
     }
+    function genTimestamp() {
+      var d = new Date();
+      var jj = String(d.getDate()).padStart(2, '0');
+      var mm = String(d.getMonth() + 1).padStart(2, '0');
+      var aaaa = d.getFullYear();
+      var hh = String(d.getHours()).padStart(2, '0');
+      var min = String(d.getMinutes()).padStart(2, '0');
+      return jj + '/' + mm + '/' + aaaa + ' à ' + hh + ':' + min;
+    }
 
     function flashCopied(label) {
       copiedEl.textContent = label;
@@ -179,15 +190,21 @@
 
         var prop = pick(propPools[cat] || propLevelsDefault);
         var id = genId();
+        var timestamp = genTimestamp();
         var srcLabel = srcTag[src];
 
         var cred = null;
         if (rankEl) {
           var tier = rankTier[rankEl.value] || 'mid';
+          // Une rumeur criminelle est prise au sérieux quel que soit le
+          // rang de qui la propage : jamais le pire tier de crédibilité.
+          if (cat === 'Criminelle' && tier === 'low') {
+            tier = 'mid';
+          }
           cred = pick(credibilityPools[tier]);
         }
 
-        lastGen = { cat: cat, text: text, srcLabel: srcLabel, prop: prop, id: id, cred: cred };
+        lastGen = { cat: cat, text: text, srcLabel: srcLabel, prop: prop, id: id, cred: cred, timestamp: timestamp };
 
         var out = "[RUMEUR — " + cat.toUpperCase() + "]\n\n"
                 + text + "\n\n"
