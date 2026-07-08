@@ -30,29 +30,27 @@
       + ' &middot; ID : <b style="color:#e8e2d8;">' + escapeHtml(gen.id) + '</b></div>';
   }
 
-  function initMurmure() {
-    var root = document.getElementById('rm-root');
-    if (!root) return false;
-    if (root.getAttribute('data-rm-init')) return true;
+  function initOne(root) {
+    if (root.getAttribute('data-rm-init')) return;
     root.setAttribute('data-rm-init', '1');
 
-    var clockEl = root.querySelector('#rm-clock');
-    var sendBtn = root.querySelector('#rm-send');
-    var copyBtn = root.querySelector('#rm-copy');
-    var copyHtmlBtn = root.querySelector('#rm-copy-html');
-    var resetBtn = root.querySelector('#rm-reset');
-    var scanBox = root.querySelector('#rm-scan');
-    var resultBox = root.querySelector('#rm-result');
-    var bodyBox = root.querySelector('#rm-body');
-    var scanTxt = root.querySelector('#rm-scan-txt');
-    var textEl = root.querySelector('#rm-text');
-    var catEl = root.querySelector('#rm-cat');
-    var srcEl = root.querySelector('#rm-src');
-    var outEl = root.querySelector('#rm-out');
-    var chipProp = root.querySelector('#rm-chip-prop');
-    var chipGrp = root.querySelector('#rm-chip-grp');
-    var chipId = root.querySelector('#rm-chip-id');
-    var copiedEl = root.querySelector('#rm-copied');
+    var clockEl = root.querySelector('[id="rm-clock"]');
+    var sendBtn = root.querySelector('[id="rm-send"]');
+    var copyBtn = root.querySelector('[id="rm-copy"]');
+    var copyHtmlBtn = root.querySelector('[id="rm-copy-html"]');
+    var resetBtn = root.querySelector('[id="rm-reset"]');
+    var scanBox = root.querySelector('[id="rm-scan"]');
+    var resultBox = root.querySelector('[id="rm-result"]');
+    var bodyBox = root.querySelector('[id="rm-body"]');
+    var scanTxt = root.querySelector('[id="rm-scan-txt"]');
+    var textEl = root.querySelector('[id="rm-text"]');
+    var catEl = root.querySelector('[id="rm-cat"]');
+    var srcEl = root.querySelector('[id="rm-src"]');
+    var outEl = root.querySelector('[id="rm-out"]');
+    var chipProp = root.querySelector('[id="rm-chip-prop"]');
+    var chipGrp = root.querySelector('[id="rm-chip-grp"]');
+    var chipId = root.querySelector('[id="rm-chip-id"]');
+    var copiedEl = root.querySelector('[id="rm-copied"]');
 
     // Garde-fou : si un élément essentiel manque (ID modifié, collage
     // corrompu par ForumActif, page pas encore mise à jour...), on le dit
@@ -70,7 +68,7 @@
     for (var key in required) {
       if (!required[key]) {
         console.warn('[Réseau du Murmure] élément introuvable dans le DOM : #' + key + ' — le widget ne peut pas s\'initialiser.');
-        return true;
+        return;
       }
     }
     if (!copyHtmlBtn) {
@@ -224,31 +222,33 @@
       resultBox.style.display = 'none';
       bodyBox.style.display = 'block';
     });
-
-    return true;
   }
 
-  function tryInit() {
-    if (initMurmure() && observer) {
-      observer.disconnect();
-      observer = null;
+  function scanAndInit() {
+    // ForumActif permet plusieurs posts avec le même id="rm-root" sur une
+    // seule page (un par post). getElementById ne renverrait que le
+    // premier ; on balaie donc tous les nœuds correspondants et on
+    // initialise chacun indépendamment (le garde-fou data-rm-init évite
+    // les doubles écoutes d'événements au fil des re-scans).
+    var roots = document.querySelectorAll('[id="rm-root"]');
+    for (var i = 0; i < roots.length; i++) {
+      initOne(roots[i]);
     }
   }
 
-  var observer = null;
   if ('MutationObserver' in window) {
-    observer = new MutationObserver(tryInit);
+    var observer = new MutationObserver(scanAndInit);
     observer.observe(document.documentElement, { childList: true, subtree: true });
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', tryInit);
+    document.addEventListener('DOMContentLoaded', scanAndInit);
   } else {
-    tryInit();
+    scanAndInit();
   }
 
   // Filet de sécurité si MutationObserver n'a rien capté
-  setTimeout(tryInit, 1000);
-  setTimeout(tryInit, 3000);
+  setTimeout(scanAndInit, 1000);
+  setTimeout(scanAndInit, 3000);
 
 })();
