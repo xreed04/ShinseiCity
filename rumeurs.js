@@ -16,20 +16,33 @@
   function buildTractHtml(gen) {
     var textHtml = escapeHtml(gen.text).replace(/\n/g, '<br>');
     var srcHtml = escapeHtml(gen.srcLabel);
+    var catHtml = escapeHtml(gen.cat);
+    var propHtml = escapeHtml(gen.prop);
+    var idHtml = escapeHtml(gen.id);
+    var credHtml = gen.cred ? escapeHtml(gen.cred) : null;
 
-    return '<div style="max-width:480px;background:#e9e2d0;color:#211f1a;border:2px dashed #3a352c;'
-      + 'padding:1.3em 1.5em;transform:rotate(-0.6deg);box-shadow:4px 4px 0 rgba(0,0,0,0.18);'
-      + 'font-family:Georgia,\'Times New Roman\',serif;">'
-      + '<div style="font-weight:700;font-size:1.05rem;text-transform:uppercase;letter-spacing:0.03em;'
-      + 'border-bottom:3px solid #7d2027;padding-bottom:0.4em;margin-bottom:0.8em;">'
-      + 'Rumeur &mdash; ' + escapeHtml(gen.cat) + '</div>'
-      + '<div style="font-size:0.92rem;line-height:1.65;white-space:pre-wrap;margin-bottom:0.9em;">' + textHtml + '</div>'
-      + '<div style="font-size:0.82rem;font-style:italic;color:#4a4640;margin-bottom:1em;">' + srcHtml + '</div>'
-      + '<div style="border-top:1px dashed #8a8474;padding-top:0.6em;font-family:\'Courier New\',monospace;'
-      + 'font-size:0.68rem;letter-spacing:0.04em;text-transform:uppercase;color:#5c584f;">'
-      + 'Propagation : <strong style="color:#7d2027;">' + escapeHtml(gen.prop) + '</strong>'
-      + '&nbsp;&middot;&nbsp;Premier relais : <strong style="color:#7d2027;">' + escapeHtml(gen.grp) + '</strong>'
-      + '&nbsp;&middot;&nbsp;Réf. : <strong style="color:#7d2027;">' + escapeHtml(gen.id) + '</strong></div>'
+    return '<div style="max-width:520px;margin:1em auto;background:var(--dbckg1);'
+      + 'border:1px solid color-mix(in srgb, var(--accent1) 35%, var(--border1-c));'
+      + 'border-radius:2px;overflow:hidden;font-family:var(--f-body,sans-serif);color:var(--text);">'
+      + '<div style="height:3px;background:linear-gradient(to right, var(--accent2), var(--accent1), var(--accent2));"></div>'
+      + '<div style="padding:1.3em 1.5em 1.1em;">'
+      + '<div style="display:flex;align-items:center;justify-content:space-between;gap:1em;margin-bottom:1.1em;">'
+      + '<span style="display:flex;align-items:center;gap:.5em;font:700 0.68rem var(--f-mono,monospace);letter-spacing:.1em;text-transform:uppercase;color:var(--accent1);">'
+      + '<span style="width:6px;height:6px;border-radius:50%;background:var(--accent1);flex-shrink:0;"></span>'
+      + 'Réseau du Murmure</span>'
+      + '<span style="font:700 0.62rem var(--f-mono,monospace);letter-spacing:.06em;text-transform:uppercase;'
+      + 'padding:.3em .7em;border:1px solid color-mix(in srgb, var(--accent2) 55%, var(--border1-c));'
+      + 'color:var(--subtitle);border-radius:2px;white-space:nowrap;">' + catHtml + '</span>'
+      + '</div>'
+      + '<div style="font-size:0.98rem;line-height:1.6;color:var(--subtitle);white-space:pre-wrap;margin-bottom:1em;">' + textHtml + '</div>'
+      + '<div style="font-size:0.82rem;font-style:italic;color:var(--text2);margin-bottom:1.1em;">' + srcHtml + '</div>'
+      + '<div style="border-top:1px dashed color-mix(in srgb, var(--accent2) 40%, var(--border1-c));padding-top:.8em;'
+      + 'display:flex;flex-wrap:wrap;gap:.4em 1em;font:700 0.66rem var(--f-mono,monospace);text-transform:uppercase;letter-spacing:.03em;">'
+      + '<span style="color:var(--text2);">Propagation : <b style="color:var(--accent1);">' + propHtml + '</b></span>'
+      + (credHtml ? '<span style="color:var(--text2);">Crédibilité : <b style="color:var(--accent1);">' + credHtml + '</b></span>' : '')
+      + '<span style="color:var(--text2);">Réf. : <b style="color:var(--accent1);">' + idHtml + '</b></span>'
+      + '</div>'
+      + '</div>'
       + '</div>';
   }
 
@@ -39,7 +52,6 @@
 
     var clockEl = root.querySelector('[id="rm-clock"]');
     var sendBtn = root.querySelector('[id="rm-send"]');
-    var copyBtn = root.querySelector('[id="rm-copy"]');
     var copyHtmlBtn = root.querySelector('[id="rm-copy-html"]');
     var resetBtn = root.querySelector('[id="rm-reset"]');
     var scanBox = root.querySelector('[id="rm-scan"]');
@@ -51,21 +63,17 @@
     var srcEl = root.querySelector('[id="rm-src"]');
     var outEl = root.querySelector('[id="rm-out"]');
     var chipProp = root.querySelector('[id="rm-chip-prop"]');
-    var chipGrp = root.querySelector('[id="rm-chip-grp"]');
     var chipId = root.querySelector('[id="rm-chip-id"]');
     var copiedEl = root.querySelector('[id="rm-copied"]');
+    var rankEl = root.querySelector('[id="rm-rank"]');
+    var chipCred = root.querySelector('[id="rm-chip-cred"]');
 
-    // Garde-fou : si un élément essentiel manque (ID modifié, collage
-    // corrompu par ForumActif, page pas encore mise à jour...), on le dit
-    // clairement dans la console au lieu de planter silencieusement au clic.
-    // Le bouton "Copier en HTML" est traité séparément, plus bas : son
-    // absence ne doit jamais empêcher le reste du widget de fonctionner.
     var required = {
-      'rm-clock': clockEl, 'rm-send': sendBtn, 'rm-copy': copyBtn,
+      'rm-clock': clockEl, 'rm-send': sendBtn, 'rm-copy-html': copyHtmlBtn,
       'rm-reset': resetBtn, 'rm-scan': scanBox,
       'rm-result': resultBox, 'rm-body': bodyBox, 'rm-scan-txt': scanTxt,
       'rm-text': textEl, 'rm-cat': catEl, 'rm-src': srcEl, 'rm-out': outEl,
-      'rm-chip-prop': chipProp, 'rm-chip-grp': chipGrp,
+      'rm-chip-prop': chipProp,
       'rm-chip-id': chipId, 'rm-copied': copiedEl
     };
     for (var key in required) {
@@ -74,8 +82,8 @@
         return;
       }
     }
-    if (!copyHtmlBtn) {
-      console.warn('[Réseau du Murmure] #rm-copy-html absent — bouton "Copier en HTML" indisponible sur cette page, le reste fonctionne normalement.');
+    if (!rankEl || !chipCred) {
+      console.warn('[Réseau du Murmure] #rm-rank ou #rm-chip-cred absent — le chip de crédibilité perçue sera ignoré, le reste fonctionne normalement.');
     }
 
     function tick() {
@@ -87,11 +95,21 @@
     tick();
     setInterval(tick, 15000);
 
-    var propLevels = ['Faible', 'Modérée', 'Modérée', 'Virale'];
-    var groups = ['Loyalistes', 'Détracteurs', 'Indifférents', 'Fanatiques'];
+    // Propagation pondérée par catégorie : certains types de rumeurs
+    // ont statistiquement plus de chances de devenir virales que
+    // d'autres, pour que le hasard raconte une histoire cohérente.
+    var propPools = {
+      'Brume': ['Faible', 'Modérée', 'Virale', 'Virale'],
+      'Criminelle': ['Modérée', 'Modérée', 'Virale', 'Virale'],
+      'Politique': ['Faible', 'Modérée', 'Modérée', 'Virale'],
+      'Industrielle': ['Faible', 'Modérée', 'Modérée', 'Virale'],
+      'Personnelle': ['Faible', 'Faible', 'Modérée', 'Modérée'],
+      'Le Maire': ['Modérée', 'Virale', 'Virale', 'Virale']
+    };
+    var propLevelsDefault = ['Faible', 'Modérée', 'Modérée', 'Virale'];
 
     var srcTag = {
-      'Anonyme': "Source : anonyme, transmise sans visage.",
+      'Anonyme': "Source : anonyme.",
       'Témoin direct': "Source : témoin direct, présent sur place.",
       'Ouï-dire': "Source : ouï-dire, déjà passée par d'autres bouches."
     };
@@ -100,8 +118,19 @@
       "Analyse du contenu en cours",
       "Évaluation de la source",
       "Estimation de la portée",
-      "Attribution du premier relais"
+      "Calcul de la crédibilité perçue"
     ];
+
+    var rankTier = {
+      'Obsidian': 'low', 'Bronze': 'low',
+      'Silver': 'mid',
+      'Gold': 'high', 'Platinum': 'high'
+    };
+    var credibilityPools = {
+      low: ['Faible', 'Très faible', 'Douteuse'],
+      mid: ['Moyenne', 'Incertaine'],
+      high: ['Élevée', 'Fiable']
+    };
 
     var lastGen = null;
 
@@ -148,12 +177,17 @@
         clearInterval(interval);
         scanBox.style.display = 'none';
 
-        var prop = pick(propLevels);
-        var grp = pick(groups);
+        var prop = pick(propPools[cat] || propLevelsDefault);
         var id = genId();
         var srcLabel = srcTag[src];
 
-        lastGen = { cat: cat, text: text, srcLabel: srcLabel, prop: prop, grp: grp, id: id };
+        var cred = null;
+        if (rankEl) {
+          var tier = rankTier[rankEl.value] || 'mid';
+          cred = pick(credibilityPools[tier]);
+        }
+
+        lastGen = { cat: cat, text: text, srcLabel: srcLabel, prop: prop, id: id, cred: cred };
 
         var out = "[RUMEUR — " + cat.toUpperCase() + "]\n\n"
                 + text + "\n\n"
@@ -162,19 +196,13 @@
 
         outEl.textContent = out;
         chipProp.textContent = prop;
-        chipGrp.textContent = grp;
         chipId.textContent = id;
+        if (chipCred && cred) {
+          chipCred.textContent = cred;
+        }
 
         resultBox.style.display = 'block';
       }, 2100);
-    });
-
-    copyBtn.addEventListener('click', function () {
-      var out = outEl.textContent;
-      if (!navigator.clipboard || !navigator.clipboard.writeText) return;
-      navigator.clipboard.writeText(out).then(function () {
-        flashCopied('Copié.');
-      }).catch(function () { /* silencieux : copie manuelle toujours possible */ });
     });
 
     if (copyHtmlBtn) {
@@ -198,11 +226,6 @@
   }
 
   function scanAndInit() {
-    // ForumActif permet plusieurs posts avec le même id="rm-root" sur une
-    // seule page (un par post). getElementById ne renverrait que le
-    // premier ; on balaie donc tous les nœuds correspondants et on
-    // initialise chacun indépendamment (le garde-fou data-rm-init évite
-    // les doubles écoutes d'événements au fil des re-scans).
     var roots = document.querySelectorAll('[id="rm-root"]');
     for (var i = 0; i < roots.length; i++) {
       initOne(roots[i]);
@@ -220,7 +243,6 @@
     scanAndInit();
   }
 
-  // Filet de sécurité si MutationObserver n'a rien capté
   setTimeout(scanAndInit, 1000);
   setTimeout(scanAndInit, 3000);
 
