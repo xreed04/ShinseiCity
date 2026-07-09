@@ -427,3 +427,7 @@
   #gbpet-submit { width: 100%; justify-content: center; }
   .gbpetsigrow { flex-wrap: wrap; }
 }
+
+.gbpetgauge.undefined span {
+  background: color-mix(in srgb, var(--accent1) 45%, var(--border1-c));
+}
