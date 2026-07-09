@@ -12,7 +12,7 @@
   }
 
   setText("tbdate-today", todayDate + " " + monthsFR[month].toLowerCase() + " " + year);
-  setText("tbweather-month", todayDate + " " + monthsFR[month]);
+  setText("tbweather-month", todayDate + " " + monthsFR[month] + " " + year);
 
   function esc(s) {
     return String(s).replace(/"/g, "&quot;");
