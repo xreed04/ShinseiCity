@@ -436,3 +436,8 @@
 .gbpetlist-head .gbpet-tag {
   text-shadow: none;
 }
+
+.gbpet-banner img {
+  max-height: 260px;
+  object-fit: cover;
+}
