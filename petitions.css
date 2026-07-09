@@ -152,7 +152,7 @@
 .gbpetfield textarea {
   width: 100%;
   background: var(--dbckg4);
-  border: var(--border2);
+  border: 1px solid color-mix(in srgb, var(--accent2) 55%, var(--text3));
   border-radius: 3px;
   padding: .65em .8em;
   color: var(--subtitle);
