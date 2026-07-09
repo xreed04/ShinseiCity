@@ -192,11 +192,8 @@
   .msg-time { font-family: var(--font-mono); font-size: 9.5px; color: var(--text-muted); display: block; margin-top: 3px; }
   .msg-row.mine .msg-time { text-align: right; margin-right: 4px; }
   .msg-row.theirs .msg-time { margin-left: 4px; }
-  #chat-form { display: flex; align-items: flex-end; gap: 9px; padding: 13px 16px; border-top: 0.5px solid var(--border); background: var(--bg-surface); }
-  #chat-input {
-    flex: 1; border-radius: 18px; background: var(--bg-app); resize: none; overflow-y: auto;
-    max-height: 100px; line-height: 1.4; font-family: var(--font-body);
-  }
+  #chat-form { display: flex; align-items: center; gap: 9px; padding: 13px 16px; border-top: 0.5px solid var(--border); background: var(--bg-surface); }
+  #chat-form input { flex: 1; border-radius: 20px; background: var(--bg-app); }
   #chat-form button {
     background: var(--accent); border: none; width: 38px; height: 38px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent-ink);
@@ -358,7 +355,7 @@
         <button type="button" id="send-image-btn" aria-label="Envoyer une image">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
         </button>
-        <textarea id="chat-input" placeholder="Message..." rows="1"></textarea>
+        <input id="chat-input" type="text" placeholder="Message..." autocomplete="off">
         <button type="submit">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
         </button>
@@ -471,16 +468,6 @@ let unsubMessages = null;
 let replyingTo = null;
 
 const chatInputEl = document.getElementById("chat-input");
-chatInputEl.addEventListener("input", () => {
-  chatInputEl.style.height = "auto";
-  chatInputEl.style.height = Math.min(chatInputEl.scrollHeight, 100) + "px";
-});
-chatInputEl.addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault();
-    document.getElementById("chat-form").requestSubmit();
-  }
-});
 
 function setReply(msg) {
   replyingTo = { id: msg.id, from: msg.from, snippet: msg.image ? "📷 Image" : (msg.text || "").slice(0, 70) };
@@ -886,7 +873,6 @@ document.getElementById("chat-form").addEventListener("submit", async (e) => {
   if (!text || !currentConv) return;
   const replySnapshot = replyingTo;
   input.value = "";
-  input.style.height = "auto";
   clearReply();
   try {
     const ts = Date.now();
