@@ -1,53 +1,429 @@
-#gbpet-root{max-width:680px;margin:2rem auto;font-family:var(--f-body);color:var(--title)}
+/* ===================================================
+   Registre des Pétitions — feuille de style
+   Hébergée sur GitHub (xreed04/ShinseiCity), chargée via
+   <link rel="stylesheet" href="https://xreed04.github.io/ShinseiCity/petitions.css">
+   Composant scope sous #gbpet-root.
+=================================================== */
 
-.gbpet-head{display:flex;flex-direction:column;gap:.2rem;margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:1px solid var(--border1)}
-.gbpet-tag{font:700 var(--fset-mono4);font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.12em;color:var(--accent1)}
-.gbpet-title{font:700 var(--fset-titles4);font-family:var(--f-titles);text-transform:uppercase;letter-spacing:.03em;color:var(--title)}
+#gbpet-root,
+#gbpet-root *,
+#gbpet-root *::before,
+#gbpet-root *::after {
+  box-sizing: border-box;
+}
 
-.gbpetform{position:relative;background:var(--deco);border:1px solid var(--border1);padding:1.5rem;margin-bottom:2rem}
-.gbpetform::before,.gbpetform::after{content:'';position:absolute;width:10px;height:10px;border:1px solid var(--accent1)}
-.gbpetform::before{top:-1px;left:-1px;border-right:none;border-bottom:none}
-.gbpetform::after{bottom:-1px;right:-1px;border-left:none;border-top:none}
+#gbpet-root {
+  position: relative;
+  max-width: 680px;
+  margin: 2em auto;
+  background: var(--cuerpo);
+  backdrop-filter: var(--ft-blur);
+  border: 1px solid color-mix(in srgb, var(--accent1) 30%, var(--border1-c));
+  color: var(--text);
+  font-family: var(--f-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow: hidden;
+}
 
-.gbpetfield{margin-bottom:1rem}
-.gbpetfield label{display:block;font:700 var(--fs-tiny);font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:.4rem}
-.gbpetfield input,.gbpetfield textarea{width:100%;box-sizing:border-box;background:var(--cuerpo);border:1px solid var(--border1);color:var(--title);padding:.6rem .7rem;font-family:var(--f-body);font-size:.95rem}
-.gbpetfield input:focus,.gbpetfield textarea:focus{outline:none;border-color:var(--accent1)}
-.gbpetfield textarea{min-height:100px;resize:vertical;line-height:1.5}
+#gbpet-root::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--accent2), var(--accent1), var(--accent2));
+  z-index: 3;
+}
 
-.gbpetform button#gbpet-submit{display:block;margin-left:auto;background:var(--accent1);color:#fff;border:none;padding:.65rem 1.4rem;cursor:pointer;font-family:var(--f-mono);font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;transition:filter .2s}
-.gbpetform button#gbpet-submit:hover{filter:brightness(1.15)}
-#gbpet-msg{font-size:.8rem;color:var(--accent1);margin-top:.5rem;text-align:right;font-family:var(--f-mono)}
+/* ============ BANNIÈRE (image + effet CRT) ============ */
+.gbpet-banner {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
 
-.gbpetlist-head{margin-bottom:1rem}
+.gbpet-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: top;
+  filter: var(--gm-filter);
+}
 
-.gbpetcard{position:relative;background:var(--deco);border:1px solid var(--border1);border-left:3px solid var(--accent1);padding:1.1rem 1.3rem;margin-bottom:1rem}
-.gbpetcard-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem}
-.gbpetdocnum{font:700 var(--fs-tiny);font-family:var(--f-mono);letter-spacing:.1em;color:var(--text3);text-transform:uppercase}
-.gbpetbadge{display:inline-block;padding:.15rem .55rem;font-family:var(--f-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;border:1px solid var(--accent1);color:var(--accent1)}
-.gbpetbadge.etude{border-color:#c9a24c;color:#c9a24c}
-.gbpetbadge.repondue{border-color:#4caf7d;color:#4caf7d}
+.gbpet-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.28) 0px,
+      rgba(0, 0, 0, 0.28) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    color-mix(in srgb, var(--accent2) 24%, transparent);
+  mix-blend-mode: multiply;
+  animation: gbpet-crt-flicker 5s infinite;
+  z-index: 1;
+  pointer-events: none;
+}
 
-.gbpetcard h4{font-family:var(--f-titles);font-size:1.1rem;margin:0 0 .3rem;color:var(--title)}
-.gbpetmeta{font-family:var(--f-mono);font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.6rem}
-.gbpetmeta b{color:var(--title);font-style:normal}
-.gbpettext{color:var(--text3);font-size:.88rem;line-height:1.55;margin-bottom:.9rem;white-space:pre-wrap}
+.gbpet-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, transparent 35%, rgba(0, 0, 0, 0.8) 100%),
+    radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.4) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
 
-.gbpetsigrow{display:flex;align-items:center;gap:.7rem;margin-bottom:.8rem}
-.gbpetgauge{flex:1;height:4px;background:var(--cuerpo);border:1px solid var(--border1);overflow:hidden}
-.gbpetgauge span{display:block;height:100%;background:var(--accent1);transition:width .3s}
-.gbpetcount{font-family:var(--f-mono);font-size:.72rem;color:var(--title);white-space:nowrap}
+@keyframes gbpet-crt-flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.75; }
+  94% { opacity: 1; }
+  97% { opacity: 0.85; }
+  98% { opacity: 1; }
+}
 
-.gbpetsign{background:transparent;border:1px solid var(--accent1);color:var(--accent1);padding:.4rem .9rem;cursor:pointer;font-family:var(--f-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;transition:all .2s}
-.gbpetsign:hover{background:var(--accent1);color:#fff}
-.gbpetsign:disabled{opacity:.35;cursor:not-allowed}
+@media (prefers-reduced-motion: reduce) {
+  .gbpet-banner::before {
+    animation: none !important;
+  }
+}
 
-.gbpetresponse{margin-top:.6rem;font-size:.82rem;font-family:var(--f-mono)}
-.gbpetresponse a{color:var(--accent1);text-decoration:none;border-bottom:1px dotted var(--accent1)}
+.gbpet-banner-content {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 3;
+  padding: 1.4em 1.6em;
+}
 
-.gbpetmairebtn{display:block;margin:1.5rem auto 0;background:transparent;border:1px dashed var(--border1);color:var(--text3);font-family:var(--f-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;padding:.3rem .7rem;cursor:pointer;opacity:.6;transition:opacity .2s}
-.gbpetmairebtn:hover{opacity:1}
+.gbpet-tag {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent1);
+  margin-bottom: .45em;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+}
 
-.gbpetadmin{display:flex;gap:.5rem;margin-top:.7rem;padding-top:.7rem;border-top:1px dashed var(--border1)}
-.gbpetadmin button{font-family:var(--f-mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;padding:.3rem .6rem;border:1px solid var(--border1);background:transparent;color:var(--title);cursor:pointer;transition:border-color .2s}
-.gbpetadmin button:hover{border-color:var(--accent1)}
+.gbpet-title {
+  font-family: var(--f-titles);
+  font-size: 1.4rem;
+  line-height: 1.25;
+  text-transform: uppercase;
+  letter-spacing: .01em;
+  color: #fdfaf5;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+}
+
+/* ============ FORMULAIRE ============ */
+.gbpetform {
+  padding: 1.5em;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent2) 30%, var(--border1-c));
+}
+
+.gbpetfield {
+  margin-bottom: 1.2em;
+  display: flex;
+  flex-direction: column;
+}
+
+.gbpetfield label {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text2);
+  margin-bottom: .4em;
+}
+
+.gbpetfield input,
+.gbpetfield textarea {
+  width: 100%;
+  background: var(--dbckg4);
+  border: var(--border2);
+  border-radius: 3px;
+  padding: .65em .8em;
+  color: var(--subtitle);
+  font-family: var(--f-body);
+  font-size: .92rem;
+  transition: background .15s ease, border-color .15s ease;
+}
+
+.gbpetfield textarea {
+  min-height: 105px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.gbpetfield input::placeholder,
+.gbpetfield textarea::placeholder {
+  color: var(--text3);
+}
+
+.gbpetfield input:hover,
+.gbpetfield input:focus-visible,
+.gbpetfield textarea:hover,
+.gbpetfield textarea:focus-visible {
+  border-color: var(--accent1);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent1) 20%, transparent);
+}
+
+#gbpet-submit {
+  display: flex;
+  align-items: center;
+  gap: .6em;
+  width: fit-content;
+  margin: .4em auto 0;
+  font-family: var(--f-mono);
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border: 1px solid var(--accent1);
+  background: linear-gradient(135deg, var(--accent2), var(--accent1));
+  color: #fff;
+  padding: .85em 2em;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+
+#gbpet-submit::after {
+  content: '\f0da';
+  font-family: 'font awesome 6 pro';
+  font-weight: 400;
+  font-size: .85em;
+}
+
+#gbpet-submit:hover {
+  filter: brightness(1.12);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent1) 45%, transparent);
+}
+
+#gbpet-msg {
+  text-align: center;
+  font-family: var(--f-mono);
+  font-size: .78rem;
+  color: var(--accent1);
+  margin-top: .8em;
+}
+
+/* ============ LISTE ============ */
+.gbpetlist-head {
+  padding: 1.2em 1.5em .8em;
+}
+
+.gbpetlist {
+  padding: 0 1.5em 1.5em;
+}
+
+.gbpetcard {
+  position: relative;
+  background: var(--dbckg1);
+  border: 1px solid color-mix(in srgb, var(--accent2) 30%, var(--border1-c));
+  border-radius: 2px;
+  padding: 1.2em 1.4em;
+  margin-bottom: 1em;
+}
+
+.gbpetcard-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  margin-bottom: .8em;
+}
+
+.gbpetdocnum {
+  font-family: var(--f-mono);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+.gbpetbadge {
+  font-family: var(--f-mono);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: .3em .7em;
+  border: 1px solid color-mix(in srgb, var(--accent2) 55%, var(--border1-c));
+  color: var(--accent1);
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.gbpetbadge.etude { border-color: #c9a24c; color: #c9a24c; }
+.gbpetbadge.repondue { border-color: #4caf7d; color: #4caf7d; }
+
+.gbpetcard h4 {
+  font-family: var(--f-titles);
+  font-size: 1.05rem;
+  color: var(--title);
+  margin: 0 0 .3em;
+  line-height: 1.3;
+}
+
+.gbpetmeta {
+  font-family: var(--f-mono);
+  font-size: .7rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: .9em;
+}
+
+.gbpetmeta b {
+  color: var(--title);
+  font-weight: 700;
+}
+
+.gbpettext {
+  font-family: var(--f-mono);
+  font-size: .85rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  background: var(--dbckg4);
+  color: var(--subtitle);
+  border-left: 2px solid var(--accent1);
+  padding: .9em 1.1em;
+  margin-bottom: 1em;
+}
+
+.gbpetsigrow {
+  display: flex;
+  align-items: center;
+  gap: .8em;
+  margin-bottom: .9em;
+}
+
+.gbpetgauge {
+  flex: 1;
+  height: 3px;
+  background: var(--border1-c);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.gbpetgauge span {
+  display: block;
+  height: 100%;
+  background: var(--accent1);
+  transition: width .3s ease;
+}
+
+.gbpetcount {
+  font-family: var(--f-mono);
+  font-size: .7rem;
+  color: var(--text2);
+  white-space: nowrap;
+}
+
+.gbpetsign {
+  font-family: var(--f-mono);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  border: 1px solid var(--accent2);
+  background: color-mix(in srgb, var(--accent2) 12%, transparent);
+  color: var(--subtitle);
+  padding: .7em 1.4em;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, color .15s ease, transform .1s ease;
+}
+
+.gbpetsign:hover {
+  background: color-mix(in srgb, var(--accent1) 22%, transparent);
+  border-color: var(--accent1);
+  color: var(--title);
+  transform: translateY(-1px);
+}
+
+.gbpetsign:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.gbpetresponse {
+  margin-top: .8em;
+  font-family: var(--f-mono);
+  font-size: .78rem;
+}
+
+.gbpetresponse a {
+  color: var(--accent1);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--accent1);
+}
+
+.gbpetadmin {
+  display: flex;
+  gap: .6em;
+  margin-top: .9em;
+  padding-top: .9em;
+  border-top: 1px dashed color-mix(in srgb, var(--accent2) 30%, var(--border1-c));
+}
+
+.gbpetadmin button {
+  font-family: var(--f-mono);
+  font-size: .66rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  padding: .35em .7em;
+  border: 1px solid var(--border1-c);
+  background: transparent;
+  color: var(--text2);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: border-color .15s ease, color .15s ease;
+}
+
+.gbpetadmin button:hover {
+  border-color: var(--accent1);
+  color: var(--title);
+}
+
+.gbpetmairebtn {
+  display: block;
+  margin: 0 auto 1.5em;
+  font-family: var(--f-mono);
+  font-size: .64rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  border: 1px dashed var(--border1-c);
+  background: transparent;
+  color: var(--text3);
+  padding: .35em .8em;
+  cursor: pointer;
+  opacity: .55;
+  transition: opacity .2s ease;
+}
+
+.gbpetmairebtn:hover { opacity: 1; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 40rem) {
+  .gbpet-banner-content { padding: 1.1em 1.25em; }
+  .gbpetform, .gbpetlist, .gbpetlist-head { padding-left: 1.1em; padding-right: 1.1em; }
+  #gbpet-submit { width: 100%; justify-content: center; }
+  .gbpetsigrow { flex-wrap: wrap; }
+}
