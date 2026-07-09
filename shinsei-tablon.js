@@ -6,15 +6,21 @@
   var todayDate = today.getDate();
   var monthKey = year + "-" + String(month + 1).padStart(2, "0");
 
-  document.getElementById("tbdate-today").textContent =
-    todayDate + " " + monthsFR[month].toLowerCase() + " " + year;
-  document.getElementById("tbweather-month").textContent = todayDate + " " + monthsFR[month];
+  function setText(id, text) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = text;
+  }
+
+  setText("tbdate-today", todayDate + " " + monthsFR[month].toLowerCase() + " " + year);
+  setText("tbweather-month", todayDate + " " + monthsFR[month]);
 
   function esc(s) {
     return String(s).replace(/"/g, "&quot;");
   }
 
   function renderCalendar(evenements) {
+    var target = document.getElementById("tbcalendar-days");
+    if (!target) return;
     evenements = evenements || {};
     var firstDay = new Date(year, month, 1).getDay();
     firstDay = (firstDay === 0) ? 6 : firstDay - 1;
@@ -51,7 +57,7 @@
       }
       html += "</span>";
     }
-    document.getElementById("tbcalendar-days").outerHTML = html;
+    target.outerHTML = html;
   }
 
   fetch("https://cdn.jsdelivr.net/gh/xreed04/ShinseiCity@main/evenements.json?v=1")
@@ -70,7 +76,7 @@
       var tempNow = Math.round(data.current.temperature_2m);
       var tempMax = Math.round(data.daily.temperature_2m_max[0]);
       var tempMin = Math.round(data.daily.temperature_2m_min[0]);
-      document.getElementById("tbweather-temp").textContent = tempMin + "\u00b0 / " + tempMax + "\u00b0 (actuel " + tempNow + "\u00b0)";
+      setText("tbweather-temp", tempMin + "\u00b0 / " + tempMax + "\u00b0 (actuel " + tempNow + "\u00b0)");
       var icon = "fa-cloud";
       if (code === 0) icon = "fa-sun";
       else if (code === 1 || code === 2) icon = "fa-cloud-sun";
@@ -81,9 +87,10 @@
       else if (code >= 80 && code <= 82) icon = "fa-cloud-showers-heavy";
       else if (code === 85 || code === 86) icon = "fa-snowflake";
       else if (code >= 95) icon = "fa-cloud-bolt";
-      document.getElementById("tbweather-icon").className = "fa-light " + icon;
+      var iconEl = document.getElementById("tbweather-icon");
+      if (iconEl) iconEl.className = "fa-light " + icon;
     })
     .catch(function(){
-      document.getElementById("tbweather-temp").textContent = "--\u00b0 / --\u00b0";
+      setText("tbweather-temp", "--\u00b0 / --\u00b0");
     });
 })();
