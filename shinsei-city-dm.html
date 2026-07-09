@@ -213,6 +213,39 @@
   .conv-delete:hover { opacity: 1; color: #E8807F; }
 
   #boot-error { padding: 30px 26px; color: #E8807F; font-family: var(--font-mono); font-size: 12px; text-align: center; line-height: 1.7; }
+
+  .icon-edit {
+    background: transparent; border: none; color: var(--text-muted); padding: 3px;
+    display: flex; align-items: center; justify-content: center; opacity: 0.6; flex-shrink: 0;
+  }
+  .icon-edit:hover { opacity: 1; color: var(--accent); }
+
+  .msg-row { position: relative; }
+  .msg-wrap { display: flex; align-items: flex-end; gap: 5px; }
+  .msg-row.mine .msg-wrap { flex-direction: row-reverse; }
+  .react-trigger {
+    background: transparent; border: none; color: var(--text-muted); opacity: 0;
+    display: flex; align-items: center; justify-content: center; padding: 4px; flex-shrink: 0;
+    transition: opacity 0.15s;
+  }
+  .msg-row:hover .react-trigger { opacity: 0.6; }
+  .react-trigger:hover { opacity: 1 !important; color: var(--accent); }
+  .react-picker {
+    display: none; gap: 4px; background: var(--bg-surface); border: 0.5px solid var(--border);
+    border-radius: 20px; padding: 5px 7px; position: absolute; top: -34px; z-index: 5;
+  }
+  .msg-row.mine .react-picker { right: 0; }
+  .msg-row.theirs .react-picker { left: 0; }
+  .react-picker.open { display: flex; }
+  .react-picker button { background: transparent; border: none; font-size: 15px; padding: 2px; line-height: 1; }
+  .react-picker button:hover { transform: scale(1.2); }
+  .reactions { display: flex; gap: 4px; margin-top: 3px; flex-wrap: wrap; }
+  .msg-row.mine .reactions { justify-content: flex-end; }
+  .reaction-chip {
+    font-family: var(--font-mono); font-size: 11px; background: var(--bg-surface); border: 0.5px solid var(--border);
+    border-radius: 10px; padding: 1px 7px; cursor: pointer; color: var(--text-secondary);
+  }
+  .reaction-chip.mine-reaction { border-color: var(--accent); color: var(--accent); }
 </style>
 </head>
 <body>
@@ -257,6 +290,9 @@
         <div class="who">
           <div class="avatar" id="hub-avatar"></div>
           <span class="username" id="hub-username"></span>
+          <button id="edit-avatar-btn" type="button" class="icon-edit" aria-label="Modifier l'avatar">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+          </button>
         </div>
         <button id="logout-btn" type="button">Déconnexion</button>
       </div>
@@ -283,6 +319,9 @@
         <div>
           <div class="top-line">
             <span id="chat-username"></span>
+            <button id="edit-nickname-btn" type="button" class="icon-edit" aria-label="Renommer ce contact">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+            </button>
           </div>
         </div>
       </div>
@@ -429,13 +468,13 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     if (loginMode === "create") {
       if (doc.exists) { errEl.textContent = "Ce pseudo existe déjà. Connecte-toi plutôt."; return; }
       const avatarUrl = document.getElementById("login-avatar").value.trim();
-      await ref.set({ username: uname, code: pass, avatarUrl: avatarUrl || "", createdAt: Date.now() });
-      session = { username: uname, avatarUrl: avatarUrl || "" };
+      await ref.set({ username: uname, code: pass, avatarUrl: avatarUrl || "", nicknames: {}, createdAt: Date.now() });
+      session = { username: uname, avatarUrl: avatarUrl || "", nicknames: {} };
     } else {
       if (!doc.exists) { errEl.textContent = "Pseudo inconnu. Crée un compte d'abord."; return; }
       const data = doc.data();
       if (data.code !== pass) { errEl.textContent = "Code incorrect."; return; }
-      session = { username: data.username, avatarUrl: data.avatarUrl || "" };
+      session = { username: data.username, avatarUrl: data.avatarUrl || "", nicknames: data.nicknames || {} };
     }
     saveSession(session);
     enterHub();
@@ -443,6 +482,27 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     errEl.textContent = "Erreur de connexion. Vérifie ta configuration Firebase.";
   }
 });
+
+document.getElementById("edit-avatar-btn").onclick = async () => {
+  if (!session) return;
+  const url = window.prompt("Nouveau lien d'avatar (laisse vide pour retirer) :", session.avatarUrl || "");
+  if (url === null) return;
+  const newUrl = url.trim();
+  const myKey = session.username.toLowerCase();
+  try {
+    await db.collection("dm_users").doc(myKey).update({ avatarUrl: newUrl });
+    session.avatarUrl = newUrl;
+    saveSession(session);
+    applyAvatar(document.getElementById("hub-avatar"), session.username, session.avatarUrl);
+
+    const snap = await db.collection("dm_conversations").where("participants", "array-contains", myKey).get();
+    const batch = db.batch();
+    snap.forEach((d) => {
+      batch.update(d.ref, { [`participantAvatars.${myKey}`]: newUrl });
+    });
+    await batch.commit();
+  } catch (err) {}
+};
 
 document.getElementById("logout-btn").onclick = () => {
   clearSession();
@@ -494,7 +554,9 @@ document.getElementById("new-conv-form").addEventListener("submit", async (e) =>
     document.getElementById("new-conv-form").classList.remove("active");
     document.getElementById("show-new-conv").style.display = "block";
     document.getElementById("new-conv-username").value = "";
-    openConversation(cid, otherData.username, otherData.avatarUrl || "");
+    const okey = otherData.username.toLowerCase();
+    const displayName = (session.nicknames && session.nicknames[okey]) || otherData.username;
+    openConversation(cid, displayName, otherData.avatarUrl || "", okey, otherData.username);
   } catch (err) {
     errEl.textContent = "Erreur. Réessaie.";
   }
@@ -537,7 +599,8 @@ function renderConvList(list) {
   const myKey = session.username.toLowerCase();
   list.forEach((conv) => {
     const otherKey = conv.participants.find(p => p !== myKey);
-    const otherName = conv.participantNames ? conv.participantNames[otherKey] : otherKey;
+    const realName = conv.participantNames ? conv.participantNames[otherKey] : otherKey;
+    const otherName = (session.nicknames && session.nicknames[otherKey]) || realName;
     const otherAvatar = conv.participantAvatars ? (conv.participantAvatars[otherKey] || "") : "";
     const lastRead = (conv.lastReadBy && conv.lastReadBy[myKey]) || 0;
     const isUnread = conv.lastMessageFrom && conv.lastMessageFrom !== myKey && (conv.lastMessageAt || 0) > lastRead;
@@ -557,7 +620,7 @@ function renderConvList(list) {
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg>
       </button>
     `;
-    item.addEventListener("click", () => openConversation(conv.id, otherName, otherAvatar));
+    item.addEventListener("click", () => openConversation(conv.id, otherName, otherAvatar, otherKey, realName));
     item.querySelector(".conv-delete").addEventListener("click", (e) => {
       e.stopPropagation();
       db.collection("dm_conversations").doc(conv.id).update({
@@ -573,11 +636,11 @@ document.getElementById("chat-back").onclick = () => {
   showScreen("screen-hub");
 };
 
-function openConversation(cid, otherName, otherAvatar) {
-  currentConv = { id: cid, otherUser: otherName };
+function openConversation(cid, displayName, otherAvatar, otherKey, realName) {
+  currentConv = { id: cid, otherUser: displayName, otherKey: otherKey, realName: realName };
   const avatarEl = document.getElementById("chat-avatar");
-  applyAvatar(avatarEl, otherName, otherAvatar);
-  document.getElementById("chat-username").textContent = otherName;
+  applyAvatar(avatarEl, displayName, otherAvatar);
+  document.getElementById("chat-username").textContent = displayName;
   showScreen("screen-chat");
   listenMessages();
   const myKey = session.username.toLowerCase();
@@ -585,6 +648,29 @@ function openConversation(cid, otherName, otherAvatar) {
     [`lastReadBy.${myKey}`]: Date.now()
   }).catch(() => {});
 }
+
+document.getElementById("edit-nickname-btn").onclick = async () => {
+  if (!currentConv) return;
+  const current = session.nicknames && session.nicknames[currentConv.otherKey];
+  const value = window.prompt("Surnom pour " + currentConv.realName + " (visible seulement par toi, laisse vide pour retirer) :", current || "");
+  if (value === null) return;
+  const nickname = value.trim();
+  const myKey = session.username.toLowerCase();
+  try {
+    if (nickname) {
+      await db.collection("dm_users").doc(myKey).update({ [`nicknames.${currentConv.otherKey}`]: nickname });
+      session.nicknames = session.nicknames || {};
+      session.nicknames[currentConv.otherKey] = nickname;
+    } else {
+      await db.collection("dm_users").doc(myKey).update({ [`nicknames.${currentConv.otherKey}`]: firebase.firestore.FieldValue.delete() });
+      if (session.nicknames) delete session.nicknames[currentConv.otherKey];
+    }
+    saveSession(session);
+    const displayName = nickname || currentConv.realName;
+    currentConv.otherUser = displayName;
+    document.getElementById("chat-username").textContent = displayName;
+  } catch (err) {}
+};
 
 function listenMessages() {
   if (unsubMessages) unsubMessages();
@@ -594,9 +680,26 @@ function listenMessages() {
     .collection("dm_messages").orderBy("ts", "asc")
     .onSnapshot((snap) => {
       const msgs = [];
-      snap.forEach((doc) => msgs.push(doc.data()));
+      snap.forEach((doc) => msgs.push({ id: doc.id, ...doc.data() }));
       renderMessages(msgs);
     });
+}
+
+const REACTION_EMOJIS = ["❤️", "👍", "😂", "😮", "😢"];
+
+function toggleReaction(messageId, emoji) {
+  const myKey = session.username.toLowerCase();
+  const ref = db.collection("dm_conversations").doc(currentConv.id).collection("dm_messages").doc(messageId);
+  ref.get().then((doc) => {
+    const data = doc.data() || {};
+    const reactions = data.reactions || {};
+    if (reactions[myKey] === emoji) {
+      delete reactions[myKey];
+    } else {
+      reactions[myKey] = emoji;
+    }
+    ref.update({ reactions });
+  }).catch(() => {});
 }
 
 function renderMessages(msgs) {
@@ -606,25 +709,72 @@ function renderMessages(msgs) {
     return;
   }
   el.innerHTML = "";
+  const myKey = session.username.toLowerCase();
   msgs.forEach((m) => {
-    const mine = m.from.toLowerCase() === session.username.toLowerCase();
+    const mine = m.from.toLowerCase() === myKey;
     const row = document.createElement("div");
     row.className = "msg-row " + (mine ? "mine" : "theirs");
-    if (m.image) {
-      row.innerHTML = `
-        <div class="bubble bubble-image"><img src="${escapeHtml(m.image)}" alt="" onerror="this.parentElement.parentElement.style.display='none'"></div>
-        <span class="msg-time">${formatTime(m.ts)}</span>
-      `;
-    } else {
-      row.innerHTML = `
-        <div class="bubble">${escapeHtml(m.text)}</div>
-        <span class="msg-time">${formatTime(m.ts)}</span>
-      `;
+
+    const bubbleHtml = m.image
+      ? `<div class="bubble bubble-image"><img src="${escapeHtml(m.image)}" alt="" onerror="this.parentElement.parentElement.style.display='none'"></div>`
+      : `<div class="bubble">${escapeHtml(m.text)}</div>`;
+
+    const pickerHtml = REACTION_EMOJIS.map(em => `<button type="button" data-emoji="${em}">${em}</button>`).join("");
+
+    row.innerHTML = `
+      <div class="msg-wrap">
+        ${bubbleHtml}
+        <button class="react-trigger" type="button" aria-label="Réagir">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
+        </button>
+        <div class="react-picker">${pickerHtml}</div>
+      </div>
+      <span class="msg-time">${formatTime(m.ts)}</span>
+    `;
+
+    const trigger = row.querySelector(".react-trigger");
+    const picker = row.querySelector(".react-picker");
+    trigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      document.querySelectorAll(".react-picker.open").forEach(p => { if (p !== picker) p.classList.remove("open"); });
+      picker.classList.toggle("open");
+    });
+    picker.querySelectorAll("button").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleReaction(m.id, btn.dataset.emoji);
+        picker.classList.remove("open");
+      });
+    });
+
+    if (m.reactions && Object.keys(m.reactions).length > 0) {
+      const counts = {};
+      Object.entries(m.reactions).forEach(([user, emoji]) => {
+        counts[emoji] = counts[emoji] || { count: 0, mine: false };
+        counts[emoji].count++;
+        if (user === myKey) counts[emoji].mine = true;
+      });
+      const reactionsEl = document.createElement("div");
+      reactionsEl.className = "reactions";
+      Object.entries(counts).forEach(([emoji, info]) => {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "reaction-chip" + (info.mine ? " mine-reaction" : "");
+        chip.textContent = `${emoji} ${info.count}`;
+        chip.addEventListener("click", () => toggleReaction(m.id, emoji));
+        reactionsEl.appendChild(chip);
+      });
+      row.appendChild(reactionsEl);
     }
+
     el.appendChild(row);
   });
   el.scrollTop = el.scrollHeight;
 }
+
+document.addEventListener("click", () => {
+  document.querySelectorAll(".react-picker.open").forEach(p => p.classList.remove("open"));
+});
 
 document.getElementById("chat-form").addEventListener("submit", async (e) => {
   e.preventDefault();
