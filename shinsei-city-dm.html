@@ -260,7 +260,14 @@
     font-size: 11.5px; padding: 5px 9px; border-radius: 8px; margin-bottom: 5px;
     background: rgba(0,0,0,0.15); border-left: 2px solid currentColor; opacity: 0.85;
   }
+  .quoted-block { cursor: pointer; }
   .quoted-block b { font-family: var(--font-mono); font-weight: 500; }
+
+  @keyframes msgFlash {
+    0% { box-shadow: 0 0 0 2px var(--accent); }
+    100% { box-shadow: 0 0 0 2px transparent; }
+  }
+  .msg-flash .bubble { animation: msgFlash 1.1s ease; }
 
   .date-sep { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
   .date-sep::before, .date-sep::after { content: ""; flex: 1; height: 0.5px; background: var(--border); }
@@ -842,6 +849,15 @@ function deleteMessage(messageId, ts) {
   }).catch(() => {});
 }
 
+function scrollToMessage(messageId) {
+  const el = document.getElementById("messages");
+  const target = el.querySelector(`[data-msg-id="${messageId}"]`);
+  if (!target) return;
+  target.scrollIntoView({ behavior: "smooth", block: "center" });
+  target.classList.add("msg-flash");
+  setTimeout(() => target.classList.remove("msg-flash"), 1200);
+}
+
 function renderMessages(msgs) {
   const el = document.getElementById("messages");
   if (msgs.length === 0) {
@@ -867,6 +883,7 @@ function renderMessages(msgs) {
     const mine = m.from.toLowerCase() === myKey;
     const row = document.createElement("div");
     row.className = "msg-row " + (mine ? "mine" : "theirs");
+    row.dataset.msgId = m.id;
 
     if (m.deleted) {
       row.innerHTML = `
@@ -916,6 +933,13 @@ function renderMessages(msgs) {
     `;
 
     const triggers = row.querySelectorAll(".react-trigger");
+    const quoteEl = row.querySelector(".quoted-block");
+    if (quoteEl && m.replyTo) {
+      quoteEl.addEventListener("click", (e) => {
+        e.stopPropagation();
+        scrollToMessage(m.replyTo.id);
+      });
+    }
     const reactBtn = triggers[0];
     const replyBtn = triggers[1];
     const deleteBtn = mine ? triggers[2] : null;
