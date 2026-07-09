@@ -84,6 +84,8 @@
 .echo-cell{position:relative;aspect-ratio:1;overflow:hidden;cursor:pointer;}
 .echo-cell img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .35s ease;}
 .echo-cell:hover img{transform:scale(1.06);}
+.echo-cell-placeholder{display:flex;align-items:center;justify-content:center;background:var(--echo-panel);cursor:default;}
+.echo-cell-placeholder span{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--echo-faint);}
 .echo-empty{padding:36px 16px;text-align:center;color:var(--echo-faint);font-family:'JetBrains Mono',monospace;font-size:11.5px;}
 .echo-empty a{color:var(--echo-cyan);cursor:pointer;}
 
