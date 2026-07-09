@@ -192,8 +192,11 @@
   .msg-time { font-family: var(--font-mono); font-size: 9.5px; color: var(--text-muted); display: block; margin-top: 3px; }
   .msg-row.mine .msg-time { text-align: right; margin-right: 4px; }
   .msg-row.theirs .msg-time { margin-left: 4px; }
-  #chat-form { display: flex; align-items: center; gap: 9px; padding: 13px 16px; border-top: 0.5px solid var(--border); background: var(--bg-surface); }
-  #chat-form input { flex: 1; border-radius: 20px; background: var(--bg-app); }
+  #chat-form { display: flex; align-items: flex-end; gap: 9px; padding: 13px 16px; border-top: 0.5px solid var(--border); background: var(--bg-surface); }
+  #chat-input {
+    flex: 1; border-radius: 18px; background: var(--bg-app); resize: none; overflow-y: auto;
+    max-height: 100px; line-height: 1.4; font-family: var(--font-body);
+  }
   #chat-form button {
     background: var(--accent); border: none; width: 38px; height: 38px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent-ink);
@@ -246,6 +249,25 @@
     border-radius: 10px; padding: 1px 7px; cursor: pointer; color: var(--text-secondary);
   }
   .reaction-chip.mine-reaction { border-color: var(--accent); color: var(--accent); }
+
+  .quote-bar {
+    display: none; align-items: center; gap: 8px; padding: 8px 16px; background: var(--bg-app);
+    border-top: 0.5px solid var(--border); border-left: 2px solid var(--accent);
+  }
+  .quote-bar.open { display: flex; }
+  .quote-bar .qb-text { flex: 1; min-width: 0; font-size: 12px; color: var(--text-secondary); }
+  .quote-bar .qb-text b { color: var(--accent); font-family: var(--font-mono); font-weight: 500; }
+  .quote-bar .qb-close { background: transparent; border: none; color: var(--text-muted); flex-shrink: 0; display: flex; }
+
+  .quoted-block {
+    font-size: 11.5px; padding: 5px 9px; border-radius: 8px; margin-bottom: 5px;
+    background: rgba(0,0,0,0.15); border-left: 2px solid currentColor; opacity: 0.85;
+  }
+  .quoted-block b { font-family: var(--font-mono); font-weight: 500; }
+
+  .date-sep { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
+  .date-sep::before, .date-sep::after { content: ""; flex: 1; height: 0.5px; background: var(--border); }
+  .date-sep span { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.5px; color: var(--text-muted); white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -326,11 +348,17 @@
         </div>
       </div>
       <div id="messages"></div>
+      <div class="quote-bar" id="quote-bar">
+        <div class="qb-text">Réponse à <b id="quote-bar-name"></b><br><span id="quote-bar-snippet"></span></div>
+        <button type="button" class="qb-close" id="quote-bar-close" aria-label="Annuler la citation">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
       <form id="chat-form">
         <button type="button" id="send-image-btn" aria-label="Envoyer une image">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
         </button>
-        <input id="chat-input" type="text" placeholder="Message..." autocomplete="off">
+        <textarea id="chat-input" placeholder="Message..." rows="1"></textarea>
         <button type="submit">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
         </button>
@@ -414,6 +442,22 @@ function formatTime(ts) {
   const d = ts && ts.toDate ? ts.toDate() : new Date(ts);
   return d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
 }
+function toDateObj(ts) { return ts && ts.toDate ? ts.toDate() : new Date(ts); }
+function dayKey(ts) {
+  const d = toDateObj(ts);
+  return d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
+}
+function dateLabel(ts) {
+  const d = toDateObj(ts);
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
+  const dOnly = new Date(d); dOnly.setHours(0, 0, 0, 0);
+  if (dOnly.getTime() === today.getTime()) return "Aujourd'hui";
+  if (dOnly.getTime() === yesterday.getTime()) return "Hier";
+  const opts = { day: "numeric", month: "long" };
+  if (dOnly.getFullYear() !== today.getFullYear()) opts.year = "numeric";
+  return d.toLocaleDateString("fr-FR", opts);
+}
 function escapeHtml(str) {
   const div = document.createElement("div");
   div.textContent = str;
@@ -424,6 +468,32 @@ let session = null;
 let currentConv = null;
 let unsubConvs = null;
 let unsubMessages = null;
+let replyingTo = null;
+
+const chatInputEl = document.getElementById("chat-input");
+chatInputEl.addEventListener("input", () => {
+  chatInputEl.style.height = "auto";
+  chatInputEl.style.height = Math.min(chatInputEl.scrollHeight, 100) + "px";
+});
+chatInputEl.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    document.getElementById("chat-form").requestSubmit();
+  }
+});
+
+function setReply(msg) {
+  replyingTo = { id: msg.id, from: msg.from, snippet: msg.image ? "📷 Image" : (msg.text || "").slice(0, 70) };
+  document.getElementById("quote-bar-name").textContent = msg.from;
+  document.getElementById("quote-bar-snippet").textContent = replyingTo.snippet;
+  document.getElementById("quote-bar").classList.add("open");
+  chatInputEl.focus();
+}
+function clearReply() {
+  replyingTo = null;
+  document.getElementById("quote-bar").classList.remove("open");
+}
+document.getElementById("quote-bar-close").addEventListener("click", clearReply);
 
 function saveSession(s) { localStorage.setItem("shinsei_dm_session", JSON.stringify(s)); }
 function loadSession() {
@@ -710,14 +780,38 @@ function renderMessages(msgs) {
   }
   el.innerHTML = "";
   const myKey = session.username.toLowerCase();
+  const byId = {};
+  msgs.forEach(m => byId[m.id] = m);
+  let lastDay = null;
+
   msgs.forEach((m) => {
+    const key = dayKey(m.ts);
+    if (key !== lastDay) {
+      lastDay = key;
+      const sep = document.createElement("div");
+      sep.className = "date-sep";
+      sep.innerHTML = `<span>${dateLabel(m.ts)}</span>`;
+      el.appendChild(sep);
+    }
+
     const mine = m.from.toLowerCase() === myKey;
     const row = document.createElement("div");
     row.className = "msg-row " + (mine ? "mine" : "theirs");
 
+    let quoteHtml = "";
+    if (m.replyTo) {
+      const orig = byId[m.replyTo.id];
+      const snippet = orig ? (orig.image ? "📷 Image" : (orig.text || "").slice(0, 70)) : m.replyTo.snippet;
+      quoteHtml = `<div class="quoted-block"><b>${escapeHtml(m.replyTo.from)}</b><br>${escapeHtml(snippet)}</div>`;
+    }
+
+    const innerContent = m.image
+      ? `<img src="${escapeHtml(m.image)}" alt="" style="display:block;max-width:220px;width:100%;" onerror="this.style.display='none'">`
+      : escapeHtml(m.text);
+
     const bubbleHtml = m.image
-      ? `<div class="bubble bubble-image"><img src="${escapeHtml(m.image)}" alt="" onerror="this.parentElement.parentElement.style.display='none'"></div>`
-      : `<div class="bubble">${escapeHtml(m.text)}</div>`;
+      ? `<div class="bubble bubble-image">${quoteHtml ? `<div style="padding:9px 13px 0;">${quoteHtml}</div>` : ""}${innerContent}</div>`
+      : `<div class="bubble">${quoteHtml}${innerContent}</div>`;
 
     const pickerHtml = REACTION_EMOJIS.map(em => `<button type="button" data-emoji="${em}">${em}</button>`).join("");
 
@@ -727,17 +821,26 @@ function renderMessages(msgs) {
         <button class="react-trigger" type="button" aria-label="Réagir">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
         </button>
+        <button class="react-trigger" type="button" aria-label="Répondre">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17l-5-5 5-5M4 12h11a4 4 0 010 8h-1"/></svg>
+        </button>
         <div class="react-picker">${pickerHtml}</div>
       </div>
       <span class="msg-time">${formatTime(m.ts)}</span>
     `;
 
-    const trigger = row.querySelector(".react-trigger");
+    const triggers = row.querySelectorAll(".react-trigger");
+    const reactBtn = triggers[0];
+    const replyBtn = triggers[1];
     const picker = row.querySelector(".react-picker");
-    trigger.addEventListener("click", (e) => {
+    reactBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       document.querySelectorAll(".react-picker.open").forEach(p => { if (p !== picker) p.classList.remove("open"); });
       picker.classList.toggle("open");
+    });
+    replyBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      setReply(m);
     });
     picker.querySelectorAll("button").forEach(btn => {
       btn.addEventListener("click", (e) => {
@@ -781,11 +884,16 @@ document.getElementById("chat-form").addEventListener("submit", async (e) => {
   const input = document.getElementById("chat-input");
   const text = input.value.trim();
   if (!text || !currentConv) return;
+  const replySnapshot = replyingTo;
   input.value = "";
+  input.style.height = "auto";
+  clearReply();
   try {
     const ts = Date.now();
+    const msgData = { from: session.username, text, ts };
+    if (replySnapshot) msgData.replyTo = replySnapshot;
     await db.collection("dm_conversations").doc(currentConv.id)
-      .collection("dm_messages").add({ from: session.username, text, ts });
+      .collection("dm_messages").add(msgData);
     await db.collection("dm_conversations").doc(currentConv.id).update({
       lastMessage: text,
       lastMessageAt: ts,
@@ -795,6 +903,7 @@ document.getElementById("chat-form").addEventListener("submit", async (e) => {
     });
   } catch (err) {
     input.value = text;
+    if (replySnapshot) setReply({ id: replySnapshot.id, from: replySnapshot.from, text: replySnapshot.snippet });
   }
 });
 
@@ -803,10 +912,14 @@ document.getElementById("send-image-btn").addEventListener("click", async () => 
   const url = window.prompt("Colle le lien de l'image (URL) :");
   if (!url || !url.trim()) return;
   const imageUrl = url.trim();
+  const replySnapshot = replyingTo;
+  clearReply();
   try {
     const ts = Date.now();
+    const msgData = { from: session.username, image: imageUrl, ts };
+    if (replySnapshot) msgData.replyTo = replySnapshot;
     await db.collection("dm_conversations").doc(currentConv.id)
-      .collection("dm_messages").add({ from: session.username, image: imageUrl, ts });
+      .collection("dm_messages").add(msgData);
     await db.collection("dm_conversations").doc(currentConv.id).update({
       lastMessage: "📷 Image",
       lastMessageAt: ts,
