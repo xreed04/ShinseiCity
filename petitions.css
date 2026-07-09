@@ -431,3 +431,8 @@
 .gbpetgauge.undefined span {
   background: color-mix(in srgb, var(--accent1) 45%, var(--border1-c));
 }
+
+
+.gbpetlist-head .gbpet-tag {
+  text-shadow: none;
+}
