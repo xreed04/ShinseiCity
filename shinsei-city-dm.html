@@ -265,6 +265,14 @@
   .date-sep { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
   .date-sep::before, .date-sep::after { content: ""; flex: 1; height: 0.5px; background: var(--border); }
   .date-sep span { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.5px; color: var(--text-muted); white-space: nowrap; }
+
+  .presence-dot {
+    position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px;
+    border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 2px var(--bg-app);
+  }
+  #chat-top .presence-dot { box-shadow: 0 0 0 2px var(--bg-surface); }
+
+  .bubble.deleted { font-style: italic; color: var(--text-muted) !important; background: transparent !important; border: 0.5px dashed var(--border) !important; }
 </style>
 </head>
 <body>
@@ -334,7 +342,10 @@
         <span id="chat-back">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
         </span>
-        <div class="avatar" id="chat-avatar"></div>
+        <div style="position:relative;">
+          <div class="avatar" id="chat-avatar"></div>
+          <span class="presence-dot" id="chat-presence-dot" style="display:none;"></span>
+        </div>
         <div>
           <div class="top-line">
             <span id="chat-username"></span>
@@ -466,6 +477,49 @@ let currentConv = null;
 let unsubConvs = null;
 let unsubMessages = null;
 let replyingTo = null;
+let lastConvList = [];
+let presenceData = {};
+let presenceUnsubs = {};
+let heartbeatInterval = null;
+let presenceRefreshInterval = null;
+
+const ONLINE_THRESHOLD_MS = 60000;
+function isOnline(lastSeen) {
+  return !!lastSeen && (Date.now() - lastSeen) < ONLINE_THRESHOLD_MS;
+}
+
+function startHeartbeat() {
+  const myKey = session.username.toLowerCase();
+  const beat = () => db.collection("dm_users").doc(myKey).update({ lastSeen: Date.now() }).catch(() => {});
+  beat();
+  heartbeatInterval = setInterval(beat, 25000);
+}
+function stopHeartbeat() {
+  if (heartbeatInterval) clearInterval(heartbeatInterval);
+  heartbeatInterval = null;
+}
+
+function ensurePresenceSub(otherKey) {
+  if (presenceUnsubs[otherKey] || !otherKey) return;
+  presenceUnsubs[otherKey] = db.collection("dm_users").doc(otherKey).onSnapshot((doc) => {
+    presenceData[otherKey] = (doc.data() || {}).lastSeen || 0;
+    refreshPresenceUI();
+  }, () => {});
+}
+function stopAllPresence() {
+  Object.values(presenceUnsubs).forEach(u => u());
+  presenceUnsubs = {};
+  presenceData = {};
+}
+function refreshPresenceUI() {
+  if (document.getElementById("screen-hub").classList.contains("active")) {
+    renderConvList(lastConvList);
+  }
+  if (currentConv && currentConv.otherKey) {
+    const dot = document.getElementById("chat-presence-dot");
+    dot.style.display = isOnline(presenceData[currentConv.otherKey]) ? "block" : "none";
+  }
+}
 
 const chatInputEl = document.getElementById("chat-input");
 
@@ -566,6 +620,9 @@ document.getElementById("logout-btn").onclick = () => {
   session = null;
   if (unsubConvs) unsubConvs();
   if (unsubMessages) unsubMessages();
+  stopHeartbeat();
+  stopAllPresence();
+  if (presenceRefreshInterval) { clearInterval(presenceRefreshInterval); presenceRefreshInterval = null; }
   showScreen("screen-login");
 };
 
@@ -625,6 +682,8 @@ function enterHub() {
   document.getElementById("hub-username").textContent = session.username;
   showScreen("screen-hub");
   listenConversations();
+  startHeartbeat();
+  if (!presenceRefreshInterval) presenceRefreshInterval = setInterval(refreshPresenceUI, 20000);
 }
 
 function listenConversations() {
@@ -640,6 +699,11 @@ function listenConversations() {
         list.push(data);
       });
       list.sort((a, b) => (b.lastMessageAt || 0) - (a.lastMessageAt || 0));
+      list.forEach((conv) => {
+        const otherKey = conv.participants.find(p => p !== myKey);
+        ensurePresenceSub(otherKey);
+      });
+      lastConvList = list;
       renderConvList(list);
     }, () => {
       document.getElementById("conv-list").innerHTML = '<div class="empty-state">Impossible de charger les conversations.</div>';
@@ -665,7 +729,7 @@ function renderConvList(list) {
     const item = document.createElement("div");
     item.className = "conv-item" + (isUnread ? " unread" : "");
     item.innerHTML = `
-      <div class="avatar" style="width:44px;height:44px;font-size:16px;${avatarInlineStyle(otherName, otherAvatar)}">${avatarInlineLetter(otherName, otherAvatar)}</div>
+      <div class="avatar" style="width:44px;height:44px;font-size:16px;${avatarInlineStyle(otherName, otherAvatar)}">${avatarInlineLetter(otherName, otherAvatar)}${isOnline(presenceData[otherKey]) ? '<span class="presence-dot"></span>' : ''}</div>
       <div class="info">
         <div class="top-line">
           <span>${escapeHtml(otherName)}</span>
@@ -700,6 +764,8 @@ function openConversation(cid, displayName, otherAvatar, otherKey, realName) {
   document.getElementById("chat-username").textContent = displayName;
   showScreen("screen-chat");
   listenMessages();
+  ensurePresenceSub(otherKey);
+  document.getElementById("chat-presence-dot").style.display = isOnline(presenceData[otherKey]) ? "block" : "none";
   const myKey = session.username.toLowerCase();
   db.collection("dm_conversations").doc(cid).update({
     [`lastReadBy.${myKey}`]: Date.now()
@@ -759,6 +825,23 @@ function toggleReaction(messageId, emoji) {
   }).catch(() => {});
 }
 
+function deleteMessage(messageId, ts) {
+  const convRef = db.collection("dm_conversations").doc(currentConv.id);
+  convRef.collection("dm_messages").doc(messageId).update({
+    deleted: true,
+    text: "",
+    image: firebase.firestore.FieldValue.delete(),
+    reactions: {},
+  }).then(() => {
+    convRef.get().then((doc) => {
+      const data = doc.data() || {};
+      if (data.lastMessageAt === ts) {
+        convRef.update({ lastMessage: "Message supprimé" });
+      }
+    });
+  }).catch(() => {});
+}
+
 function renderMessages(msgs) {
   const el = document.getElementById("messages");
   if (msgs.length === 0) {
@@ -785,10 +868,21 @@ function renderMessages(msgs) {
     const row = document.createElement("div");
     row.className = "msg-row " + (mine ? "mine" : "theirs");
 
+    if (m.deleted) {
+      row.innerHTML = `
+        <div class="msg-wrap">
+          <div class="bubble deleted">Message supprimé</div>
+        </div>
+        <span class="msg-time">${formatTime(m.ts)}</span>
+      `;
+      el.appendChild(row);
+      return;
+    }
+
     let quoteHtml = "";
     if (m.replyTo) {
       const orig = byId[m.replyTo.id];
-      const snippet = orig ? (orig.image ? "📷 Image" : (orig.text || "").slice(0, 70)) : m.replyTo.snippet;
+      const snippet = orig ? (orig.deleted ? "Message supprimé" : (orig.image ? "📷 Image" : (orig.text || "").slice(0, 70))) : m.replyTo.snippet;
       quoteHtml = `<div class="quoted-block"><b>${escapeHtml(m.replyTo.from)}</b><br>${escapeHtml(snippet)}</div>`;
     }
 
@@ -802,6 +896,11 @@ function renderMessages(msgs) {
 
     const pickerHtml = REACTION_EMOJIS.map(em => `<button type="button" data-emoji="${em}">${em}</button>`).join("");
 
+    const deleteBtnHtml = mine ? `
+        <button class="react-trigger" type="button" aria-label="Supprimer">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg>
+        </button>` : "";
+
     row.innerHTML = `
       <div class="msg-wrap">
         ${bubbleHtml}
@@ -810,7 +909,7 @@ function renderMessages(msgs) {
         </button>
         <button class="react-trigger" type="button" aria-label="Répondre">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17l-5-5 5-5M4 12h11a4 4 0 010 8h-1"/></svg>
-        </button>
+        </button>${deleteBtnHtml}
         <div class="react-picker">${pickerHtml}</div>
       </div>
       <span class="msg-time">${formatTime(m.ts)}</span>
@@ -819,6 +918,7 @@ function renderMessages(msgs) {
     const triggers = row.querySelectorAll(".react-trigger");
     const reactBtn = triggers[0];
     const replyBtn = triggers[1];
+    const deleteBtn = mine ? triggers[2] : null;
     const picker = row.querySelector(".react-picker");
     reactBtn.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -829,6 +929,12 @@ function renderMessages(msgs) {
       e.stopPropagation();
       setReply(m);
     });
+    if (deleteBtn) {
+      deleteBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (window.confirm("Supprimer ce message ?")) deleteMessage(m.id, m.ts);
+      });
+    }
     picker.querySelectorAll("button").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
