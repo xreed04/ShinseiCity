@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shinsei City · Instagram</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-page: #06070a;
+    --bg-app: #0a0b10;
+    --bg-surface: #14161c;
+    --bg-input: #191b22;
+    --border: #23262f;
+    --border-soft: #1a1c24;
+    --text-primary: #e9e7df;
+    --text-secondary: #8d8f9a;
+    --text-muted: #55575f;
+    --accent: #5DCAA5;
+    --accent-ink: #04342C;
+    --font-display: 'Rajdhani', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-body: 'Inter', -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    background: var(--bg-page);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(93,202,165,0.025) 0px, rgba(93,202,165,0.025) 1px, transparent 1px, transparent 34px),
+      repeating-linear-gradient(90deg, rgba(93,202,165,0.025) 0px, rgba(93,202,165,0.025) 1px, transparent 1px, transparent 34px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  #frame {
+    position: relative;
+    max-width: 390px;
+    width: 100%;
+    padding: 10px;
+  }
+  #frame::before, #frame::after,
+  #frame .br-tl, #frame .br-br {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-color: var(--accent);
+    opacity: 0.85;
+  }
+  #frame::before { top: 0; left: 0; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+  #frame::after { bottom: 0; right: 0; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+  #frame .br-tl { top: 0; right: 0; border-top: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+  #frame .br-br { bottom: 0; left: 0; border-bottom: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+
+  #app {
+    background: var(--bg-app);
+    border: 0.5px solid var(--border);
+    overflow: hidden;
+    min-height: 560px;
+    display: flex;
+    flex-direction: column;
+  }
+  .screen { display: none; flex-direction: column; flex: 1; }
+  .screen.active { display: flex; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  input, select {
+    width: 100%;
+    background: var(--bg-input);
+    border: 0.5px solid var(--border);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: var(--font-body);
+    padding: 11px 14px;
+    border-radius: 6px;
+    outline: none;
+  }
+  input:focus, select:focus { border-color: var(--accent); }
+  button { font-family: var(--font-body); cursor: pointer; }
+
+  .btn-primary {
+    width: 100%;
+    background: var(--accent);
+    color: var(--accent-ink);
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-primary);
+    border: 0.5px solid var(--border);
+    padding: 12px;
+    border-radius: 6px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .error-text { font-size: 12px; color: #E8807F; padding: 4px 2px; font-family: var(--font-mono); }
+
+  .avatar {
+    position: relative;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .avatar::before, .avatar::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+  }
+  .avatar::before { top: -2px; left: -2px; border-top: 1.5px solid var(--accent); border-left: 1.5px solid var(--accent); }
+  .avatar::after { bottom: -2px; right: -2px; border-bottom: 1.5px solid var(--accent); border-right: 1.5px solid var(--accent); }
+
+  /* Login screen */
+  #login-header { padding: 36px 26px 22px; text-align: center; border-bottom: 0.5px solid var(--border-soft); margin-bottom: 22px; }
+  #login-header .title { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--text-primary); letter-spacing: 1px; text-transform: uppercase; }
+  #login-header .subtitle { font-family: var(--font-mono); font-size: 11px; color: var(--accent); margin-top: 6px; }
+  .mode-toggle { display: flex; margin: 0 26px 20px; background: var(--bg-input); border-radius: 6px; padding: 3px; }
+  .mode-toggle button {
+    flex: 1; padding: 9px; border: none; border-radius: 4px; font-family: var(--font-display);
+    font-size: 13px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase;
+    background: transparent; color: var(--text-secondary);
+  }
+  .mode-toggle button.active { background: var(--bg-surface); color: var(--text-primary); }
+  #login-form { padding: 0 26px; display: flex; flex-direction: column; gap: 14px; }
+  #login-form label.eyebrow { display: block; margin-bottom: 7px; }
+  #login-footer { padding: 20px 26px; margin-top: auto; font-size: 11px; color: var(--text-muted); line-height: 1.6; text-align: center; border-top: 0.5px solid var(--border-soft); }
+
+  /* Hub screen */
+  #hub-top { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 0.5px solid var(--border); }
+  #hub-top .who { display: flex; align-items: center; gap: 11px; }
+  #hub-top .avatar { width: 34px; height: 34px; font-size: 13px; background: var(--bg-surface); color: var(--accent); }
+  #hub-top .username { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--text-primary); letter-spacing: 0.3px; }
+  #logout-btn { background: transparent; border: none; color: var(--text-muted); font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; }
+  #new-conv-zone { padding: 14px 18px; border-bottom: 0.5px solid var(--border); }
+  #new-conv-form { display: none; flex-direction: column; gap: 8px; }
+  #new-conv-form.active { display: flex; }
+  #new-conv-form .row { display: flex; gap: 8px; }
+  #new-conv-form .row button { flex: 1; }
+  #conv-list { flex: 1; overflow-y: auto; }
+  .conv-item { display: flex; align-items: center; gap: 13px; padding: 13px 18px; cursor: pointer; border-bottom: 0.5px solid var(--border-soft); transition: background 0.15s; }
+  .conv-item:hover { background: var(--bg-surface); }
+  .conv-item .avatar { width: 44px; height: 44px; font-size: 16px; }
+  .conv-item .info { flex: 1; min-width: 0; }
+  .conv-item .top-line { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
+  .conv-item .top-line span:first-child { font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--text-primary); letter-spacing: 0.2px; }
+  .conv-item .preview { font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .empty-state { padding: 44px 22px; text-align: center; color: var(--text-muted); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.3px; }
+
+  /* Chat screen */
+  #chat-top { display: flex; align-items: center; gap: 11px; padding: 14px 18px; border-bottom: 0.5px solid var(--border); background: var(--bg-surface); }
+  #chat-back { color: var(--text-primary); cursor: pointer; display: flex; align-items: center; }
+  #chat-top .avatar { width: 32px; height: 32px; font-size: 12px; }
+  #chat-top .top-line { display: flex; align-items: center; gap: 8px; }
+  #chat-top .top-line span:first-child { font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--text-primary); letter-spacing: 0.2px; }
+  #messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; min-height: 320px; }
+  .msg-row { max-width: 75%; }
+  .msg-row.mine { align-self: flex-end; }
+  .msg-row.theirs { align-self: flex-start; }
+  .bubble { font-size: 13.5px; padding: 9px 13px; line-height: 1.45; word-break: break-word; font-family: var(--font-body); }
+  .msg-row.mine .bubble { background: var(--accent); color: var(--accent-ink); border-radius: 14px 14px 3px 14px; }
+  .msg-row.theirs .bubble { background: var(--bg-surface); color: var(--text-primary); border-radius: 14px 14px 14px 3px; border: 0.5px solid var(--border); }
+  .msg-time { font-family: var(--font-mono); font-size: 9.5px; color: var(--text-muted); display: block; margin-top: 3px; }
+  .msg-row.mine .msg-time { text-align: right; margin-right: 4px; }
+  .msg-row.theirs .msg-time { margin-left: 4px; }
+  #chat-form { display: flex; align-items: center; gap: 9px; padding: 13px 16px; border-top: 0.5px solid var(--border); background: var(--bg-surface); }
+  #chat-form input { flex: 1; border-radius: 20px; background: var(--bg-app); }
+  #chat-form button {
+    background: var(--accent); border: none; width: 38px; height: 38px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent-ink);
+  }
+
+  #boot-error { padding: 30px 26px; color: #E8807F; font-family: var(--font-mono); font-size: 12px; text-align: center; line-height: 1.7; }
+</style>
+</head>
+<body>
+
+<div id="frame">
+  <span class="br-tl"></span><span class="br-br"></span>
+  <div id="app">
+    <div id="boot-error" style="display:none;"></div>
+
+    <div id="screen-login" class="screen active">
+      <div id="login-header">
+        <div class="title">Shinsei City</div>
+        <div class="subtitle">// réseau citoyen — instagram</div>
+      </div>
+      <div class="mode-toggle">
+        <button id="mode-login" class="active" type="button">Connexion</button>
+        <button id="mode-create" type="button">Créer un compte</button>
+      </div>
+      <form id="login-form">
+        <div>
+          <label class="eyebrow">Identifiant citoyen</label>
+          <input id="login-username" type="text" placeholder="pseudo_du_perso" autocomplete="off">
+        </div>
+        <div>
+          <label class="eyebrow">Code d'accès</label>
+          <input id="login-code" type="password" placeholder="code perso" autocomplete="off">
+        </div>
+        <div id="login-error" class="error-text"></div>
+        <button type="submit" class="btn-primary" id="login-submit" style="margin-top:6px;">Se connecter</button>
+      </form>
+      <div id="login-footer">
+        Le code protège ton compte des curieux, entre joueurs de confiance. Ce n'est pas un système sécurisé, ne réutilise pas un mot de passe important.
+      </div>
+    </div>
+
+    <div id="screen-hub" class="screen">
+      <div id="hub-top">
+        <div class="who">
+          <div class="avatar" id="hub-avatar"></div>
+          <span class="username" id="hub-username"></span>
+        </div>
+        <button id="logout-btn" type="button">Déconnexion</button>
+      </div>
+      <div id="new-conv-zone">
+        <button class="btn-primary" id="show-new-conv" type="button">+ Nouvelle conversation</button>
+        <form id="new-conv-form">
+          <input id="new-conv-username" type="text" placeholder="Pseudo du destinataire" autocomplete="off">
+          <div id="new-conv-error" class="error-text"></div>
+          <div class="row">
+            <button type="submit" class="btn-primary">Démarrer</button>
+            <button type="button" class="btn-ghost" id="cancel-new-conv">Annuler</button>
+          </div>
+        </form>
+      </div>
+      <div id="conv-list"></div>
+    </div>
+
+    <div id="screen-chat" class="screen">
+      <div id="chat-top">
+        <span id="chat-back">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </span>
+        <div class="avatar" id="chat-avatar"></div>
+        <div>
+          <div class="top-line">
+            <span id="chat-username"></span>
+          </div>
+        </div>
+      </div>
+      <div id="messages"></div>
+      <form id="chat-form">
+        <input id="chat-input" type="text" placeholder="Message..." autocomplete="off">
+        <button type="submit">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase (compat SDK, simple <script> tags, no build step) -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+
+<script>
+/* ============================================================
+   CONFIGURATION FIREBASE
+   Remplace les valeurs ci-dessous par celles de TON projet Firebase.
+   Console Firebase > Paramètres du projet > Tes applications > Config
+   ============================================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyA3NrJ_MF_Xz0-D2o8tP6vG2NQXu8wFCrU",
+  authDomain: "shinsei-city.firebaseapp.com",
+  projectId: "shinsei-city",
+  storageBucket: "shinsei-city.firebasestorage.app",
+  messagingSenderId: "23807897974",
+  appId: "1:23807897974:web:2f2a59c1836de1fb770a57"
+};
+
+let db;
+try {
+  if (firebaseConfig.apiKey === "COLLE_TA_APIKEY_ICI") {
+    throw new Error("CONFIG_MISSING");
+  }
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+} catch (e) {
+  document.getElementById("boot-error").style.display = "block";
+  document.getElementById("boot-error").textContent =
+    e.message === "CONFIG_MISSING"
+      ? "Configuration Firebase manquante. Remplace les valeurs firebaseConfig en haut du fichier avec celles de ton projet Firebase."
+      : "Erreur de connexion à Firebase. Vérifie ta configuration.";
+}
+
+const AVATAR_COLORS = [
+  { bg: "#3C3489", text: "#CECBF6" },
+  { bg: "#085041", text: "#5DCAA5" },
+  { bg: "#712B13", text: "#F0997B" },
+  { bg: "#72243E", text: "#ED93B1" },
+  { bg: "#0C447C", text: "#85B7EB" },
+  { bg: "#633806", text: "#EF9F27" },
+];
+function colorFor(name) {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+}
+function convId(a, b) { return [a.toLowerCase(), b.toLowerCase()].sort().join("__"); }
+function formatTime(ts) {
+  const d = ts && ts.toDate ? ts.toDate() : new Date(ts);
+  return d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+}
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+let session = null;
+let currentConv = null;
+let unsubConvs = null;
+let unsubMessages = null;
+
+function saveSession(s) { localStorage.setItem("shinsei_dm_session", JSON.stringify(s)); }
+function loadSession() {
+  try {
+    const raw = localStorage.getItem("shinsei_dm_session");
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) { return null; }
+}
+function clearSession() { localStorage.removeItem("shinsei_dm_session"); }
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+let loginMode = "login";
+document.getElementById("mode-login").onclick = () => setLoginMode("login");
+document.getElementById("mode-create").onclick = () => setLoginMode("create");
+function setLoginMode(mode) {
+  loginMode = mode;
+  document.getElementById("mode-login").classList.toggle("active", mode === "login");
+  document.getElementById("mode-create").classList.toggle("active", mode === "create");
+  document.getElementById("login-submit").textContent = mode === "login" ? "Se connecter" : "Créer mon compte";
+  document.getElementById("login-error").textContent = "";
+}
+
+document.getElementById("login-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const errEl = document.getElementById("login-error");
+  errEl.textContent = "";
+  const uname = document.getElementById("login-username").value.trim();
+  const pass = document.getElementById("login-code").value.trim();
+
+  if (!uname || !pass) { errEl.textContent = "Remplis le pseudo et le code."; return; }
+  if (!/^[a-zA-Z0-9_.]{2,20}$/.test(uname)) { errEl.textContent = "Pseudo invalide (lettres, chiffres, _ et . uniquement)."; return; }
+
+  try {
+    const ref = db.collection("dm_users").doc(uname.toLowerCase());
+    const doc = await ref.get();
+
+    if (loginMode === "create") {
+      if (doc.exists) { errEl.textContent = "Ce pseudo existe déjà. Connecte-toi plutôt."; return; }
+      await ref.set({ username: uname, code: pass, createdAt: Date.now() });
+      session = { username: uname };
+    } else {
+      if (!doc.exists) { errEl.textContent = "Pseudo inconnu. Crée un compte d'abord."; return; }
+      const data = doc.data();
+      if (data.code !== pass) { errEl.textContent = "Code incorrect."; return; }
+      session = { username: data.username };
+    }
+    saveSession(session);
+    enterHub();
+  } catch (err) {
+    errEl.textContent = "Erreur de connexion. Vérifie ta configuration Firebase.";
+  }
+});
+
+document.getElementById("logout-btn").onclick = () => {
+  clearSession();
+  session = null;
+  if (unsubConvs) unsubConvs();
+  if (unsubMessages) unsubMessages();
+  showScreen("screen-login");
+};
+
+document.getElementById("show-new-conv").onclick = () => {
+  document.getElementById("new-conv-form").classList.add("active");
+  document.getElementById("show-new-conv").style.display = "none";
+};
+document.getElementById("cancel-new-conv").onclick = () => {
+  document.getElementById("new-conv-form").classList.remove("active");
+  document.getElementById("show-new-conv").style.display = "block";
+  document.getElementById("new-conv-error").textContent = "";
+  document.getElementById("new-conv-username").value = "";
+};
+
+document.getElementById("new-conv-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const errEl = document.getElementById("new-conv-error");
+  errEl.textContent = "";
+  const other = document.getElementById("new-conv-username").value.trim();
+  if (!other) return;
+  if (other.toLowerCase() === session.username.toLowerCase()) { errEl.textContent = "Tu ne peux pas discuter avec toi-même."; return; }
+
+  try {
+    const otherDoc = await db.collection("dm_users").doc(other.toLowerCase()).get();
+    if (!otherDoc.exists) { errEl.textContent = "Ce joueur n'a pas encore de compte."; return; }
+    const otherData = otherDoc.data();
+    const cid = convId(session.username, other);
+
+    const convRef = db.collection("dm_conversations").doc(cid);
+    const convDoc = await convRef.get();
+    if (!convDoc.exists) {
+      await convRef.set({
+        participants: [session.username.toLowerCase(), otherData.username.toLowerCase()],
+        participantNames: { [session.username.toLowerCase()]: session.username, [otherData.username.toLowerCase()]: otherData.username },
+        lastMessage: "",
+        lastMessageAt: Date.now(),
+      });
+    }
+    document.getElementById("new-conv-form").classList.remove("active");
+    document.getElementById("show-new-conv").style.display = "block";
+    document.getElementById("new-conv-username").value = "";
+    openConversation(cid, otherData.username);
+  } catch (err) {
+    errEl.textContent = "Erreur. Réessaie.";
+  }
+});
+
+function enterHub() {
+  const c = colorFor(session.username);
+  const avatarEl = document.getElementById("hub-avatar");
+  avatarEl.style.background = c.bg;
+  avatarEl.style.color = c.text;
+  avatarEl.textContent = session.username[0].toUpperCase();
+  document.getElementById("hub-username").textContent = session.username;
+  showScreen("screen-hub");
+  listenConversations();
+}
+
+function listenConversations() {
+  if (unsubConvs) unsubConvs();
+  unsubConvs = db.collection("dm_conversations")
+    .where("participants", "array-contains", session.username.toLowerCase())
+    .onSnapshot((snap) => {
+      const list = [];
+      snap.forEach((doc) => list.push({ id: doc.id, ...doc.data() }));
+      list.sort((a, b) => (b.lastMessageAt || 0) - (a.lastMessageAt || 0));
+      renderConvList(list);
+    }, () => {
+      document.getElementById("conv-list").innerHTML = '<div class="empty-state">Impossible de charger les conversations.</div>';
+    });
+}
+
+function renderConvList(list) {
+  const el = document.getElementById("conv-list");
+  if (list.length === 0) {
+    el.innerHTML = '<div class="empty-state">Aucune conversation pour l\'instant.</div>';
+    return;
+  }
+  el.innerHTML = "";
+  list.forEach((conv) => {
+    const myKey = session.username.toLowerCase();
+    const otherKey = conv.participants.find(p => p !== myKey);
+    const otherName = conv.participantNames ? conv.participantNames[otherKey] : otherKey;
+    const oc = colorFor(otherName);
+
+    const item = document.createElement("div");
+    item.className = "conv-item";
+    item.innerHTML = `
+      <div class="avatar" style="width:44px;height:44px;font-size:16px;background:${oc.bg};color:${oc.text};">${otherName[0].toUpperCase()}</div>
+      <div class="info">
+        <div class="top-line">
+          <span>${escapeHtml(otherName)}</span>
+        </div>
+        <div class="preview">${escapeHtml(conv.lastMessage || "Démarrer la conversation")}</div>
+      </div>
+    `;
+    item.onclick = () => openConversation(conv.id, otherName);
+    el.appendChild(item);
+  });
+}
+
+document.getElementById("chat-back").onclick = () => {
+  if (unsubMessages) unsubMessages();
+  showScreen("screen-hub");
+};
+
+function openConversation(cid, otherName) {
+  currentConv = { id: cid, otherUser: otherName };
+  const oc = colorFor(otherName);
+  const avatarEl = document.getElementById("chat-avatar");
+  avatarEl.style.background = oc.bg;
+  avatarEl.style.color = oc.text;
+  avatarEl.textContent = otherName[0].toUpperCase();
+  document.getElementById("chat-username").textContent = otherName;
+  showScreen("screen-chat");
+  listenMessages();
+}
+
+function listenMessages() {
+  if (unsubMessages) unsubMessages();
+  const el = document.getElementById("messages");
+  el.innerHTML = "";
+  unsubMessages = db.collection("dm_conversations").doc(currentConv.id)
+    .collection("dm_messages").orderBy("ts", "asc")
+    .onSnapshot((snap) => {
+      const msgs = [];
+      snap.forEach((doc) => msgs.push(doc.data()));
+      renderMessages(msgs);
+    });
+}
+
+function renderMessages(msgs) {
+  const el = document.getElementById("messages");
+  if (msgs.length === 0) {
+    el.innerHTML = '<div class="empty-state" style="margin-top:20px;">Aucun message. Lance la conversation.</div>';
+    return;
+  }
+  el.innerHTML = "";
+  msgs.forEach((m) => {
+    const mine = m.from.toLowerCase() === session.username.toLowerCase();
+    const row = document.createElement("div");
+    row.className = "msg-row " + (mine ? "mine" : "theirs");
+    row.innerHTML = `
+      <div class="bubble">${escapeHtml(m.text)}</div>
+      <span class="msg-time">${formatTime(m.ts)}</span>
+    `;
+    el.appendChild(row);
+  });
+  el.scrollTop = el.scrollHeight;
+}
+
+document.getElementById("chat-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const input = document.getElementById("chat-input");
+  const text = input.value.trim();
+  if (!text || !currentConv) return;
+  input.value = "";
+  try {
+    const ts = Date.now();
+    await db.collection("dm_conversations").doc(currentConv.id)
+      .collection("dm_messages").add({ from: session.username, text, ts });
+    await db.collection("dm_conversations").doc(currentConv.id).update({
+      lastMessage: text,
+      lastMessageAt: ts,
+    });
+  } catch (err) {
+    input.value = text;
+  }
+});
+
+(function boot() {
+  if (!db) return;
+  const saved = loadSession();
+  if (saved) {
+    session = saved;
+    enterHub();
+  }
+})();
+</script>
+
+</body>
+</html>
