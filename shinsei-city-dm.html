@@ -196,6 +196,19 @@
     background: var(--accent); border: none; width: 38px; height: 38px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent-ink);
   }
+  #send-image-btn { background: var(--bg-app); border: 0.5px solid var(--border); color: var(--text-secondary); }
+  .bubble-image { padding: 0 !important; overflow: hidden; }
+  .bubble-image img { display: block; max-width: 220px; width: 100%; }
+
+  .conv-item { position: relative; }
+  .conv-item.unread .top-line span:first-child { color: var(--text-primary); }
+  .conv-item.unread .preview { color: var(--text-primary); font-weight: 500; }
+  .unread-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .conv-delete {
+    background: transparent; border: none; color: var(--text-muted); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; padding: 6px; opacity: 0.5;
+  }
+  .conv-delete:hover { opacity: 1; color: #E8807F; }
 
   #boot-error { padding: 30px 26px; color: #E8807F; font-family: var(--font-mono); font-size: 12px; text-align: center; line-height: 1.7; }
 </style>
@@ -224,6 +237,10 @@
         <div>
           <label class="eyebrow">Code d'accès</label>
           <input id="login-code" type="password" placeholder="code perso" autocomplete="off">
+        </div>
+        <div id="avatar-field" style="display:none;">
+          <label class="eyebrow">Avatar (lien image, optionnel)</label>
+          <input id="login-avatar" type="text" placeholder="https://..." autocomplete="off">
         </div>
         <div id="login-error" class="error-text"></div>
         <button type="submit" class="btn-primary" id="login-submit" style="margin-top:6px;">Se connecter</button>
@@ -269,6 +286,9 @@
       </div>
       <div id="messages"></div>
       <form id="chat-form">
+        <button type="button" id="send-image-btn" aria-label="Envoyer une image">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        </button>
         <input id="chat-input" type="text" placeholder="Message..." autocomplete="off">
         <button type="submit">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
@@ -326,6 +346,29 @@ function colorFor(name) {
   return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
 }
 function convId(a, b) { return [a.toLowerCase(), b.toLowerCase()].sort().join("__"); }
+function applyAvatar(el, name, avatarUrl) {
+  if (avatarUrl) {
+    el.style.background = "";
+    el.style.backgroundImage = `url('${avatarUrl}')`;
+    el.style.backgroundSize = "cover";
+    el.style.backgroundPosition = "center";
+    el.textContent = "";
+  } else {
+    const c = colorFor(name);
+    el.style.backgroundImage = "none";
+    el.style.background = c.bg;
+    el.style.color = c.text;
+    el.textContent = name[0].toUpperCase();
+  }
+}
+function avatarInlineStyle(name, avatarUrl) {
+  if (avatarUrl) return `background-image:url('${avatarUrl.replace(/'/g, "%27")}');background-size:cover;background-position:center;`;
+  const c = colorFor(name);
+  return `background:${c.bg};color:${c.text};`;
+}
+function avatarInlineLetter(name, avatarUrl) {
+  return avatarUrl ? "" : name[0].toUpperCase();
+}
 function formatTime(ts) {
   const d = ts && ts.toDate ? ts.toDate() : new Date(ts);
   return d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
@@ -362,6 +405,7 @@ function setLoginMode(mode) {
   loginMode = mode;
   document.getElementById("mode-login").classList.toggle("active", mode === "login");
   document.getElementById("mode-create").classList.toggle("active", mode === "create");
+  document.getElementById("avatar-field").style.display = mode === "create" ? "block" : "none";
   document.getElementById("login-submit").textContent = mode === "login" ? "Se connecter" : "Créer mon compte";
   document.getElementById("login-error").textContent = "";
 }
@@ -382,13 +426,14 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
 
     if (loginMode === "create") {
       if (doc.exists) { errEl.textContent = "Ce pseudo existe déjà. Connecte-toi plutôt."; return; }
-      await ref.set({ username: uname, code: pass, createdAt: Date.now() });
-      session = { username: uname };
+      const avatarUrl = document.getElementById("login-avatar").value.trim();
+      await ref.set({ username: uname, code: pass, avatarUrl: avatarUrl || "", createdAt: Date.now() });
+      session = { username: uname, avatarUrl: avatarUrl || "" };
     } else {
       if (!doc.exists) { errEl.textContent = "Pseudo inconnu. Crée un compte d'abord."; return; }
       const data = doc.data();
       if (data.code !== pass) { errEl.textContent = "Code incorrect."; return; }
-      session = { username: data.username };
+      session = { username: data.username, avatarUrl: data.avatarUrl || "" };
     }
     saveSession(session);
     enterHub();
@@ -436,25 +481,26 @@ document.getElementById("new-conv-form").addEventListener("submit", async (e) =>
       await convRef.set({
         participants: [session.username.toLowerCase(), otherData.username.toLowerCase()],
         participantNames: { [session.username.toLowerCase()]: session.username, [otherData.username.toLowerCase()]: otherData.username },
+        participantAvatars: { [session.username.toLowerCase()]: session.avatarUrl || "", [otherData.username.toLowerCase()]: otherData.avatarUrl || "" },
         lastMessage: "",
         lastMessageAt: Date.now(),
+        lastMessageFrom: "",
+        lastReadBy: { [session.username.toLowerCase()]: Date.now() },
+        hiddenFor: [],
       });
     }
     document.getElementById("new-conv-form").classList.remove("active");
     document.getElementById("show-new-conv").style.display = "block";
     document.getElementById("new-conv-username").value = "";
-    openConversation(cid, otherData.username);
+    openConversation(cid, otherData.username, otherData.avatarUrl || "");
   } catch (err) {
     errEl.textContent = "Erreur. Réessaie.";
   }
 });
 
 function enterHub() {
-  const c = colorFor(session.username);
   const avatarEl = document.getElementById("hub-avatar");
-  avatarEl.style.background = c.bg;
-  avatarEl.style.color = c.text;
-  avatarEl.textContent = session.username[0].toUpperCase();
+  applyAvatar(avatarEl, session.username, session.avatarUrl);
   document.getElementById("hub-username").textContent = session.username;
   showScreen("screen-hub");
   listenConversations();
@@ -462,11 +508,16 @@ function enterHub() {
 
 function listenConversations() {
   if (unsubConvs) unsubConvs();
+  const myKey = session.username.toLowerCase();
   unsubConvs = db.collection("dm_conversations")
-    .where("participants", "array-contains", session.username.toLowerCase())
+    .where("participants", "array-contains", myKey)
     .onSnapshot((snap) => {
       const list = [];
-      snap.forEach((doc) => list.push({ id: doc.id, ...doc.data() }));
+      snap.forEach((doc) => {
+        const data = { id: doc.id, ...doc.data() };
+        if ((data.hiddenFor || []).includes(myKey)) return;
+        list.push(data);
+      });
       list.sort((a, b) => (b.lastMessageAt || 0) - (a.lastMessageAt || 0));
       renderConvList(list);
     }, () => {
@@ -481,24 +532,36 @@ function renderConvList(list) {
     return;
   }
   el.innerHTML = "";
+  const myKey = session.username.toLowerCase();
   list.forEach((conv) => {
-    const myKey = session.username.toLowerCase();
     const otherKey = conv.participants.find(p => p !== myKey);
     const otherName = conv.participantNames ? conv.participantNames[otherKey] : otherKey;
-    const oc = colorFor(otherName);
+    const otherAvatar = conv.participantAvatars ? (conv.participantAvatars[otherKey] || "") : "";
+    const lastRead = (conv.lastReadBy && conv.lastReadBy[myKey]) || 0;
+    const isUnread = conv.lastMessageFrom && conv.lastMessageFrom !== myKey && (conv.lastMessageAt || 0) > lastRead;
 
     const item = document.createElement("div");
-    item.className = "conv-item";
+    item.className = "conv-item" + (isUnread ? " unread" : "");
     item.innerHTML = `
-      <div class="avatar" style="width:44px;height:44px;font-size:16px;background:${oc.bg};color:${oc.text};">${otherName[0].toUpperCase()}</div>
+      <div class="avatar" style="width:44px;height:44px;font-size:16px;${avatarInlineStyle(otherName, otherAvatar)}">${avatarInlineLetter(otherName, otherAvatar)}</div>
       <div class="info">
         <div class="top-line">
           <span>${escapeHtml(otherName)}</span>
         </div>
         <div class="preview">${escapeHtml(conv.lastMessage || "Démarrer la conversation")}</div>
       </div>
+      ${isUnread ? '<span class="unread-dot"></span>' : ''}
+      <button class="conv-delete" type="button" aria-label="Supprimer la conversation">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg>
+      </button>
     `;
-    item.onclick = () => openConversation(conv.id, otherName);
+    item.addEventListener("click", () => openConversation(conv.id, otherName, otherAvatar));
+    item.querySelector(".conv-delete").addEventListener("click", (e) => {
+      e.stopPropagation();
+      db.collection("dm_conversations").doc(conv.id).update({
+        hiddenFor: firebase.firestore.FieldValue.arrayUnion(myKey)
+      });
+    });
     el.appendChild(item);
   });
 }
@@ -508,16 +571,17 @@ document.getElementById("chat-back").onclick = () => {
   showScreen("screen-hub");
 };
 
-function openConversation(cid, otherName) {
+function openConversation(cid, otherName, otherAvatar) {
   currentConv = { id: cid, otherUser: otherName };
-  const oc = colorFor(otherName);
   const avatarEl = document.getElementById("chat-avatar");
-  avatarEl.style.background = oc.bg;
-  avatarEl.style.color = oc.text;
-  avatarEl.textContent = otherName[0].toUpperCase();
+  applyAvatar(avatarEl, otherName, otherAvatar);
   document.getElementById("chat-username").textContent = otherName;
   showScreen("screen-chat");
   listenMessages();
+  const myKey = session.username.toLowerCase();
+  db.collection("dm_conversations").doc(cid).update({
+    [`lastReadBy.${myKey}`]: Date.now()
+  }).catch(() => {});
 }
 
 function listenMessages() {
@@ -544,10 +608,17 @@ function renderMessages(msgs) {
     const mine = m.from.toLowerCase() === session.username.toLowerCase();
     const row = document.createElement("div");
     row.className = "msg-row " + (mine ? "mine" : "theirs");
-    row.innerHTML = `
-      <div class="bubble">${escapeHtml(m.text)}</div>
-      <span class="msg-time">${formatTime(m.ts)}</span>
-    `;
+    if (m.image) {
+      row.innerHTML = `
+        <div class="bubble bubble-image"><img src="${escapeHtml(m.image)}" alt="" onerror="this.parentElement.parentElement.style.display='none'"></div>
+        <span class="msg-time">${formatTime(m.ts)}</span>
+      `;
+    } else {
+      row.innerHTML = `
+        <div class="bubble">${escapeHtml(m.text)}</div>
+        <span class="msg-time">${formatTime(m.ts)}</span>
+      `;
+    }
     el.appendChild(row);
   });
   el.scrollTop = el.scrollHeight;
@@ -566,10 +637,32 @@ document.getElementById("chat-form").addEventListener("submit", async (e) => {
     await db.collection("dm_conversations").doc(currentConv.id).update({
       lastMessage: text,
       lastMessageAt: ts,
+      lastMessageFrom: session.username.toLowerCase(),
+      [`lastReadBy.${session.username.toLowerCase()}`]: ts,
+      hiddenFor: [],
     });
   } catch (err) {
     input.value = text;
   }
+});
+
+document.getElementById("send-image-btn").addEventListener("click", async () => {
+  if (!currentConv) return;
+  const url = window.prompt("Colle le lien de l'image (URL) :");
+  if (!url || !url.trim()) return;
+  const imageUrl = url.trim();
+  try {
+    const ts = Date.now();
+    await db.collection("dm_conversations").doc(currentConv.id)
+      .collection("dm_messages").add({ from: session.username, image: imageUrl, ts });
+    await db.collection("dm_conversations").doc(currentConv.id).update({
+      lastMessage: "📷 Image",
+      lastMessageAt: ts,
+      lastMessageFrom: session.username.toLowerCase(),
+      [`lastReadBy.${session.username.toLowerCase()}`]: ts,
+      hiddenFor: [],
+    });
+  } catch (err) {}
 });
 
 (function boot() {
