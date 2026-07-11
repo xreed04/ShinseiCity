@@ -2213,15 +2213,22 @@ ul#privmsgs-menu {
 }
 
 
-/* Notiffi CSS */
+/* ============================================================
+   NOTIFFI — Retheme Shinsei City
+   Remplace le bloc "Notiffi CSS" existant en entier
+   Aucune classe/structure touchée, uniquement les valeurs visuelles
+   ============================================================ */
+
 /* Cache la toolbar défaut */
 #fa_toolbar {display: none}
 
 /* Bouton de notification */
 #notiffi_button {
  cursor: pointer;
- background: var(--neutral);
- border-radius: 10px;
+ background: var(--dbckg0);
+ backdrop-filter: var(--ft-blur);
+ border: var(--border2);
+ border-radius: 0;
  display: flex;
  align-items: center;
  gap: 10px;
@@ -2231,18 +2238,25 @@ ul#privmsgs-menu {
  top: 30px;
  right: 10px;
  height: 35px;
+ color: var(--text2);
+ transition: ease .3s;
+}
+
+#notiffi_button:hover {
+ color: var(--links2);
+ border-color: var(--accent2-c, var(--accent2));
 }
 
 /* Conteneur du nombre de notification non lues REMPLI */
 .unread_count {
  position: relative;
- background: var(--neutralDarker);
- border-radius: 5px;
+ background: linear-gradient(to top right, var(--accent2), var(--accent1));
+ border-radius: 999px;
  width: 25px;
  display: grid;
  place-items: center;
- font-weight: 600;
- font-size: 12px;
+ font: 700 var(--fs-mini) var(--f-mono);
+ color: var(--title-img, #fff);
  scale: 1;
  opacity: 1;
  aspect-ratio: 1;
@@ -2257,11 +2271,9 @@ ul#privmsgs-menu {
  transition: all ease-out .2s;
 }
 
-
-
 /* Menu des notifications FERMÉ */
 #notiffi_panel {
- --menuSize: 500px;
+ --menuSize: 380px;
  /* taille du Menu */
  width: var(--menuSize);
  position: fixed;
@@ -2273,13 +2285,14 @@ ul#privmsgs-menu {
  flex-direction: column;
  gap: 10px;
  align-items: start;
- background: var(--neutral);
- border-left: 1px solid var(--neutralDark);
+ background: var(--deco);
+ border-left: var(--border2);
  padding: 15px;
  padding-top: 50px;
  opacity: 0;
  visibility: hidden;
- transition: all ease .7s;
+ transition: all ease .5s;
+ box-sizing: border-box;
 }
 
 /* Menu des notifications OUVERT */
@@ -2294,9 +2307,11 @@ ul#privmsgs-menu {
  width: 100%;
  overflow: auto;
  max-height: 100%;
- background: var(--neutralDark);
+ background: var(--dbckg0);
+ backdrop-filter: var(--ft-blur);
+ border: var(--border1);
  padding: 10px;
- border-radius: 10px;
+ border-radius: 0;
  -ms-overflow-style: none;
  scrollbar-width: none;
 
@@ -2309,15 +2324,22 @@ ul#privmsgs-menu {
 /* Conteneur des notifications VIDE */
 .no_notification {
  text-align: center;
- font-style: italic;
+ font: var(--fset-mono3);
+ text-transform: uppercase;
+ letter-spacing: .04em;
+ color: var(--text3);
+ padding: 1.5em 0;
 }
 
-/* Conteneur du footer du menu 
+/* Conteneur du footer du menu
   (voir toutes les notifications, marquer comme lu, tout supprimer) */
 .notiffi_manage {
  width: 100%;
  display: flex;
  justify-content: space-between;
+ font: var(--fset-mono4);
+ text-transform: uppercase;
+ color: var(--subtitle);
 }
 
 /* Conteneur des bouton d'action des notifications */
@@ -2328,12 +2350,20 @@ ul#privmsgs-menu {
 
  /* Bouton d'action */
  button {
-   padding: 2px 10px;
-   background: var(--neutralDark);
-   border-radius: 5px;
+   padding: .4em .9em;
+   background: transparent;
+   border: var(--border1);
+   border-radius: 0;
+   font: 700 var(--fs-mini) var(--f-mono);
+   text-transform: uppercase;
+   letter-spacing: .04em;
+   color: var(--text2);
+   cursor: pointer;
+   transition: ease .3s;
 
    &:hover {
-     color: var(--accentClr)
+     color: var(--accent1);
+     border-color: var(--accent2);
    }
  }
 }
@@ -2344,14 +2374,15 @@ ul#privmsgs-menu {
  gap: 15px;
  margin-bottom: 5px;
  padding: 10px;
- border-radius: 5px;
- border: 1px solid transparent;
- transition: border .2s;
+ border-radius: 0;
+ border: var(--border1);
+ transition: border .2s, background .2s;
  animation: notiffiFadeIn 0.3s ease-in-out;
 
  /* Notification au survol */
  &:hover {
-   border-color: var(--neutralDarker);
+   border-color: var(--accent2);
+   background: var(--dbckg1);
  }
 }
 
@@ -2368,7 +2399,7 @@ ul#privmsgs-menu {
 
 /* Apparence d'une notification NON LUE */
 .notification.unread {
- background-color: var(--neutral);
+ background-color: color-mix(in srgb, var(--accent1) 8%, var(--dbckg0));
 }
 
 /* Conteneur des détails de la notification (avatar, icone) */
@@ -2379,9 +2410,11 @@ ul#privmsgs-menu {
 
 /* Conteneur de l'avatar */
 .notif_avatar {
- background: var(--neutral);
+ background: var(--dbckg1);
+ outline: 1px solid var(--c1, var(--accent2));
+ outline-offset: -1px;
  height: 35px;
- border-radius: 5px;
+ border-radius: 0;
  aspect-ratio: 1;
 
  /* Image de l'avatar */
@@ -2390,7 +2423,7 @@ ul#privmsgs-menu {
    aspect-ratio: 1;
    object-fit: cover;
    object-position: center;
-   border-radius: 5px;
+   border-radius: 0;
  }
 }
 
@@ -2399,30 +2432,39 @@ ul#privmsgs-menu {
  position: absolute;
  bottom: -5px;
  right: -5px;
- background: var(--neutral);
+ background: var(--deco);
+ border: var(--border1);
  width: 18px;
  aspect-ratio: 1;
  display: grid;
  place-items: center;
- border-radius: 20px;
+ border-radius: 999px;
  font-size: 10px;
+ color: var(--text3);
 }
 
 /* Icone lorsque la notification est non lue */
 .notification.unread .notif_icon {
- color: var(--neutral);
- background: var(--accentClr);
+ color: var(--title-img, #fff);
+ background: linear-gradient(to top right, var(--accent2), var(--accent1));
+ border-color: var(--accent1);
 }
 
 /* Conteneur du texte et la date de la notification */
 .notif_content {
  width: 100%;
+ font: var(--fset-body2);
+ color: var(--text);
+ line-height: 1.35em;
 }
 
 /* Date de la notification */
 .notif_time {
- font-size: var(--little-size);
- opacity: .8;
+ font: var(--fset-mono4);
+ text-transform: uppercase;
+ letter-spacing: .04em;
+ opacity: 1;
+ color: var(--text3);
  margin-top: 5px;
 }
 
@@ -2433,10 +2475,15 @@ ul#privmsgs-menu {
  font-size: 18px;
  line-height: 0;
  opacity: 0;
- border-radius: 100px;
+ color: var(--text3);
+ border-radius: 999px;
  aspect-ratio: 1;
  padding: 2px;
  transition: all .3s;
+}
+
+.notif_close:hover {
+ color: var(--accent1);
 }
 
 /* Affiche le bouton de suppression au survol de la notification */
@@ -2452,7 +2499,10 @@ ul#privmsgs-menu {
  z-index: 99;
  bottom: 10px;
  right: 10px;
- background: var(--neutralDarker);
+ background: var(--dbckg0);
+ backdrop-filter: var(--ft-blur);
+ border: var(--border2);
+ border-radius: 0;
  transform: translateY(100%);
  opacity: 0;
  filter: blur(5px);
@@ -2467,12 +2517,17 @@ ul#privmsgs-menu {
 }
 
 .alert_close {
- background: var(--neutral);
+ background: var(--dbckg1);
+ color: var(--text2);
  font-size: 18px;
  line-height: 0;
- border-radius: 100px;
+ border-radius: 999px;
  aspect-ratio: 1;
  padding: 2px;
+}
+
+.alert_close:hover {
+ color: var(--accent1);
 }
 
 /* --- Pastille "signal actif" --- */
