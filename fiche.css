@@ -72,6 +72,41 @@
   line-height: 1.25;
 }
 
+.cf-draft-note {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  flex-wrap: wrap;
+  background: color-mix(in srgb, var(--accent1) 10%, transparent);
+  border: 1px solid var(--accent1);
+  border-radius: 2px;
+  padding: 0.8em 1.1em;
+  margin-bottom: 1.4em;
+  font-family: var(--f-mono, monospace);
+  font-size: 0.78rem;
+  color: var(--subtitle);
+}
+
+#cf-clear-draft {
+  font-family: var(--f-mono, monospace) !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  background: transparent !important;
+  border: 1px solid var(--accent1) !important;
+  color: var(--accent1) !important;
+  padding: 0.4em 0.9em !important;
+  border-radius: 2px !important;
+  cursor: pointer !important;
+  white-space: nowrap;
+}
+
+#cf-clear-draft:hover {
+  background: color-mix(in srgb, var(--accent1) 15%, transparent) !important;
+}
+
 /* ============ CORPS DU FORMULAIRE ============ */
 
 #cf-body {
@@ -176,21 +211,22 @@
 /* ============ BOUTON "CRÉER LA FICHE" ============ */
 
 #cf-send {
-  display: flex;
-  align-items: center;
-  gap: 0.6em;
-  width: fit-content;
-  margin: 1.8em auto 0;
-  font-family: var(--f-mono, monospace);
-  font-size: 0.92rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border: 1px solid var(--accent1);
-  background: linear-gradient(135deg, var(--accent2), var(--accent1));
-  color: #fdfaf5;
-  padding: 0.85em 2.2em;
-  cursor: pointer;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.6em !important;
+  width: fit-content !important;
+  margin: 1.8em auto 0 !important;
+  font-family: var(--f-mono, monospace) !important;
+  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  border: 1px solid var(--accent1) !important;
+  background: linear-gradient(135deg, var(--accent2), var(--accent1)) !important;
+  color: #fdfaf5 !important;
+  padding: 0.85em 2.2em !important;
+  border-radius: 3px !important;
+  cursor: pointer !important;
   transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
@@ -245,7 +281,50 @@
 
 #cf-copy,
 #cf-edit {
+  font-family: var(--f-mono, monospace) !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.07em !important;
+  text-transform: uppercase !important;
+  border: 1px solid var(--accent2) !important;
+  background: color-mix(in srgb, var(--accent2) 12%, transparent) !important;
+  color: var(--subtitle) !important;
+  padding: 0.75em 1.5em !important;
+  border-radius: 3px !important;
+  cursor: pointer !important;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+
+#cf-copy:hover,
+#cf-edit:hover {
+  background: color-mix(in srgb, var(--accent1) 22%, transparent) !important;
+  border-color: var(--accent1) !important;
+  color: var(--title) !important;
+  transform: translateY(-1px);
+}
+
+.cf-copied {
+  display: none;
   font-family: var(--f-mono, monospace);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
+  font-size: 0.76rem;
+  color: var(--accent1);
+}
+
+/* ============ RESPONSIVE ============ */
+
+@media (max-width: 40rem) {
+  #cf-head,
+  #cf-body,
+  #cf-preview-wrap {
+    padding-left: 1.2em;
+    padding-right: 1.2em;
+  }
+  .cf-row {
+    flex-direction: column;
+    gap: 1.1em;
+  }
+  #cf-send {
+    width: 100%;
+    justify-content: center;
+  }
+}
