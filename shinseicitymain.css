@@ -2219,29 +2219,6 @@ ul#privmsgs-menu {
    Aucune classe/structure touchée, uniquement les valeurs visuelles
    ============================================================ */
  
-/* ============================================================
-   TITRE "Notifications" — non présent dans le template Potion fourni.
-   Probablement injecté par notiffi.min.js lui-même en position absolue/fixe,
-   d'où le chevauchement avec la 1re notif. Sélecteur à ajuster une fois la
-   vraie classe/structure identifiée via l'inspecteur (voir échange avec Raph).
-   Règle générique de secours ci-dessous, à affiner :
-   ============================================================ */
-#notiffi_panel > *:not(.all_notifications):not(.notiffi_manage) {
- position: relative !important;
- top: auto !important;
- right: auto !important;
- order: -1;
- padding-bottom: .5em;
- border-bottom: var(--border1);
- margin-bottom: .3em;
- font: 700 var(--fs-small) var(--f-titles);
- text-transform: uppercase;
- letter-spacing: .05em;
- color: var(--subtitle);
-}
- 
- 
- 
 /* Bouton de notification */
 #notiffi_button {
  cursor: pointer;
