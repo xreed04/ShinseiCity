@@ -2218,10 +2218,30 @@ ul#privmsgs-menu {
    Remplace le bloc "Notiffi CSS" existant en entier
    Aucune classe/structure touchée, uniquement les valeurs visuelles
    ============================================================ */
-
-/* Cache la toolbar défaut */
-#fa_toolbar {display: none}
-
+ 
+/* ============================================================
+   TITRE "Notifications" — non présent dans le template Potion fourni.
+   Probablement injecté par notiffi.min.js lui-même en position absolue/fixe,
+   d'où le chevauchement avec la 1re notif. Sélecteur à ajuster une fois la
+   vraie classe/structure identifiée via l'inspecteur (voir échange avec Raph).
+   Règle générique de secours ci-dessous, à affiner :
+   ============================================================ */
+#notiffi_panel > *:not(.all_notifications):not(.notiffi_manage) {
+ position: relative !important;
+ top: auto !important;
+ right: auto !important;
+ order: -1;
+ padding-bottom: .5em;
+ border-bottom: var(--border1);
+ margin-bottom: .3em;
+ font: 700 var(--fs-small) var(--f-titles);
+ text-transform: uppercase;
+ letter-spacing: .05em;
+ color: var(--subtitle);
+}
+ 
+ 
+ 
 /* Bouton de notification */
 #notiffi_button {
  cursor: pointer;
@@ -2241,12 +2261,12 @@ ul#privmsgs-menu {
  color: var(--text2);
  transition: ease .3s;
 }
-
+ 
 #notiffi_button:hover {
  color: var(--links2);
  border-color: var(--accent2-c, var(--accent2));
 }
-
+ 
 /* Conteneur du nombre de notification non lues REMPLI */
 .unread_count {
  position: relative;
@@ -2262,7 +2282,7 @@ ul#privmsgs-menu {
  aspect-ratio: 1;
  transition: scale ease-out .2s;
 }
-
+ 
 /* Conteneur du nombre de notification non lues VIDE */
 .unread_count:empty {
  position: absolute;
@@ -2270,7 +2290,7 @@ ul#privmsgs-menu {
  opacity: 0;
  transition: all ease-out .2s;
 }
-
+ 
 /* Menu des notifications FERMÉ */
 #notiffi_panel {
  --menuSize: 380px;
@@ -2294,14 +2314,14 @@ ul#privmsgs-menu {
  transition: all ease .5s;
  box-sizing: border-box;
 }
-
+ 
 /* Menu des notifications OUVERT */
 #notiffi_panel.open {
  right: 0;
  visibility: visible;
  opacity: 1;
 }
-
+ 
 /* Conteneur des notifications */
 .all_notifications {
  width: 100%;
@@ -2314,13 +2334,13 @@ ul#privmsgs-menu {
  border-radius: 0;
  -ms-overflow-style: none;
  scrollbar-width: none;
-
+ 
  /* Désactive la barre de défilement dans le contenenur */
  &::-webkit-scrollbar {
    display: none;
  }
 }
-
+ 
 /* Conteneur des notifications VIDE */
 .no_notification {
  text-align: center;
@@ -2330,7 +2350,7 @@ ul#privmsgs-menu {
  color: var(--text3);
  padding: 1.5em 0;
 }
-
+ 
 /* Conteneur du footer du menu
   (voir toutes les notifications, marquer comme lu, tout supprimer) */
 .notiffi_manage {
@@ -2341,13 +2361,13 @@ ul#privmsgs-menu {
  text-transform: uppercase;
  color: var(--subtitle);
 }
-
+ 
 /* Conteneur des bouton d'action des notifications */
 .notiffi_actions {
  display: grid;
  justify-items: end;
  gap: 5px;
-
+ 
  /* Bouton d'action */
  button {
    padding: .4em .9em;
@@ -2360,14 +2380,14 @@ ul#privmsgs-menu {
    color: var(--text2);
    cursor: pointer;
    transition: ease .3s;
-
+ 
    &:hover {
      color: var(--accent1);
      border-color: var(--accent2);
    }
  }
 }
-
+ 
 /* Apparence d'une notification */
 .notification {
  display: flex;
@@ -2378,36 +2398,44 @@ ul#privmsgs-menu {
  border: var(--border1);
  transition: border .2s, background .2s;
  animation: notiffiFadeIn 0.3s ease-in-out;
-
+ 
  /* Notification au survol */
  &:hover {
    border-color: var(--accent2);
    background: var(--dbckg1);
  }
 }
-
+ 
 /* Animation d'apparition des notifications */
 @keyframes notiffiFadeIn {
  from {
    opacity: 0;
  }
-
+ 
  to {
    opacity: 1;
  }
 }
-
+ 
 /* Apparence d'une notification NON LUE */
 .notification.unread {
  background-color: color-mix(in srgb, var(--accent1) 8%, var(--dbckg0));
 }
-
+ 
 /* Conteneur des détails de la notification (avatar, icone) */
+/* Uniquement affiché pour les récompenses (classe .new_award ajoutée par
+   Notiffi) : MP, mention, réponse n'ont pas d'avatar réel dans le DOM
+   (div vide), donc masquer tout le bloc évite le rond vide flottant. */
 .notif_details {
+ display: none;
+}
+ 
+.notification.new_award .notif_details {
+ display: block;
  position: relative;
  align-self: start;
 }
-
+ 
 /* Conteneur de l'avatar */
 .notif_avatar {
  background: var(--dbckg1);
@@ -2416,7 +2444,7 @@ ul#privmsgs-menu {
  height: 35px;
  border-radius: 0;
  aspect-ratio: 1;
-
+ 
  /* Image de l'avatar */
  & img {
    width: 100%;
@@ -2426,7 +2454,7 @@ ul#privmsgs-menu {
    border-radius: 0;
  }
 }
-
+ 
 /* Icone du type de la notification */
 .notif_icon {
  position: absolute;
@@ -2442,14 +2470,14 @@ ul#privmsgs-menu {
  font-size: 10px;
  color: var(--text3);
 }
-
+ 
 /* Icone lorsque la notification est non lue */
 .notification.unread .notif_icon {
  color: var(--title-img, #fff);
  background: linear-gradient(to top right, var(--accent2), var(--accent1));
  border-color: var(--accent1);
 }
-
+ 
 /* Conteneur du texte et la date de la notification */
 .notif_content {
  width: 100%;
@@ -2457,7 +2485,7 @@ ul#privmsgs-menu {
  color: var(--text);
  line-height: 1.35em;
 }
-
+ 
 /* Date de la notification */
 .notif_time {
  font: var(--fset-mono4);
@@ -2467,7 +2495,7 @@ ul#privmsgs-menu {
  color: var(--text3);
  margin-top: 5px;
 }
-
+ 
 /* Bouton de suppression de la notification */
 .notif_close {
  background: transparent;
@@ -2481,16 +2509,16 @@ ul#privmsgs-menu {
  padding: 2px;
  transition: all .3s;
 }
-
+ 
 .notif_close:hover {
  color: var(--accent1);
 }
-
+ 
 /* Affiche le bouton de suppression au survol de la notification */
 .notification:hover .notif_close {
  opacity: 1
 }
-
+ 
 /* Alerte d'une notification */
 .notification.alert {
  position: fixed;
@@ -2508,14 +2536,14 @@ ul#privmsgs-menu {
  filter: blur(5px);
  transition: all .5s ease-in-out;
 }
-
+ 
 .notification.alert.up {
  transform: translateY(0%);
  opacity: 1;
  filter: blur(0);
  transition: all .5s ease-in-out;
 }
-
+ 
 .alert_close {
  background: var(--dbckg1);
  color: var(--text2);
@@ -2525,11 +2553,11 @@ ul#privmsgs-menu {
  aspect-ratio: 1;
  padding: 2px;
 }
-
+ 
 .alert_close:hover {
  color: var(--accent1);
 }
-
+ 
 /* --- Pastille "signal actif" --- */
 .chatbox-title {
   display: flex;
