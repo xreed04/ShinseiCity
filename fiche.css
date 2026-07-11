@@ -1,0 +1,251 @@
+/* ===================================================
+   Fiche de présentation — feuille de style du FORMULAIRE
+   Hébergée sur GitHub (xreed04/ShinseiCity), chargée via
+   <link rel="stylesheet" href="https://xreed04.github.io/ShinseiCity/fiche.css">
+
+   Réutilise directement les variables du thème du forum :
+   s'adapte automatiquement au clair/sombre (classe .light).
+
+   NOTE : ce CSS ne stylise QUE le formulaire interactif.
+   La fiche générée et copiée (bouton "Copier en HTML") est
+   entièrement en styles inline dans fiche.js, indépendante
+   de ce fichier, pour pouvoir être collée telle quelle dans
+   n'importe quel sujet du forum.
+=================================================== */
+
+#cf-root,
+#cf-root *,
+#cf-root *::before,
+#cf-root *::after {
+  box-sizing: border-box;
+}
+
+#cf-root p {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#cf-root {
+  position: relative;
+  max-width: 760px;
+  margin: 2em auto;
+  background: var(--cuerpo);
+  backdrop-filter: var(--ft-blur);
+  border: 1px solid color-mix(in srgb, var(--accent1) 30%, var(--border1-c));
+  border-radius: 2px;
+  overflow: hidden;
+  font-family: var(--f-body, sans-serif);
+  color: var(--text);
+}
+
+#cf-root::before {
+  content: "";
+  display: block;
+  height: 2px;
+  background: linear-gradient(to right, var(--accent2), var(--accent1), var(--accent2));
+}
+
+/* ============ EN-TÊTE ============ */
+
+#cf-head {
+  padding: 1.5em 1.8em 1.3em;
+  border-bottom: var(--border1);
+}
+
+.cf-tag {
+  display: block;
+  font-family: var(--f-mono, monospace);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent1);
+  margin-bottom: 0.4em;
+}
+
+.cf-title {
+  font-family: var(--f-titles, sans-serif);
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: var(--title);
+  line-height: 1.25;
+}
+
+/* ============ CORPS DU FORMULAIRE ============ */
+
+#cf-body {
+  padding: 1.8em;
+}
+
+.cf-section-label {
+  font-family: var(--f-titles, sans-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--accent1);
+  padding-top: 1.6em;
+  margin-top: 1.6em;
+  margin-bottom: 1em;
+  border-top: var(--border1);
+}
+
+#cf-body > .cf-section-label:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.cf-row {
+  display: flex;
+  gap: 1em;
+  margin-bottom: 1.1em;
+}
+
+.cf-field {
+  flex: 1;
+  margin-bottom: 1.1em;
+}
+
+.cf-row .cf-field {
+  margin-bottom: 0;
+}
+
+.cf-label {
+  display: block;
+  font-family: var(--f-mono, monospace);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text2);
+  margin-bottom: 0.4em;
+}
+
+.cf-input,
+.cf-select,
+.cf-textarea {
+  display: block;
+  width: 100%;
+  background: var(--dbckg4);
+  border: var(--border2);
+  border-radius: 3px;
+  color: var(--subtitle);
+  font-family: var(--f-body, sans-serif);
+  font-size: 0.92rem;
+  line-height: 1.4;
+  padding: 0.6em 0.8em;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.cf-select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 2em;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--accent1) 50%),
+    linear-gradient(135deg, var(--accent1) 50%, transparent 50%);
+  background-position: calc(100% - 16px) center, calc(100% - 11px) center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.cf-textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.cf-input::placeholder,
+.cf-textarea::placeholder {
+  color: var(--text3);
+}
+
+.cf-input:hover,
+.cf-select:hover,
+.cf-textarea:hover,
+.cf-input:focus-visible,
+.cf-select:focus-visible,
+.cf-textarea:focus-visible {
+  border-color: var(--accent1);
+  background: color-mix(in srgb, var(--accent1) 8%, var(--dbckg4));
+  outline: none;
+}
+
+/* ============ BOUTON "CRÉER LA FICHE" ============ */
+
+#cf-send {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  width: fit-content;
+  margin: 1.8em auto 0;
+  font-family: var(--f-mono, monospace);
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--accent1);
+  background: linear-gradient(135deg, var(--accent2), var(--accent1));
+  color: #fdfaf5;
+  padding: 0.85em 2.2em;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+#cf-send::after {
+  content: '\f0da';
+  font-family: 'font awesome 6 pro';
+  font-weight: 400;
+  font-size: 0.85em;
+}
+
+#cf-send:hover {
+  filter: brightness(1.12);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent1) 45%, transparent);
+}
+
+#cf-send:focus-visible {
+  outline: 2px solid var(--accent1);
+  outline-offset: 3px;
+}
+
+/* ============ APERÇU + ACTIONS ============ */
+
+#cf-preview-wrap {
+  padding: 0 1.8em 1.8em;
+}
+
+.cf-res-label {
+  font-family: var(--f-mono, monospace);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 1em;
+  text-align: center;
+}
+
+#cf-preview {
+  border: var(--border1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 1.3em;
+}
+
+.cf-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.8em;
+}
+
+#cf-copy,
+#cf-edit {
+  font-family: var(--f-mono, monospace);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
