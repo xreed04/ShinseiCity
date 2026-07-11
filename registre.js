@@ -106,7 +106,7 @@
         }
 
         if (!items.length) {
-          listEl.innerHTML = '<div class="mr-empty">Aucun murmure enregistré pour le moment.</div>';
+          listEl.innerHTML = '<div class="mr-empty">Aucune rumeur enregistrée pour le moment.</div>';
           console.warn('[Registre du Murmure] Aucun sujet au format "Rumeur - MRM-XXXX" trouvé. Si des rumeurs existent bien sur le forum, vérifiez que les sélecteurs .ftopic/.fttitle correspondent toujours à la structure réelle de la page (elle a pu changer depuis).');
           return;
         }
