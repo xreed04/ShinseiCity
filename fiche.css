@@ -310,6 +310,50 @@
   color: var(--accent1);
 }
 
+/* ============ BOUTON "POSTER DIRECTEMENT LA FICHE" ============ */
+
+#cf-post-direct {
+  font-family: var(--f-mono, monospace) !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.07em !important;
+  text-transform: uppercase !important;
+  border: 1px solid var(--accent1) !important;
+  background: linear-gradient(135deg, var(--accent2), var(--accent1)) !important;
+  color: #fdfaf5 !important;
+  padding: 0.75em 1.5em !important;
+  border-radius: 3px !important;
+  cursor: pointer !important;
+  transition: filter 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
+}
+
+#cf-post-direct:hover:not(:disabled) {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
+
+#cf-post-direct:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: none;
+  transform: none;
+}
+
+.cf-post-status {
+  display: block;
+  width: 100%;
+  margin-top: 0.9em;
+  font-family: var(--f-mono, monospace);
+  font-size: 0.76rem;
+  text-align: center;
+  color: var(--text2);
+}
+
+.cf-post-status a {
+  color: var(--accent1);
+  text-decoration: underline;
+}
+
 /* ============ RESPONSIVE ============ */
 
 @media (max-width: 40rem) {
@@ -326,5 +370,14 @@
   #cf-send {
     width: 100%;
     justify-content: center;
+  }
+  .cf-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  #cf-copy,
+  #cf-edit,
+  #cf-post-direct {
+    width: 100%;
   }
 }
